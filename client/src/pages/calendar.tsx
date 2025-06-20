@@ -211,10 +211,10 @@ export default function Calendar() {
                         <div 
                           key={reservation.id}
                           className={`text-xs text-white px-1 py-0.5 rounded flex items-center justify-between group ${getRoomColor(reservation.roomId)}`}
-                          title={`${reservation.room.name} - ${reservation.class.name} (${reservation.teacherName})`}
+                          title={`${reservation.room.name} - ${reservation.class.name} (${reservation.teacherName}) - ${reservation.periods?.join(', ') || '시간 미지정'}교시`}
                         >
                           <span className="truncate flex-1">
-                            {reservation.room.name} {reservation.class.name}
+                            {reservation.room.name} {reservation.class.name} ({reservation.periods?.join(',') || '?'}교시)
                           </span>
                           <Button
                             variant="ghost"
