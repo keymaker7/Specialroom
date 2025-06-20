@@ -18,15 +18,13 @@ export const DEFAULT_GRADE_SCHEDULES: GradeSchedule[] = [
     periods: {
       "1": { start: "09:00", end: "09:40", label: "1교시" },
       "break1": { start: "09:40", end: "09:50", isBreak: true, label: "쉬는시간" },
-      "2": { start: "09:50", end: "10:30", label: "2교시" },
+      "2": { start: "09:50", end: "10:29", label: "2교시" },
       "break2": { start: "10:30", end: "10:40", isBreak: true, label: "쉬는시간" },
-      "3": { start: "10:40", end: "11:20", label: "3교시" },
+      "3": { start: "10:40", end: "11:19", label: "3교시" },
       "break3": { start: "11:20", end: "11:30", isBreak: true, label: "쉬는시간" },
-      "4": { start: "11:30", end: "12:10", label: "4교시" },
+      "4": { start: "11:30", end: "12:09", label: "4교시" },
       "lunch": { start: "12:10", end: "13:00", isBreak: true, label: "점심시간" },
-      "5": { start: "13:00", end: "13:40", label: "5교시" },
-      "break5": { start: "13:40", end: "13:50", isBreak: true, label: "쉬는시간" },
-      "6": { start: "13:50", end: "14:30", label: "6교시" }
+      "5": { start: "13:00", end: "13:39", label: "5교시" }
     }
   },
   {
@@ -34,15 +32,15 @@ export const DEFAULT_GRADE_SCHEDULES: GradeSchedule[] = [
     periods: {
       "1": { start: "09:00", end: "09:40", label: "1교시" },
       "break1": { start: "09:40", end: "09:50", isBreak: true, label: "쉬는시간" },
-      "2": { start: "09:50", end: "10:30", label: "2교시" },
+      "2": { start: "09:50", end: "10:29", label: "2교시" },
       "break2": { start: "10:30", end: "10:40", isBreak: true, label: "쉬는시간" },
-      "3": { start: "10:40", end: "11:20", label: "3교시" },
+      "3": { start: "10:40", end: "11:19", label: "3교시" },
       "break3": { start: "11:20", end: "11:30", isBreak: true, label: "쉬는시간" },
-      "4": { start: "11:30", end: "12:10", label: "4교시" },
+      "4": { start: "11:30", end: "12:09", label: "4교시" },
       "break4": { start: "12:10", end: "12:20", isBreak: true, label: "쉬는시간" },
-      "5": { start: "12:20", end: "13:00", label: "5교시" },
+      "5": { start: "12:20", end: "12:59", label: "5교시" },
       "lunch": { start: "13:00", end: "13:50", isBreak: true, label: "점심시간" },
-      "6": { start: "13:50", end: "14:30", label: "6교시" }
+      "6": { start: "13:50", end: "14:29", label: "6교시" }
     }
   },
   {
@@ -50,15 +48,15 @@ export const DEFAULT_GRADE_SCHEDULES: GradeSchedule[] = [
     periods: {
       "1": { start: "09:00", end: "09:40", label: "1교시" },
       "break1": { start: "09:40", end: "09:50", isBreak: true, label: "쉬는시간" },
-      "2": { start: "09:50", end: "10:30", label: "2교시" },
+      "2": { start: "09:50", end: "10:29", label: "2교시" },
       "break2": { start: "10:30", end: "10:40", isBreak: true, label: "쉬는시간" },
-      "3": { start: "10:40", end: "11:20", label: "3교시" },
+      "3": { start: "10:40", end: "11:19", label: "3교시" },
       "lunch": { start: "11:20", end: "12:10", isBreak: true, label: "점심시간" },
-      "4": { start: "12:10", end: "12:50", label: "4교시" },
+      "4": { start: "12:10", end: "12:49", label: "4교시" },
       "break4": { start: "12:50", end: "13:00", isBreak: true, label: "쉬는시간" },
-      "5": { start: "13:00", end: "13:40", label: "5교시" },
+      "5": { start: "13:00", end: "13:39", label: "5교시" },
       "break5": { start: "13:40", end: "13:50", isBreak: true, label: "쉬는시간" },
-      "6": { start: "13:50", end: "14:30", label: "6교시" }
+      "6": { start: "13:50", end: "14:29", label: "6교시" }
     }
   }
 ];

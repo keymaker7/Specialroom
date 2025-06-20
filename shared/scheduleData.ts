@@ -13,33 +13,42 @@ export const PLANNED_SCHEDULE: ScheduledUsage[] = [
   { room: "강당", timeSlot: "09:00-09:40", day: "수", grades: ["체(3-7)", "체(6-1)"] },
   { room: "강당", timeSlot: "09:00-09:40", day: "목", grades: ["체(3-2)", "체(6-6)"] },
   
-  { room: "강당", timeSlot: "09:50-10:30", day: "월", grades: ["체(4-6)", "체(5-2)"] },
-  { room: "강당", timeSlot: "09:50-10:30", day: "화", grades: ["체(4-11)", "체(5-7)"] },
-  { room: "강당", timeSlot: "09:50-10:30", day: "수", grades: ["체(3-6)", "체(6-2)"] },
-  { room: "강당", timeSlot: "09:50-10:30", day: "목", grades: ["체(3-1)", "체(6-7)"] },
+  { room: "강당", timeSlot: "09:50-10:29", day: "월", grades: ["체(4-6)", "체(5-2)"] },
+  { room: "강당", timeSlot: "09:50-10:29", day: "화", grades: ["체(4-11)", "체(5-7)"] },
+  { room: "강당", timeSlot: "09:50-10:29", day: "수", grades: ["체(3-6)", "체(6-2)"] },
+  { room: "강당", timeSlot: "09:50-10:29", day: "목", grades: ["체(3-1)", "체(6-7)"] },
   
-  { room: "강당", timeSlot: "10:40-11:20", day: "월", grades: ["체(4-7)", "체(5-5)"] },
-  { room: "강당", timeSlot: "10:40-11:20", day: "화", grades: ["체(4-1)", "체(5-9)"] },
-  { room: "강당", timeSlot: "10:40-11:20", day: "수", grades: ["체(3-5)", "체(6-3)"] },
-  { room: "강당", timeSlot: "10:40-11:20", day: "목", grades: ["체(4-1)", "체(4-7)"] },
-  { room: "강당", timeSlot: "10:40-11:20", day: "금", grades: ["체(4-6)"] },
+  { room: "강당", timeSlot: "10:40-11:19", day: "월", grades: ["체(4-7)", "체(5-5)"] },
+  { room: "강당", timeSlot: "10:40-11:19", day: "화", grades: ["체(4-1)", "체(5-9)"] },
+  { room: "강당", timeSlot: "10:40-11:19", day: "수", grades: ["체(3-5)", "체(6-3)"] },
+  { room: "강당", timeSlot: "10:40-11:19", day: "목", grades: ["체(4-1)", "체(4-7)"] },
+  { room: "강당", timeSlot: "10:40-11:19", day: "금", grades: ["체(4-6)"] },
   
-  { room: "강당", timeSlot: "11:30-12:10", day: "월", grades: ["체(4-8)"] },
-  { room: "강당", timeSlot: "11:30-12:10", day: "화", grades: ["체(4-2)"] },
-  { room: "강당", timeSlot: "11:30-12:10", day: "수", grades: ["체(3-8)"] },
-  { room: "강당", timeSlot: "11:30-12:10", day: "목", grades: ["체(3-4)", "체(3-8)"] },
-  { room: "강당", timeSlot: "11:30-12:10", day: "금", grades: ["체(3-3)"] },
+  { room: "강당", timeSlot: "11:30-12:09", day: "월", grades: ["체(4-8)"] },
+  { room: "강당", timeSlot: "11:30-12:09", day: "화", grades: ["체(4-2)"] },
+  { room: "강당", timeSlot: "11:30-12:09", day: "수", grades: ["체(3-8)"] },
+  { room: "강당", timeSlot: "11:30-12:09", day: "목", grades: ["체(3-4)", "체(3-8)"] },
+  { room: "강당", timeSlot: "11:30-12:09", day: "금", grades: ["체(3-3)"] },
   
-  { room: "강당", timeSlot: "12:20-13:00", day: "월", grades: ["체(4-9)", "체(5-4)"] },
-  { room: "강당", timeSlot: "12:20-13:00", day: "화", grades: ["체(4-3)", "체(5-8)"] },
-  { room: "강당", timeSlot: "12:20-13:00", day: "수", grades: ["체(3-9)", "체(6-4)"] },
-  { room: "강당", timeSlot: "12:20-13:00", day: "목", grades: ["체(4-3)", "체(4-5)"] },
-  { room: "강당", timeSlot: "12:20-13:00", day: "금", grades: ["체(3-4)", "체(6-9)"] },
+  { room: "강당", timeSlot: "12:20-12:59", day: "월", grades: ["체(4-9)"] },
+  { room: "강당", timeSlot: "12:20-12:59", day: "화", grades: ["체(4-3)"] },
+  { room: "강당", timeSlot: "12:20-12:59", day: "수", grades: ["체(3-9)"] },
+  { room: "강당", timeSlot: "12:20-12:59", day: "목", grades: ["체(4-3)", "체(4-5)"] },
+  { room: "강당", timeSlot: "12:20-12:59", day: "금", grades: ["체(3-4)"] },
   
-  { room: "강당", timeSlot: "13:00-13:40", day: "월", grades: ["체(5-3)"] },
-  { room: "강당", timeSlot: "13:00-13:40", day: "화", grades: ["체(5-10)"] },
-  { room: "강당", timeSlot: "13:00-13:40", day: "수", grades: ["체(6-5)", "체(6-8)"] },
-  { room: "강당", timeSlot: "13:00-13:40", day: "금", grades: ["체(6-10)"] },
+  { room: "강당", timeSlot: "12:10-12:49", day: "월", grades: ["체(5-4)"] },
+  { room: "강당", timeSlot: "12:10-12:49", day: "화", grades: ["체(5-8)"] },
+  { room: "강당", timeSlot: "12:10-12:49", day: "수", grades: ["체(6-4)"] },
+  { room: "강당", timeSlot: "12:10-12:49", day: "금", grades: ["체(6-9)"] },
+  
+  { room: "강당", timeSlot: "13:00-13:39", day: "월", grades: ["체(5-3)"] },
+  { room: "강당", timeSlot: "13:00-13:39", day: "화", grades: ["체(5-10)"] },
+  { room: "강당", timeSlot: "13:00-13:39", day: "수", grades: ["체(6-5)", "체(6-8)"] },
+  { room: "강당", timeSlot: "13:00-13:39", day: "금", grades: ["체(6-10)"] },
+  
+  { room: "강당", timeSlot: "13:50-14:29", day: "월", grades: ["체(5-4)"] },
+  { room: "강당", timeSlot: "13:50-14:29", day: "화", grades: ["체(5-8)", "체(6-4)"] },
+  { room: "강당", timeSlot: "13:50-14:29", day: "수", grades: ["체(6-9)"] },
 
   // 놀이활동실1 (1,2층이체육)
   { room: "놀이활동실1", timeSlot: "09:00-09:40", day: "월", grades: ["1학년"] },
@@ -47,41 +56,40 @@ export const PLANNED_SCHEDULE: ScheduledUsage[] = [
   { room: "놀이활동실1", timeSlot: "09:00-09:40", day: "수", grades: ["2학년"] },
   { room: "놀이활동실1", timeSlot: "09:00-09:40", day: "목", grades: ["유치원"] },
   
-  { room: "놀이활동실1", timeSlot: "09:50-10:30", day: "월", grades: ["놀(2-1)"] },
-  { room: "놀이활동실1", timeSlot: "09:50-10:30", day: "화", grades: ["놀(2-5)"] },
-  { room: "놀이활동실1", timeSlot: "09:50-10:30", day: "수", grades: ["놀(1-1)"] },
-  { room: "놀이활동실1", timeSlot: "09:50-10:30", day: "목", grades: ["놀(1-4)"] },
-  { room: "놀이활동실1", timeSlot: "09:50-10:30", day: "금", grades: ["유치원"] },
+  { room: "놀이활동실1", timeSlot: "09:50-10:29", day: "월", grades: ["놀(2-1)"] },
+  { room: "놀이활동실1", timeSlot: "09:50-10:29", day: "화", grades: ["놀(2-5)"] },
+  { room: "놀이활동실1", timeSlot: "09:50-10:29", day: "수", grades: ["놀(1-1)"] },
+  { room: "놀이활동실1", timeSlot: "09:50-10:29", day: "목", grades: ["놀(1-4)"] },
+  { room: "놀이활동실1", timeSlot: "09:50-10:29", day: "금", grades: ["유치원"] },
   
-  { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "월", grades: ["놀(2-2)"] },
-  { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "화", grades: ["놀(2-6)"] },
-  { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "수", grades: ["놀(1-2)"] },
-  { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "목", grades: ["놀(1-5)"] },
-  { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "금", grades: ["복합특수"] },
+  { room: "놀이활동실1", timeSlot: "10:40-11:19", day: "월", grades: ["놀(2-2)"] },
+  { room: "놀이활동실1", timeSlot: "10:40-11:19", day: "화", grades: ["놀(2-6)"] },
+  { room: "놀이활동실1", timeSlot: "10:40-11:19", day: "수", grades: ["놀(1-2)"] },
+  { room: "놀이활동실1", timeSlot: "10:40-11:19", day: "목", grades: ["놀(1-5)"] },
+  { room: "놀이활동실1", timeSlot: "10:40-11:19", day: "금", grades: ["복합특수"] },
   
-  { room: "놀이활동실1", timeSlot: "11:30-12:10", day: "월", grades: ["놀(2-3)"] },
-  { room: "놀이활동실1", timeSlot: "11:30-12:10", day: "화", grades: ["놀(2-7)"] },
-  { room: "놀이활동실1", timeSlot: "11:30-12:10", day: "수", grades: ["놀(1-3)"] },
-  { room: "놀이활동실1", timeSlot: "11:30-12:10", day: "목", grades: ["놀(1-6)"] },
-  { room: "놀이활동실1", timeSlot: "11:30-12:10", day: "금", grades: ["복합특수"] },
+  { room: "놀이활동실1", timeSlot: "11:30-12:09", day: "월", grades: ["놀(2-3)"] },
+  { room: "놀이활동실1", timeSlot: "11:30-12:09", day: "화", grades: ["놀(2-7)"] },
+  { room: "놀이활동실1", timeSlot: "11:30-12:09", day: "수", grades: ["놀(1-3)"] },
+  { room: "놀이활동실1", timeSlot: "11:30-12:09", day: "목", grades: ["놀(1-6)"] },
+  { room: "놀이활동실1", timeSlot: "11:30-12:09", day: "금", grades: ["복합특수"] },
   
-  { room: "놀이활동실1", timeSlot: "12:10-13:00", day: "월", grades: ["1학년"] },
-  { room: "놀이활동실1", timeSlot: "12:10-13:00", day: "화", grades: ["2학년"] },
-  { room: "놀이활동실1", timeSlot: "12:10-13:00", day: "수", grades: ["5학년"] },
-  { room: "놀이활동실1", timeSlot: "12:10-13:00", day: "목", grades: ["5학년"] },
-  { room: "놀이활동실1", timeSlot: "12:10-13:00", day: "금", grades: ["3학년"] },
+  { room: "놀이활동실1", timeSlot: "12:10-12:49", day: "수", grades: ["5학년"] },
+  { room: "놀이활동실1", timeSlot: "12:10-12:49", day: "목", grades: ["5학년"] },
   
-  { room: "놀이활동실1", timeSlot: "13:00-13:40", day: "월", grades: ["놀(2-4)"] },
-  { room: "놀이활동실1", timeSlot: "13:00-13:40", day: "화", grades: ["놀(2-8)"] },
-  { room: "놀이활동실1", timeSlot: "13:00-13:40", day: "수", grades: ["늘봄"] },
-  { room: "놀이활동실1", timeSlot: "13:00-13:40", day: "목", grades: ["5학년"] },
-  { room: "놀이활동실1", timeSlot: "13:00-13:40", day: "금", grades: ["늘봄"] },
+  { room: "놀이활동실1", timeSlot: "12:20-12:59", day: "금", grades: ["3학년"] },
   
-  { room: "놀이활동실1", timeSlot: "13:50-14:30", day: "월", grades: ["늘봄"] },
-  { room: "놀이활동실1", timeSlot: "13:50-14:30", day: "화", grades: ["늘봄"] },
-  { room: "놀이활동실1", timeSlot: "13:50-14:30", day: "수", grades: ["늘봄"] },
-  { room: "놀이활동실1", timeSlot: "13:50-14:30", day: "목", grades: ["늘봄"] },
-  { room: "놀이활동실1", timeSlot: "13:50-14:30", day: "금", grades: ["늘봄"] },
+  { room: "놀이활동실1", timeSlot: "13:00-13:39", day: "월", grades: ["놀(2-4)"] },
+  { room: "놀이활동실1", timeSlot: "13:00-13:39", day: "화", grades: ["놀(2-8)"] },
+  { room: "놀이활동실1", timeSlot: "13:00-13:39", day: "수", grades: ["늘봄"] },
+  { room: "놀이활동실1", timeSlot: "13:00-13:39", day: "목", grades: ["5학년"] },
+  { room: "놀이활동실1", timeSlot: "13:00-13:39", day: "금", grades: ["늘봄"] },
+  
+  { room: "놀이활동실1", timeSlot: "13:50-14:29", day: "월", grades: ["늘봄"] },
+  { room: "놀이활동실1", timeSlot: "13:50-14:29", day: "화", grades: ["늘봄"] },
+  { room: "놀이활동실1", timeSlot: "13:50-14:29", day: "수", grades: ["늘봄"] },
+  { room: "놀이활동실1", timeSlot: "13:50-14:29", day: "목", grades: ["늘봄"] },
+  { room: "놀이활동실1", timeSlot: "13:50-14:29", day: "금", grades: ["늘봄"] },
 
   // 놀이활동실2
   { room: "놀이활동실2", timeSlot: "09:00-09:40", day: "월", grades: ["6학년"] },
@@ -90,37 +98,38 @@ export const PLANNED_SCHEDULE: ScheduledUsage[] = [
   { room: "놀이활동실2", timeSlot: "09:00-09:40", day: "목", grades: ["5학년"] },
   { room: "놀이활동실2", timeSlot: "09:00-09:40", day: "금", grades: ["4학년"] },
   
-  { room: "놀이활동실2", timeSlot: "09:50-10:30", day: "월", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "09:50-10:30", day: "화", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "09:50-10:30", day: "수", grades: ["5학년"] },
-  { room: "놀이활동실2", timeSlot: "09:50-10:30", day: "목", grades: ["5학년"] },
-  { room: "놀이활동실2", timeSlot: "09:50-10:30", day: "금", grades: ["4학년"] },
+  { room: "놀이활동실2", timeSlot: "09:50-10:29", day: "월", grades: ["6학년"] },
+  { room: "놀이활동실2", timeSlot: "09:50-10:29", day: "화", grades: ["6학년"] },
+  { room: "놀이활동실2", timeSlot: "09:50-10:29", day: "수", grades: ["5학년"] },
+  { room: "놀이활동실2", timeSlot: "09:50-10:29", day: "목", grades: ["5학년"] },
+  { room: "놀이활동실2", timeSlot: "09:50-10:29", day: "금", grades: ["4학년"] },
   
-  { room: "놀이활동실2", timeSlot: "10:40-11:20", day: "월", grades: ["3학년"] },
-  { room: "놀이활동실2", timeSlot: "10:40-11:20", day: "화", grades: ["3학년"] },
-  { room: "놀이활동실2", timeSlot: "10:40-11:20", day: "수", grades: ["3학년"] },
-  { room: "놀이활동실2", timeSlot: "10:40-11:20", day: "목", grades: ["4학년"] },
-  { room: "놀이활동실2", timeSlot: "10:40-11:20", day: "금", grades: ["4학년"] },
+  { room: "놀이활동실2", timeSlot: "10:40-11:19", day: "월", grades: ["3학년"] },
+  { room: "놀이활동실2", timeSlot: "10:40-11:19", day: "화", grades: ["3학년"] },
+  { room: "놀이활동실2", timeSlot: "10:40-11:19", day: "수", grades: ["3학년"] },
+  { room: "놀이활동실2", timeSlot: "10:40-11:19", day: "목", grades: ["4학년"] },
+  { room: "놀이활동실2", timeSlot: "10:40-11:19", day: "금", grades: ["4학년"] },
   
-  { room: "놀이활동실2", timeSlot: "11:30-12:10", day: "월", grades: ["3학년"] },
-  { room: "놀이활동실2", timeSlot: "11:30-12:10", day: "화", grades: ["3학년"] },
-  { room: "놀이활동실2", timeSlot: "11:30-12:10", day: "수", grades: ["4학년"] },
-  { room: "놀이활동실2", timeSlot: "11:30-12:10", day: "목", grades: ["4학년"] },
-  { room: "놀이활동실2", timeSlot: "11:30-12:10", day: "금", grades: ["4학년"] },
+  { room: "놀이활동실2", timeSlot: "11:30-12:09", day: "월", grades: ["3학년"] },
+  { room: "놀이활동실2", timeSlot: "11:30-12:09", day: "화", grades: ["3학년"] },
+  { room: "놀이활동실2", timeSlot: "11:30-12:09", day: "수", grades: ["4학년"] },
+  { room: "놀이활동실2", timeSlot: "11:30-12:09", day: "목", grades: ["4학년"] },
+  { room: "놀이활동실2", timeSlot: "11:30-12:09", day: "금", grades: ["4학년"] },
   
-  { room: "놀이활동실2", timeSlot: "12:10-13:00", day: "월", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "12:10-13:00", day: "화", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "12:10-13:00", day: "수", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "12:10-13:00", day: "목", grades: ["4학년"] },
-  { room: "놀이활동실2", timeSlot: "12:10-13:00", day: "금", grades: ["5학년"] },
+  { room: "놀이활동실2", timeSlot: "12:10-12:49", day: "월", grades: ["6학년"] },
+  { room: "놀이활동실2", timeSlot: "12:10-12:49", day: "화", grades: ["6학년"] },
+  { room: "놀이활동실2", timeSlot: "12:10-12:49", day: "수", grades: ["6학년"] },
+  { room: "놀이활동실2", timeSlot: "12:10-12:49", day: "금", grades: ["5학년"] },
   
-  { room: "놀이활동실2", timeSlot: "13:00-13:40", day: "월", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "13:00-13:40", day: "화", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "13:00-13:40", day: "수", grades: ["5학년"] },
-  { room: "놀이활동실2", timeSlot: "13:00-13:40", day: "목", grades: ["5학년"] },
-  { room: "놀이활동실2", timeSlot: "13:00-13:40", day: "금", grades: ["5학년"] },
+  { room: "놀이활동실2", timeSlot: "12:20-12:59", day: "목", grades: ["4학년"] },
   
-  { room: "놀이활동실2", timeSlot: "13:50-14:30", day: "목", grades: ["3학년"] },
+  { room: "놀이활동실2", timeSlot: "13:00-13:39", day: "월", grades: ["6학년"] },
+  { room: "놀이활동실2", timeSlot: "13:00-13:39", day: "화", grades: ["6학년"] },
+  { room: "놀이활동실2", timeSlot: "13:00-13:39", day: "수", grades: ["5학년"] },
+  { room: "놀이활동실2", timeSlot: "13:00-13:39", day: "목", grades: ["5학년"] },
+  { room: "놀이활동실2", timeSlot: "13:00-13:39", day: "금", grades: ["5학년"] },
+  
+  { room: "놀이활동실2", timeSlot: "13:50-14:29", day: "목", grades: ["3학년"] },
 
   // 운동장
   { room: "운동장", timeSlot: "09:00-09:40", day: "월", grades: ["4학년"] },
@@ -237,15 +246,41 @@ export function getDayOfWeek(date: string): string {
 }
 
 export function getTimeSlotFromPeriod(period: string, grade: number): string {
-  // Convert period number and grade to actual time slot
+  // Convert period number and grade to actual time slot based on grade-specific schedules
+  
+  // 1-2학년 시간표
+  if (grade <= 2) {
+    const periodTimes: Record<string, string> = {
+      '1': '09:00-09:40',
+      '2': '09:50-10:29',
+      '3': '10:40-11:19',
+      '4': '11:30-12:09',
+      '5': '13:00-13:39'
+    };
+    return periodTimes[period] || '';
+  }
+  
+  // 3-4학년 시간표
+  if (grade <= 4) {
+    const periodTimes: Record<string, string> = {
+      '1': '09:00-09:40',
+      '2': '09:50-10:29',
+      '3': '10:40-11:19',
+      '4': '11:30-12:09',
+      '5': '12:20-12:59',
+      '6': '13:50-14:29'
+    };
+    return periodTimes[period] || '';
+  }
+  
+  // 5-6학년 시간표
   const periodTimes: Record<string, string> = {
     '1': '09:00-09:40',
-    '2': '09:50-10:30',
-    '3': '10:40-11:20',
-    '4': '11:30-12:10',
-    '5': '12:10-13:00',
-    '6': '13:00-13:40',
-    '7': '13:50-14:30',
+    '2': '09:50-10:29',
+    '3': '10:40-11:19',
+    '4': '12:10-12:49',
+    '5': '13:00-13:39',
+    '6': '13:50-14:29'
   };
   
   return periodTimes[period] || '';
