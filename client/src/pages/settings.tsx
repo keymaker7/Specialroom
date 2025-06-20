@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { type ReservationWithDetails, type Room, type Class } from "@shared/schema";
+import { type CSVData, generateCSVContent, mapToCSVField } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,21 +57,19 @@ export default function SettingsPage() {
   };
 
   const exportToCSV = () => {
-    const csvData = [
+    const csvData: CSVData = [
       ["날짜", "특별실", "학급", "담당교사", "시간", "참고사항"],
       ...reservations.map((r) => [
-        r.reservationDate,
-        r.room.name,
-        r.class.name,
-        r.teacherName,
-        `${r.startTime}-${r.endTime}`,
-        r.notes || ""
+        mapToCSVField(r.reservationDate),
+        mapToCSVField(r.room.name),
+        mapToCSVField(r.class.name),
+        mapToCSVField(r.teacherName),
+        mapToCSVField(`${r.startTime}-${r.endTime}`),
+        mapToCSVField(r.notes || "")
       ])
     ];
 
-    const csvContent = csvData.map(row => 
-      row.map(field => `"${field}"`).join(",")
-    ).join("\n");
+    const csvContent = generateCSVContent(csvData);
 
     const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
@@ -85,18 +84,16 @@ export default function SettingsPage() {
   };
 
   const exportRoomsToCSV = () => {
-    const csvData = [
+    const csvData: CSVData = [
       ["특별실명", "상태", "등록일"],
-      ...rooms.map((r: any) => [
-        r.name,
-        r.isActive ? "활성" : "비활성",
-        new Date(r.createdAt).toLocaleDateString('ko-KR')
+      ...rooms.map((r) => [
+        mapToCSVField(r.name),
+        mapToCSVField(r.isActive ? "활성" : "비활성"),
+        mapToCSVField(new Date(r.createdAt).toLocaleDateString('ko-KR'))
       ])
     ];
 
-    const csvContent = csvData.map(row => 
-      row.map(field => `"${field}"`).join(",")
-    ).join("\n");
+    const csvContent = generateCSVContent(csvData);
 
     const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
@@ -111,18 +108,16 @@ export default function SettingsPage() {
   };
 
   const exportClassesToCSV = () => {
-    const csvData = [
+    const csvData: CSVData = [
       ["학급명", "학년", "반"],
-      ...classes.map((c: any) => [
-        c.name,
-        c.grade.toString(),
-        c.classNumber.toString()
+      ...classes.map((c) => [
+        mapToCSVField(c.name),
+        mapToCSVField(c.grade.toString()),
+        mapToCSVField(c.classNumber.toString())
       ])
     ];
 
-    const csvContent = csvData.map(row => 
-      row.map(field => `"${field}"`).join(",")
-    ).join("\n");
+    const csvContent = generateCSVContent(csvData);
 
     const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");

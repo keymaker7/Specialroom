@@ -28,6 +28,60 @@
   --warning: hsl(36, 100%, 50%);
   --success: hsl(122, 39%, 49%);
   --gray-50: hsl(0, 0%, 98%);
+  
+  /* Mobile-specific variables */
+  --mobile-touch-target: 44px;
+  --mobile-spacing: 16px;
+}
+
+/* PWA and Mobile Optimizations */
+@media (max-width: 768px) {
+  .mobile-touch {
+    min-height: var(--mobile-touch-target);
+    min-width: var(--mobile-touch-target);
+  }
+  
+  .mobile-spacing {
+    padding: var(--mobile-spacing);
+  }
+  
+  .mobile-text-large {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+}
+
+/* Korean font optimization */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", 
+               "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+
+/* iOS PWA status bar safe area */
+@supports (padding: max(0px)) {
+  .ios-safe-area-top {
+    padding-top: max(env(safe-area-inset-top), 1rem);
+  }
+  
+  .ios-safe-area-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+  }
+}
+
+/* Touch feedback for interactive elements */
+.touch-feedback:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Prevent text selection on mobile for better UX */
+.no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   --gray-100: hsl(0, 0%, 96%);
   --gray-200: hsl(0, 0%, 88%);
   --gray-600: hsl(0, 0%, 46%);
