@@ -62,8 +62,6 @@ export default function ReservationModal({
       roomId: reservation?.roomId || 0,
       classId: reservation?.classId || 0,
       teacherName: reservation?.teacherName || "",
-      teacherPhone: reservation?.teacherPhone || "",
-      purpose: reservation?.purpose || "",
       notes: reservation?.notes || "",
       reservationDate: reservation?.reservationDate || getToday(),
       startTime: reservation?.startTime || "09:00",
@@ -264,44 +262,14 @@ export default function ReservationModal({
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="teacherName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>담당교사 *</FormLabel>
-                    <FormControl>
-                      <Input placeholder="담당교사명" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="teacherPhone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>연락처 *</FormLabel>
-                    <FormControl>
-                      <Input placeholder="010-0000-0000" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
             <FormField
               control={form.control}
-              name="purpose"
+              name="teacherName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>사용 목적 *</FormLabel>
+                  <FormLabel>담당교사 *</FormLabel>
                   <FormControl>
-                    <Input placeholder="사용 목적을 입력하세요" {...field} />
+                    <Input placeholder="담당교사명" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -313,10 +281,10 @@ export default function ReservationModal({
               name="notes"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>특이사항</FormLabel>
+                  <FormLabel>참고사항</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="특이사항이 있으면 입력하세요"
+                      placeholder="참고사항이 있으면 입력하세요"
                       rows={3}
                       {...field}
                     />

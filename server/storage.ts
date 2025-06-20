@@ -69,8 +69,17 @@ export class MemStorage implements IStorage {
 
     // Initialize default classes
     const defaultClasses = [];
+    const classConfig: Record<number, number> = {
+      1: 6,  // 1학년 1-6반
+      2: 8,  // 2학년 1-8반
+      3: 9,  // 3학년 1-9반
+      4: 11, // 4학년 1-11반
+      5: 10, // 5학년 1-10반
+      6: 10  // 6학년 1-10반
+    };
+
     for (let grade = 1; grade <= 6; grade++) {
-      for (let classNum = 1; classNum <= 3; classNum++) {
+      for (let classNum = 1; classNum <= classConfig[grade]; classNum++) {
         defaultClasses.push({
           name: `${grade}학년 ${classNum}반`,
           grade: grade,
@@ -100,7 +109,8 @@ export class MemStorage implements IStorage {
   async createRoom(room: InsertRoom): Promise<Room> {
     const newRoom: Room = {
       id: this.currentRoomId++,
-      ...room,
+      name: room.name,
+      isActive: room.isActive ?? true,
       createdAt: new Date(),
     };
     this.rooms.set(newRoom.id, newRoom);
@@ -173,7 +183,16 @@ export class MemStorage implements IStorage {
   async createReservation(reservation: InsertReservation): Promise<Reservation> {
     const newReservation: Reservation = {
       id: this.currentReservationId++,
-      ...reservation,
+      roomId: reservation.roomId,
+      classId: reservation.classId,
+      teacherName: reservation.teacherName,
+      teacherPhone: "",
+      purpose: "",
+      notes: reservation.notes || null,
+      reservationDate: reservation.reservationDate,
+      startTime: reservation.startTime,
+      endTime: reservation.endTime,
+      periods: reservation.periods || null,
       createdAt: new Date(),
     };
     this.reservations.set(newReservation.id, newReservation);

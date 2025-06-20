@@ -43,6 +43,8 @@ export const insertClassSchema = createInsertSchema(classes).omit({
 export const insertReservationSchema = createInsertSchema(reservations).omit({
   id: true,
   createdAt: true,
+  teacherPhone: true,
+  purpose: true,
 }).extend({
   periods: z.array(z.string()).min(1, "최소 1개 교시를 선택해야 합니다"),
 });

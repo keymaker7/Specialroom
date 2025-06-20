@@ -50,7 +50,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div className="p-6 border-b border-gray-200 flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-gray-800">특별실 예약 관리</h1>
-            <p className="text-sm text-gray-600 mt-1">○○초등학교</p>
+            <p className="text-sm text-gray-600 mt-1">효행초등학교</p>
           </div>
           <button 
             onClick={onClose}
