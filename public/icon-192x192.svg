@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <rect width="192" height="192" fill="#1976D2" rx="24"/>
+  <g fill="white">
+    <!-- Door icon -->
+    <rect x="48" y="48" width="96" height="96" rx="8" fill="none" stroke="white" stroke-width="4"/>
+    <rect x="56" y="56" width="80" height="80" rx="4"/>
+    <circle cx="72" cy="96" r="3" fill="#1976D2"/>
+    <!-- School building -->
+    <rect x="140" y="120" width="24" height="24" fill="white" opacity="0.8"/>
+    <rect x="144" y="124" width="4" height="4" fill="#1976D2"/>
+    <rect x="152" y="124" width="4" height="4" fill="#1976D2"/>
+    <rect x="144" y="132" width="4" height="4" fill="#1976D2"/>
+    <rect x="152" y="132" width="4" height="4" fill="#1976D2"/>
+  </g>
+</svg>
