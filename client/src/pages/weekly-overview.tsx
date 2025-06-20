@@ -10,11 +10,19 @@ export default function WeeklyOverview() {
   const weekRange = getWeekRange();
   
   const { data: reservations = [], isLoading } = useQuery<ReservationWithDetails[]>({
-    queryKey: [`/api/reservations?startDate=${weekRange.start}&endDate=${weekRange.end}`],
+    queryKey: ['/api/reservations'],
+  });
+
+  // Filter reservations for this week
+  const weekReservations = reservations.filter(r => {
+    const reservationDate = new Date(r.reservationDate);
+    const startDate = new Date(weekRange.start);
+    const endDate = new Date(weekRange.end);
+    return reservationDate >= startDate && reservationDate <= endDate;
   });
 
   // Group reservations by date
-  const reservationsByDate = reservations.reduce((acc, reservation) => {
+  const reservationsByDate = weekReservations.reduce((acc, reservation) => {
     const date = reservation.reservationDate;
     if (!acc[date]) {
       acc[date] = [];
@@ -302,7 +310,7 @@ export default function WeeklyOverview() {
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
                 <Calendar className="w-6 h-6 text-blue-600" />
               </div>
-              <div className="text-3xl font-bold text-blue-600 mb-1">{reservations.length}</div>
+              <div className="text-3xl font-bold text-blue-600 mb-1">{weekReservations.length}</div>
               <div className="text-sm text-gray-600 font-medium">총 예약</div>
             </div>
             <div className="text-center bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
@@ -319,7 +327,7 @@ export default function WeeklyOverview() {
                 <Users className="w-6 h-6 text-purple-600" />
               </div>
               <div className="text-3xl font-bold text-purple-600 mb-1">
-                {new Set(reservations.map(r => r.roomId)).size}
+                {new Set(weekReservations.map(r => r.roomId)).size}
               </div>
               <div className="text-sm text-gray-600 font-medium">사용 특별실</div>
             </div>

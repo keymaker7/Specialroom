@@ -284,9 +284,9 @@ export default function ReservationModal({
               name="teacherName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>담당교사 *</FormLabel>
+                  <FormLabel>이용 학급 *</FormLabel>
                   <FormControl>
-                    <Input placeholder="담당교사명" {...field} />
+                    <Input placeholder="이용 학급" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

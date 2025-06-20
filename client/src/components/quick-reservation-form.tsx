@@ -207,11 +207,11 @@ export default function QuickReservationForm() {
                 name="teacherName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>담당교사</FormLabel>
+                    <FormLabel>이용 학급</FormLabel>
                     <FormControl>
                       <Input 
                         className="form-input" 
-                        placeholder="담당교사명을 입력하세요" 
+                        placeholder="이용 학급을 입력하세요" 
                         {...field} 
                       />
                     </FormControl>
