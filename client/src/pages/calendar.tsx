@@ -260,6 +260,7 @@ export default function Calendar() {
           setIsModalOpen(false);
           setSelectedDate("");
         }}
+        defaultDate={selectedDate}
       />
     </div>
   );

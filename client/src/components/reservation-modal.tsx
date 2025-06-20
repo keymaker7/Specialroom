@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,6 +41,7 @@ interface ReservationModalProps {
   isOpen: boolean;
   onClose: () => void;
   reservation?: any;
+  defaultDate?: string;
 }
 
 const periods = ["1", "2", "3", "4", "5", "6"];
@@ -48,7 +49,8 @@ const periods = ["1", "2", "3", "4", "5", "6"];
 export default function ReservationModal({ 
   isOpen, 
   onClose, 
-  reservation 
+  reservation,
+  defaultDate 
 }: ReservationModalProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -68,7 +70,7 @@ export default function ReservationModal({
       classId: reservation?.classId || 0,
       teacherName: reservation?.teacherName || "",
       notes: reservation?.notes || "",
-      reservationDate: reservation?.reservationDate || getToday(),
+      reservationDate: reservation?.reservationDate || defaultDate || getToday(),
       startTime: reservation?.startTime || "09:00",
       endTime: reservation?.endTime || "09:40",
       periods: reservation?.periods || [],
@@ -86,6 +88,22 @@ export default function ReservationModal({
   const availablePeriods = getAvailablePeriods(selectedGrade);
   const gradeSchedule = getGradeSchedule(selectedGrade);
   const selectedRoom = rooms.find(r => r.id === selectedRoomId);
+
+  // Reset form when modal opens with new date or reservation data
+  useEffect(() => {
+    if (isOpen) {
+      form.reset({
+        roomId: reservation?.roomId || 0,
+        classId: reservation?.classId || 0,
+        teacherName: reservation?.teacherName || "",
+        notes: reservation?.notes || "",
+        reservationDate: reservation?.reservationDate || defaultDate || getToday(),
+        startTime: reservation?.startTime || "09:00",
+        endTime: reservation?.endTime || "09:40",
+        periods: reservation?.periods || [],
+      });
+    }
+  }, [isOpen, defaultDate, reservation, form]);
 
   // Check for planned schedule conflicts with proper time overlap detection
   const getScheduleConflicts = () => {
