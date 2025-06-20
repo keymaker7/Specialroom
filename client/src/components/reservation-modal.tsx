@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertReservationSchema, type InsertReservation, type Room, type Class } from "@shared/schema";
 import { getGradeSchedule, formatPeriodLabel, getAvailablePeriods } from "@shared/timeConfig";
-import { getPlannedUsageForTimeSlot, getTimeSlotFromPeriod } from "@shared/scheduleData";
+import { getPlannedUsageForTimeSlot, getTimeSlotFromPeriod, doTimeSlotsOverlap } from "@shared/scheduleData";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -87,7 +87,7 @@ export default function ReservationModal({
   const gradeSchedule = getGradeSchedule(selectedGrade);
   const selectedRoom = rooms.find(r => r.id === selectedRoomId);
 
-  // Check for planned schedule conflicts
+  // Check for planned schedule conflicts with proper time overlap detection
   const getScheduleConflicts = () => {
     if (!selectedRoom || !selectedDate || !selectedPeriods.length) return [];
     
@@ -98,14 +98,34 @@ export default function ReservationModal({
     }> = [];
 
     selectedPeriods.forEach((period: string) => {
-      const timeSlot = getTimeSlotFromPeriod(period, selectedGrade);
-      const plannedGrades = getPlannedUsageForTimeSlot(selectedRoom.name, selectedDate, timeSlot);
+      const requestedTimeSlot = getTimeSlotFromPeriod(period, selectedGrade);
       
-      if (plannedGrades.length > 0) {
+      // Check all planned schedules for this room/date/day
+      const day = ['일', '월', '화', '수', '목', '금', '토'][new Date(selectedDate).getDay()];
+      
+      // Find any planned schedules that actually overlap with the requested time
+      const overlappingSchedules: string[] = [];
+      
+      // Check against all possible scheduled time slots for this room and day
+      const allScheduledSlots = [
+        '09:00-09:40', '09:50-10:30', '10:40-11:20', '11:30-12:10',
+        '12:10-12:50', '12:20-13:00', '13:00-13:40', '13:50-14:30'
+      ];
+      
+      allScheduledSlots.forEach(scheduledSlot => {
+        if (doTimeSlotsOverlap(requestedTimeSlot, scheduledSlot)) {
+          const plannedGrades = getPlannedUsageForTimeSlot(selectedRoom.name, selectedDate, scheduledSlot);
+          if (plannedGrades.length > 0) {
+            overlappingSchedules.push(...plannedGrades);
+          }
+        }
+      });
+      
+      if (overlappingSchedules.length > 0) {
         conflicts.push({
           period,
-          timeSlot,
-          plannedGrades
+          timeSlot: requestedTimeSlot,
+          plannedGrades: Array.from(new Set(overlappingSchedules)) // Remove duplicates
         });
       }
     });
