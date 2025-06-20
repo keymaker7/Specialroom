@@ -33,7 +33,7 @@ export default function WeeklyOverview() {
 
     // Group by period
     const periodGroups = reservations.reduce((acc, res) => {
-      res.periods.forEach(period => {
+      (res.periods || []).forEach(period => {
         if (!acc[period]) acc[period] = [];
         acc[period].push(res);
       });
@@ -183,6 +183,9 @@ export default function WeeklyOverview() {
                                     <span className="text-sm text-gray-600">
                                       → {reservation.room.name}
                                     </span>
+                                    <span className="text-xs text-purple-600 font-medium">
+                                      ({reservation.class.grade}학년)
+                                    </span>
                                   </div>
                                   <div className="text-sm text-gray-500">
                                     {periodTime ? `${periodTime.start} - ${periodTime.end}` : '시간 미정'}
@@ -207,7 +210,7 @@ export default function WeeklyOverview() {
                           <div className="flex items-center gap-2">
                             <Clock className="w-4 h-4 text-gray-400" />
                             <span className="text-sm text-gray-600">
-                              {reservation.periods.map(p => formatPeriodLabel(p, reservation.class.grade)).join(', ')}
+                              {(reservation.periods || []).map(p => formatPeriodLabel(p, reservation.class.grade)).join(', ')}
                             </span>
                           </div>
                         </div>

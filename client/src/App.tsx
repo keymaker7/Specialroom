@@ -8,7 +8,7 @@ import Header from "@/components/header";
 import WeeklyOverview from "@/pages/weekly-overview";
 import Calendar from "@/pages/calendar";
 import Reservations from "@/pages/reservations";
-import Dashboard from "@/pages/dashboard";
+import Dashboard from "@/pages/dashboard-simple";
 import Rooms from "@/pages/rooms";
 import Statistics from "@/pages/statistics";
 import Settings from "@/pages/settings";
