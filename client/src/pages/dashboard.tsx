@@ -37,6 +37,23 @@ export default function Dashboard() {
     queryFn: () => fetch(`/api/reservations?startDate=${weekRange.start}&endDate=${weekRange.end}`).then(res => res.json()),
   });
 
+  // Group today's reservations by time periods
+  const groupReservationsByPeriod = () => {
+    const periods = ["1", "2", "3", "4", "5", "6"];
+    return periods.map(period => {
+      const reservations = todayReservations.filter((r: any) => 
+        r.periods && r.periods.includes(period)
+      );
+      return {
+        period,
+        reservations,
+        count: reservations.length
+      };
+    });
+  };
+
+  const todayPeriods = groupReservationsByPeriod();
+
   if (statsLoading || todayLoading) {
     return (
       <div className="space-y-6">
@@ -54,10 +71,10 @@ export default function Dashboard() {
   }
 
   const statsData = statistics || {
-    todayReservations: 0,
-    weekReservations: 0,
-    activeRooms: 0,
-    utilizationRate: 0,
+    todayReservations: todayReservations.length,
+    weekReservations: weekReservations.length,
+    activeRooms: rooms.length,
+    utilizationRate: rooms.length > 0 ? Math.round((todayReservations.length / rooms.length) * 100) : 0,
   };
 
   // Get week days for calendar
@@ -177,25 +194,44 @@ export default function Dashboard() {
                   오늘 예약된 특별실이 없습니다.
                 </div>
               ) : (
-                <div className="space-y-4">
-                  {todayReservations.slice(0, 5).map((reservation: any) => (
-                    <div key={reservation.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-2 h-12 bg-primary rounded-full"></div>
-                        <div>
-                          <p className="font-medium text-gray-800">{reservation.room.name}</p>
-                          <p className="text-sm text-gray-600">{reservation.class.name}</p>
-                          <p className="text-xs text-gray-500">{reservation.teacherName} 선생님</p>
+                <div className="space-y-6">
+                  {/* Period-based schedule overview */}
+                  <div className="grid grid-cols-6 gap-2 mb-4">
+                    {todayPeriods.map(({ period, count }) => (
+                      <div key={period} className="text-center">
+                        <div className={`p-2 rounded-lg text-sm font-medium ${
+                          count > 0 ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-500'
+                        }`}>
+                          {period}교시
+                        </div>
+                        <div className="text-xs text-gray-600 mt-1">
+                          {count}건
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-sm font-medium text-gray-800">
-                          {formatTime(reservation.startTime)} - {formatTime(reservation.endTime)}
-                        </p>
-                        <p className="text-xs text-gray-500">{reservation.purpose}</p>
+                    ))}
+                  </div>
+                  
+                  {/* Detailed reservations list */}
+                  <div className="space-y-3">
+                    {todayReservations.slice(0, 5).map((reservation: any) => (
+                      <div key={reservation.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border-l-4 border-blue-500">
+                        <div className="flex items-center space-x-4">
+                          <div className="w-2 h-12 bg-primary rounded-full"></div>
+                          <div>
+                            <p className="font-medium text-gray-800">{reservation.room.name}</p>
+                            <p className="text-sm text-gray-600">{reservation.class.name}</p>
+                            <p className="text-xs text-gray-500">{reservation.teacherName} 선생님</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm font-medium text-gray-800">
+                            {reservation.periods?.join(', ')}교시
+                          </p>
+                          <p className="text-xs text-gray-500">{reservation.notes || ""}</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               )}
             </CardContent>
