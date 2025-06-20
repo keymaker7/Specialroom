@@ -1,17 +1,52 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, AlertTriangle, Users, Heart, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Calendar, Clock, AlertTriangle, Users, Heart, Star, Trash2 } from "lucide-react";
 import { type ReservationWithDetails } from "@shared/schema";
 import { getWeekRange, formatDate } from "@/lib/utils";
 import { getGradeSchedule, formatPeriodLabel } from "@shared/timeConfig";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function WeeklyOverview() {
   const weekRange = getWeekRange();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
   
   const { data: reservations = [], isLoading } = useQuery<ReservationWithDetails[]>({
     queryKey: ['/api/reservations'],
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await apiRequest("DELETE", `/api/reservations/${id}`);
+    },
+    onSuccess: () => {
+      // Invalidate and force refetch for complete synchronization
+      queryClient.invalidateQueries({ queryKey: ["/api/reservations"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/statistics"] });
+      queryClient.refetchQueries({ queryKey: ["/api/reservations"] });
+      queryClient.refetchQueries({ queryKey: ["/api/statistics"] });
+      toast({
+        title: "성공",
+        description: "예약이 취소되었습니다.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "오류",
+        description: error.message || "예약 취소에 실패했습니다.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleDelete = async (id: number, reservationInfo: string) => {
+    if (window.confirm(`정말 "${reservationInfo}" 예약을 취소하시겠습니까?`)) {
+      deleteMutation.mutate(id);
+    }
+  };
 
   // Filter reservations for this week
   const weekReservations = reservations.filter(r => {
@@ -230,19 +265,31 @@ export default function WeeklyOverview() {
                               
                               return (
                                 <div key={reservation.id} className="bg-white p-2 rounded border text-xs">
-                                  <div className="font-medium text-gray-800">
-                                    {reservation.class.name}
-                                  </div>
-                                  <div className="text-gray-600">
-                                    {reservation.room.name}
-                                  </div>
-                                  <div className="flex items-center justify-between mt-1">
-                                    <span className="text-purple-600 font-medium">
-                                      {reservation.class.grade}학년
-                                    </span>
-                                    <span className="text-gray-500">
-                                      {periodTime ? `${periodTime.start}-${periodTime.end}` : '미정'}
-                                    </span>
+                                  <div className="flex items-start justify-between">
+                                    <div className="flex-1">
+                                      <div className="font-medium text-gray-800">
+                                        {reservation.class.name}
+                                      </div>
+                                      <div className="text-gray-600">
+                                        {reservation.room.name}
+                                      </div>
+                                      <div className="flex items-center justify-between mt-1">
+                                        <span className="text-purple-600 font-medium">
+                                          {reservation.class.grade}학년
+                                        </span>
+                                        <span className="text-gray-500">
+                                          {periodTime ? `${periodTime.start}-${periodTime.end}` : '미정'}
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => handleDelete(reservation.id, `${reservation.room.name} - ${reservation.class.name}`)}
+                                      className="ml-2 h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                                    >
+                                      <Trash2 className="w-3 h-3" />
+                                    </Button>
                                   </div>
                                 </div>
                               );
@@ -254,21 +301,31 @@ export default function WeeklyOverview() {
                       // Show regular reservations
                       dayReservations.map(reservation => (
                         <div key={reservation.id} className="bg-white p-2 rounded-lg border-l-4 border-green-400 shadow-sm">
-                          <div className="text-xs space-y-1">
-                            <div className="font-medium text-gray-800">
-                              {reservation.class.name}
+                          <div className="flex items-start justify-between">
+                            <div className="text-xs space-y-1 flex-1">
+                              <div className="font-medium text-gray-800">
+                                {reservation.class.name}
+                              </div>
+                              <div className="text-gray-600">
+                                {reservation.room.name}
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <span className="text-blue-600 font-medium">
+                                  {(reservation.periods || []).join(', ')}교시
+                                </span>
+                                <span className="text-purple-600 text-xs">
+                                  {reservation.class.grade}학년
+                                </span>
+                              </div>
                             </div>
-                            <div className="text-gray-600">
-                              {reservation.room.name}
-                            </div>
-                            <div className="flex items-center justify-between">
-                              <span className="text-blue-600 font-medium">
-                                {(reservation.periods || []).join(', ')}교시
-                              </span>
-                              <span className="text-purple-600 text-xs">
-                                {reservation.class.grade}학년
-                              </span>
-                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDelete(reservation.id, `${reservation.room.name} - ${reservation.class.name}`)}
+                              className="ml-2 h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </Button>
                           </div>
                         </div>
                       ))

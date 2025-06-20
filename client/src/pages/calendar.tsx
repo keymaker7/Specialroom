@@ -1,17 +1,21 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Trash2 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import ReservationModal from "@/components/reservation-modal";
 import { type ReservationWithDetails } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>("");
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -35,6 +39,35 @@ export default function Calendar() {
   const { data: rooms = [] } = useQuery<any[]>({
     queryKey: ["/api/rooms"],
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await apiRequest("DELETE", `/api/reservations/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/reservations"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/statistics"] });
+      queryClient.refetchQueries({ queryKey: ["/api/reservations"] });
+      queryClient.refetchQueries({ queryKey: ["/api/statistics"] });
+      toast({
+        title: "성공",
+        description: "예약이 취소되었습니다.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "오류",
+        description: error.message || "예약 취소에 실패했습니다.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleDelete = async (id: number, reservationInfo: string) => {
+    if (window.confirm(`정말 "${reservationInfo}" 예약을 취소하시겠습니까?`)) {
+      deleteMutation.mutate(id);
+    }
+  };
 
   const getDaysInMonth = () => {
     const firstDay = new Date(year, month, 1);
@@ -177,10 +210,23 @@ export default function Calendar() {
                       {day.reservations.slice(0, 3).map((reservation: any) => (
                         <div 
                           key={reservation.id}
-                          className={`text-xs text-white px-1 py-0.5 rounded truncate ${getRoomColor(reservation.roomId)}`}
+                          className={`text-xs text-white px-1 py-0.5 rounded flex items-center justify-between group ${getRoomColor(reservation.roomId)}`}
                           title={`${reservation.room.name} - ${reservation.class.name} (${reservation.teacherName})`}
                         >
-                          {reservation.room.name} {reservation.class.name}
+                          <span className="truncate flex-1">
+                            {reservation.room.name} {reservation.class.name}
+                          </span>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete(reservation.id, `${reservation.room.name} - ${reservation.class.name}`);
+                            }}
+                            className="ml-1 h-4 w-4 p-0 text-white/80 hover:text-white hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
                         </div>
                       ))}
                       {day.reservations.length > 3 && (
