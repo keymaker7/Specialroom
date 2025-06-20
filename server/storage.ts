@@ -57,7 +57,9 @@ export class MemStorage implements IStorage {
       { name: "놀이활동실2" },
       { name: "야외정원(4층)" },
       { name: "시청각실1" },
-      { name: "시청각실2" }
+      { name: "시청각실2" },
+      { name: "제 1 컴퓨터실" },
+      { name: "제 2 컴퓨터실" }
     ];
 
     defaultRooms.forEach(room => {

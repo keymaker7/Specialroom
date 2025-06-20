@@ -7,6 +7,40 @@ export interface ScheduledUsage {
 }
 
 export const PLANNED_SCHEDULE: ScheduledUsage[] = [
+  // 체육관 (1,2,3,4학년)
+  { room: "강당", timeSlot: "09:00-09:40", day: "월", grades: ["체(4-5)", "체(5-1)"] },
+  { room: "강당", timeSlot: "09:00-09:40", day: "화", grades: ["체(4-10)", "체(5-6)"] },
+  { room: "강당", timeSlot: "09:00-09:40", day: "수", grades: ["체(3-7)", "체(6-1)"] },
+  { room: "강당", timeSlot: "09:00-09:40", day: "목", grades: ["체(3-2)", "체(6-6)"] },
+  
+  { room: "강당", timeSlot: "09:50-10:30", day: "월", grades: ["체(4-6)", "체(5-2)"] },
+  { room: "강당", timeSlot: "09:50-10:30", day: "화", grades: ["체(4-11)", "체(5-7)"] },
+  { room: "강당", timeSlot: "09:50-10:30", day: "수", grades: ["체(3-6)", "체(6-2)"] },
+  { room: "강당", timeSlot: "09:50-10:30", day: "목", grades: ["체(3-1)", "체(6-7)"] },
+  
+  { room: "강당", timeSlot: "10:40-11:20", day: "월", grades: ["체(4-7)", "체(5-5)"] },
+  { room: "강당", timeSlot: "10:40-11:20", day: "화", grades: ["체(4-1)", "체(5-9)"] },
+  { room: "강당", timeSlot: "10:40-11:20", day: "수", grades: ["체(3-5)", "체(6-3)"] },
+  { room: "강당", timeSlot: "10:40-11:20", day: "목", grades: ["체(4-1)", "체(4-7)"] },
+  { room: "강당", timeSlot: "10:40-11:20", day: "금", grades: ["체(4-6)"] },
+  
+  { room: "강당", timeSlot: "11:30-12:10", day: "월", grades: ["체(4-8)"] },
+  { room: "강당", timeSlot: "11:30-12:10", day: "화", grades: ["체(4-2)"] },
+  { room: "강당", timeSlot: "11:30-12:10", day: "수", grades: ["체(3-8)"] },
+  { room: "강당", timeSlot: "11:30-12:10", day: "목", grades: ["체(3-4)", "체(3-8)"] },
+  { room: "강당", timeSlot: "11:30-12:10", day: "금", grades: ["체(3-3)"] },
+  
+  { room: "강당", timeSlot: "12:20-13:00", day: "월", grades: ["체(4-9)", "체(5-4)"] },
+  { room: "강당", timeSlot: "12:20-13:00", day: "화", grades: ["체(4-3)", "체(5-8)"] },
+  { room: "강당", timeSlot: "12:20-13:00", day: "수", grades: ["체(3-9)", "체(6-4)"] },
+  { room: "강당", timeSlot: "12:20-13:00", day: "목", grades: ["체(4-3)", "체(4-5)"] },
+  { room: "강당", timeSlot: "12:20-13:00", day: "금", grades: ["체(3-4)", "체(6-9)"] },
+  
+  { room: "강당", timeSlot: "13:00-13:40", day: "월", grades: ["체(5-3)"] },
+  { room: "강당", timeSlot: "13:00-13:40", day: "화", grades: ["체(5-10)"] },
+  { room: "강당", timeSlot: "13:00-13:40", day: "수", grades: ["체(6-5)", "체(6-8)"] },
+  { room: "강당", timeSlot: "13:00-13:40", day: "금", grades: ["체(6-10)"] },
+
   // 놀이활동실1 (1,2층이체육)
   { room: "놀이활동실1", timeSlot: "09:00-09:40", day: "월", grades: ["1학년"] },
   { room: "놀이활동실1", timeSlot: "09:00-09:40", day: "화", grades: ["5학년"] },
@@ -19,7 +53,7 @@ export const PLANNED_SCHEDULE: ScheduledUsage[] = [
   { room: "놀이활동실1", timeSlot: "09:50-10:30", day: "목", grades: ["놀(1-4)"] },
   { room: "놀이활동실1", timeSlot: "09:50-10:30", day: "금", grades: ["유치원"] },
   
-  { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "월", grades: ["놀(2-9)"] },
+  { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "월", grades: ["놀(2-2)"] },
   { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "화", grades: ["놀(2-6)"] },
   { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "수", grades: ["놀(1-2)"] },
   { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "목", grades: ["놀(1-5)"] },
@@ -31,6 +65,8 @@ export const PLANNED_SCHEDULE: ScheduledUsage[] = [
   { room: "놀이활동실1", timeSlot: "11:30-12:10", day: "목", grades: ["놀(1-6)"] },
   { room: "놀이활동실1", timeSlot: "11:30-12:10", day: "금", grades: ["복합특수"] },
   
+  { room: "놀이활동실1", timeSlot: "12:10-13:00", day: "월", grades: ["1학년"] },
+  { room: "놀이활동실1", timeSlot: "12:10-13:00", day: "화", grades: ["2학년"] },
   { room: "놀이활동실1", timeSlot: "12:10-13:00", day: "수", grades: ["5학년"] },
   { room: "놀이활동실1", timeSlot: "12:10-13:00", day: "목", grades: ["5학년"] },
   { room: "놀이활동실1", timeSlot: "12:10-13:00", day: "금", grades: ["3학년"] },
@@ -84,7 +120,7 @@ export const PLANNED_SCHEDULE: ScheduledUsage[] = [
   { room: "놀이활동실2", timeSlot: "13:00-13:40", day: "목", grades: ["5학년"] },
   { room: "놀이활동실2", timeSlot: "13:00-13:40", day: "금", grades: ["5학년"] },
   
-  { room: "놀이활동실2", timeSlot: "13:50-14:30", day: "화", grades: ["3학년"] },
+  { room: "놀이활동실2", timeSlot: "13:50-14:30", day: "목", grades: ["3학년"] },
 
   // 운동장
   { room: "운동장", timeSlot: "09:00-09:40", day: "월", grades: ["4학년"] },
@@ -131,7 +167,7 @@ export const PLANNED_SCHEDULE: ScheduledUsage[] = [
   // 풋살장
   { room: "풋살장", timeSlot: "09:00-09:40", day: "월", grades: ["4학년"] },
   { room: "풋살장", timeSlot: "09:00-09:40", day: "화", grades: ["4학년"] },
-  { room: "풋살장", timeSlot: "09:00-09:40", day: "수", grades: ["특별돌봄"] },
+  { room: "풋살장", timeSlot: "09:00-09:40", day: "수", grades: ["복합특수"] },
   { room: "풋살장", timeSlot: "09:00-09:40", day: "목", grades: ["3학년"] },
   { room: "풋살장", timeSlot: "09:00-09:40", day: "금", grades: ["유치원"] },
   
@@ -166,10 +202,24 @@ export const PLANNED_SCHEDULE: ScheduledUsage[] = [
   { room: "풋살장", timeSlot: "13:00-13:40", day: "금", grades: ["5학년"] },
   
   { room: "풋살장", timeSlot: "13:50-14:30", day: "월", grades: ["6학년"] },
-  { room: "풋살장", timeSlot: "13:50-14:30", day: "화", grades: ["아우름"] },
-  { room: "풋살장", timeSlot: "13:50-14:30", day: "수", grades: ["아우름"] },
-  { room: "풋살장", timeSlot: "13:50-14:30", day: "목", grades: ["아우름"] },
+  { room: "풋살장", timeSlot: "13:50-14:30", day: "화", grades: ["와우중"] },
+  { room: "풋살장", timeSlot: "13:50-14:30", day: "수", grades: ["와우중"] },
+  { room: "풋살장", timeSlot: "13:50-14:30", day: "목", grades: ["와우중"] },
   { room: "풋살장", timeSlot: "13:50-14:30", day: "금", grades: ["5학년"] },
+
+  // 제 1 컴퓨터실 (학년별 사전 조정 후 사용)
+  { room: "제 1 컴퓨터실", timeSlot: "09:00-09:40", day: "월", grades: ["1학년 (사전 조정 필요)"] },
+  { room: "제 1 컴퓨터실", timeSlot: "09:00-09:40", day: "화", grades: ["1학년 (사전 조정 필요)"] },
+  { room: "제 1 컴퓨터실", timeSlot: "09:00-09:40", day: "수", grades: ["1학년 (사전 조정 필요)"] },
+  { room: "제 1 컴퓨터실", timeSlot: "09:00-09:40", day: "목", grades: ["1학년 (사전 조정 필요)"] },
+  { room: "제 1 컴퓨터실", timeSlot: "09:00-09:40", day: "금", grades: ["1학년 (사전 조정 필요)"] },
+
+  // 제 2 컴퓨터실 (학년별 사전 조정 후 사용)
+  { room: "제 2 컴퓨터실", timeSlot: "09:00-09:40", day: "월", grades: ["2학년 (사전 조정 필요)"] },
+  { room: "제 2 컴퓨터실", timeSlot: "09:00-09:40", day: "화", grades: ["2학년 (사전 조정 필요)"] },
+  { room: "제 2 컴퓨터실", timeSlot: "09:00-09:40", day: "수", grades: ["2학년 (사전 조정 필요)"] },
+  { room: "제 2 컴퓨터실", timeSlot: "09:00-09:40", day: "목", grades: ["2학년 (사전 조정 필요)"] },
+  { room: "제 2 컴퓨터실", timeSlot: "09:00-09:40", day: "금", grades: ["2학년 (사전 조정 필요)"] }
 ];
 
 export function getPlannedUsageForTimeSlot(room: string, date: string, timeSlot: string): string[] {
