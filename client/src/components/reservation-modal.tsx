@@ -125,7 +125,7 @@ export default function ReservationModal({
         conflicts.push({
           period,
           timeSlot: requestedTimeSlot,
-          plannedGrades: Array.from(new Set(overlappingSchedules)) // Remove duplicates
+          plannedGrades: overlappingSchedules.filter((grade, index, arr) => arr.indexOf(grade) === index) // Remove duplicates
         });
       }
     });
