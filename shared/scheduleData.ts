@@ -23,13 +23,13 @@ export const PLANNED_SCHEDULE: ScheduledUsage[] = [
   { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "화", grades: ["놀(2-6)"] },
   { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "수", grades: ["놀(1-2)"] },
   { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "목", grades: ["놀(1-5)"] },
-  { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "금", grades: ["특별돌봄"] },
+  { room: "놀이활동실1", timeSlot: "10:40-11:20", day: "금", grades: ["복합특수"] },
   
   { room: "놀이활동실1", timeSlot: "11:30-12:10", day: "월", grades: ["놀(2-3)"] },
   { room: "놀이활동실1", timeSlot: "11:30-12:10", day: "화", grades: ["놀(2-7)"] },
   { room: "놀이활동실1", timeSlot: "11:30-12:10", day: "수", grades: ["놀(1-3)"] },
   { room: "놀이활동실1", timeSlot: "11:30-12:10", day: "목", grades: ["놀(1-6)"] },
-  { room: "놀이활동실1", timeSlot: "11:30-12:10", day: "금", grades: ["특별돌봄"] },
+  { room: "놀이활동실1", timeSlot: "11:30-12:10", day: "금", grades: ["복합특수"] },
   
   { room: "놀이활동실1", timeSlot: "12:10-13:00", day: "수", grades: ["5학년"] },
   { room: "놀이활동실1", timeSlot: "12:10-13:00", day: "목", grades: ["5학년"] },
