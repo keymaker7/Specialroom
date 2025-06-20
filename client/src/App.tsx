@@ -10,6 +10,7 @@ import Calendar from "@/pages/calendar";
 import Reservations from "@/pages/reservations";
 import Rooms from "@/pages/rooms";
 import Statistics from "@/pages/statistics";
+import Settings from "@/pages/settings";
 import NotFound from "@/pages/not-found";
 import { useState } from "react";
 
@@ -22,6 +23,7 @@ function Router() {
       <Route path="/reservations" component={Reservations} />
       <Route path="/rooms" component={Rooms} />
       <Route path="/statistics" component={Statistics} />
+      <Route path="/settings" component={Settings} />
       <Route component={NotFound} />
     </Switch>
   );

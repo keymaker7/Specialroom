@@ -233,26 +233,33 @@ export default function ReservationModal({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>시간대 *</FormLabel>
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       {periods.map((period) => (
-                        <div key={period} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`period-${period}`}
-                            checked={field.value.includes(period)}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                field.onChange([...field.value, period]);
-                              } else {
-                                field.onChange(field.value.filter(p => p !== period));
-                              }
-                            }}
+                        <div key={period} className="flex items-center space-x-4">
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`period-${period}`}
+                              checked={field.value.includes(period)}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  field.onChange([...field.value, period]);
+                                } else {
+                                  field.onChange(field.value.filter(p => p !== period));
+                                }
+                              }}
+                            />
+                            <label
+                              htmlFor={`period-${period}`}
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              {period}교시
+                            </label>
+                          </div>
+                          <Input
+                            type="time"
+                            className="w-32"
+                            placeholder="시간 입력"
                           />
-                          <label
-                            htmlFor={`period-${period}`}
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            {getPeriodLabel(period)}
-                          </label>
                         </div>
                       ))}
                     </div>

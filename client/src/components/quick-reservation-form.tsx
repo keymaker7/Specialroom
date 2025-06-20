@@ -42,8 +42,6 @@ export default function QuickReservationForm() {
       roomId: 0,
       classId: 0,
       teacherName: "",
-      teacherPhone: "",
-      purpose: "",
       notes: "",
       reservationDate: getToday(),
       startTime: "09:00",
@@ -223,37 +221,17 @@ export default function QuickReservationForm() {
               />
             </div>
 
-            <div className="md:col-span-2">
-              <FormField
-                control={form.control}
-                name="teacherPhone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>연락처</FormLabel>
-                    <FormControl>
-                      <Input 
-                        className="form-input" 
-                        placeholder="연락처를 입력하세요" 
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
             <div className="md:col-span-2 lg:col-span-4">
               <FormField
                 control={form.control}
-                name="purpose"
+                name="notes"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>사용 목적</FormLabel>
+                    <FormLabel>참고사항</FormLabel>
                     <FormControl>
                       <Input 
                         className="form-input" 
-                        placeholder="사용 목적을 입력하세요" 
+                        placeholder="참고사항을 입력하세요" 
                         {...field} 
                       />
                     </FormControl>

@@ -6,7 +6,6 @@ import {
   List, 
   DoorOpen, 
   BarChart3, 
-  Download, 
   Settings,
   X
 } from "lucide-react";
@@ -25,7 +24,6 @@ const navigation = [
 ];
 
 const systemNavigation = [
-  { name: '백업/복원', href: '/backup', icon: Download },
   { name: '설정', href: '/settings', icon: Settings },
 ];
 
