@@ -93,6 +93,12 @@ export class MemStorage implements IStorage {
       }
     }
 
+    // Add special classes
+    defaultClasses.push(
+      { name: "유치원", grade: 0, classNumber: 1 },
+      { name: "복합특수", grade: 0, classNumber: 2 }
+    );
+
     defaultClasses.forEach(class_ => {
       const newClass: Class = {
         id: this.currentClassId++,

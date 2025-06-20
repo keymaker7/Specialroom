@@ -24,7 +24,9 @@ export const DEFAULT_GRADE_SCHEDULES: GradeSchedule[] = [
       "break3": { start: "11:20", end: "11:30", isBreak: true, label: "쉬는시간" },
       "4": { start: "11:30", end: "12:10", label: "4교시" },
       "lunch": { start: "12:10", end: "13:00", isBreak: true, label: "점심시간" },
-      "5": { start: "13:00", end: "13:40", label: "5교시" }
+      "5": { start: "13:00", end: "13:40", label: "5교시" },
+      "break5": { start: "13:40", end: "13:50", isBreak: true, label: "쉬는시간" },
+      "6": { start: "13:50", end: "14:30", label: "6교시" }
     }
   },
   {
