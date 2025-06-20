@@ -23,6 +23,7 @@ export default function SettingsPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isTimeConfigOpen, setIsTimeConfigOpen] = useState(false);
   
   const { toast } = useToast();
 
@@ -291,6 +292,21 @@ export default function SettingsPage() {
                 CSV 다운로드
               </Button>
             </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-purple-600" />
+                <span className="font-medium">교시별 시간 설정</span>
+              </div>
+              <Button 
+                onClick={() => setIsTimeConfigOpen(true)}
+                className="w-full"
+                variant="outline"
+              >
+                <Settings className="w-4 h-4 mr-2" />
+                시간표 관리
+              </Button>
+            </div>
           </div>
 
           <div className="mt-6 p-4 bg-blue-50 rounded-lg">
@@ -347,6 +363,12 @@ export default function SettingsPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Time Configuration Modal */}
+      <TimeConfigModal 
+        isOpen={isTimeConfigOpen} 
+        onClose={() => setIsTimeConfigOpen(false)} 
+      />
     </div>
   );
 }

@@ -126,22 +126,16 @@ export default function ReservationModal({
   });
 
   const onSubmit = (data: InsertReservation) => {
-    // Calculate start and end time based on selected periods
+    // Calculate start and end time based on selected periods and grade schedule
     if (data.periods.length > 0) {
       const firstPeriod = Math.min(...data.periods.map(p => parseInt(p)));
       const lastPeriod = Math.max(...data.periods.map(p => parseInt(p)));
       
-      const periodTimes: Record<number, { start: string; end: string }> = {
-        1: { start: "09:00", end: "09:40" },
-        2: { start: "09:50", end: "10:30" },
-        3: { start: "10:40", end: "11:20" },
-        4: { start: "11:30", end: "12:10" },
-        5: { start: "13:30", end: "14:10" },
-        6: { start: "14:20", end: "15:00" },
-      };
+      const firstPeriodTime = gradeSchedule.periods[firstPeriod.toString()];
+      const lastPeriodTime = gradeSchedule.periods[lastPeriod.toString()];
       
-      data.startTime = periodTimes[firstPeriod].start;
-      data.endTime = periodTimes[lastPeriod].end;
+      data.startTime = firstPeriodTime?.start || "09:00";
+      data.endTime = lastPeriodTime?.end || "09:40";
     }
 
     if (reservation) {
