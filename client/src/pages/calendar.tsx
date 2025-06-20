@@ -27,8 +27,8 @@ export default function Calendar() {
   // Filter reservations for the current month using string comparison to avoid timezone issues
   const reservations = allReservations.filter((r: ReservationWithDetails) => {
     const reservationDate = r.reservationDate; // Keep as string
-    const monthStartStr = new Date(year, month, 1).toISOString().split('T')[0];
-    const monthEndStr = new Date(year, month + 1, 0).toISOString().split('T')[0];
+    const monthStartStr = new Date(Date.UTC(year, month, 1)).toISOString().split('T')[0];
+    const monthEndStr = new Date(Date.UTC(year, month + 1, 0)).toISOString().split('T')[0];
     return reservationDate >= monthStartStr && reservationDate <= monthEndStr;
   });
 
@@ -51,7 +51,8 @@ export default function Calendar() {
 
     // Add days of the month
     for (let day = 1; day <= daysInMonth; day++) {
-      const dateStr = new Date(year, month, day).toISOString().split('T')[0];
+      // Use UTC to avoid timezone conversion issues
+      const dateStr = new Date(Date.UTC(year, month, day)).toISOString().split('T')[0];
       const dayReservations = reservations.filter((r: ReservationWithDetails) => {
         // Direct string comparison to avoid timezone conversion issues
         return r.reservationDate === dateStr;
