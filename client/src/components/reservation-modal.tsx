@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertReservationSchema, type InsertReservation } from "@shared/schema";
+import { insertReservationSchema, type InsertReservation, type Room, type Class } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -48,11 +48,11 @@ export default function ReservationModal({
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: rooms = [] } = useQuery({
+  const { data: rooms = [] } = useQuery<Room[]>({
     queryKey: ["/api/rooms"],
   });
 
-  const { data: classes = [] } = useQuery({
+  const { data: classes = [] } = useQuery<Class[]>({
     queryKey: ["/api/classes"],
   });
 
@@ -294,6 +294,7 @@ export default function ReservationModal({
                       placeholder="참고사항이 있으면 입력하세요"
                       rows={3}
                       {...field}
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />
