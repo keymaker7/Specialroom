@@ -1,9 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertReservationSchema, type InsertReservation, type Room, type Class } from "@shared/schema";
 import { getGradeSchedule, formatPeriodLabel, getAvailablePeriods } from "@shared/timeConfig";
+import { getPlannedUsageForTimeSlot, getTimeSlotFromPeriod } from "@shared/scheduleData";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -31,6 +32,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { AlertTriangle, Info } from "lucide-react";
 import { getPeriodLabel, getToday } from "@/lib/utils";
 
 interface ReservationModalProps {
@@ -73,10 +77,43 @@ export default function ReservationModal({
 
   // Get selected class grade for time scheduling
   const selectedClassId = form.watch("classId");
+  const selectedRoomId = form.watch("roomId");
+  const selectedDate = form.watch("reservationDate");
+  const selectedPeriods = form.watch("periods") || [];
+  
   const selectedClass = classes.find((c) => c.id === selectedClassId);
   const selectedGrade = selectedClass?.grade || 1;
   const availablePeriods = getAvailablePeriods(selectedGrade);
   const gradeSchedule = getGradeSchedule(selectedGrade);
+  const selectedRoom = rooms.find(r => r.id === selectedRoomId);
+
+  // Check for planned schedule conflicts
+  const getScheduleConflicts = () => {
+    if (!selectedRoom || !selectedDate || !selectedPeriods.length) return [];
+    
+    const conflicts: Array<{
+      period: string;
+      timeSlot: string;
+      plannedGrades: string[];
+    }> = [];
+
+    selectedPeriods.forEach((period: string) => {
+      const timeSlot = getTimeSlotFromPeriod(period, selectedGrade);
+      const plannedGrades = getPlannedUsageForTimeSlot(selectedRoom.name, selectedDate, timeSlot);
+      
+      if (plannedGrades.length > 0) {
+        conflicts.push({
+          period,
+          timeSlot,
+          plannedGrades
+        });
+      }
+    });
+
+    return conflicts;
+  };
+
+  const scheduleConflicts = getScheduleConflicts();
 
   const createMutation = useMutation({
     mutationFn: async (data: InsertReservation) => {
@@ -278,6 +315,36 @@ export default function ReservationModal({
                 )}
               />
             </div>
+
+            {/* Schedule Conflict Warning */}
+            {scheduleConflicts.length > 0 && (
+              <Alert className="border-orange-200 bg-orange-50">
+                <AlertTriangle className="h-4 w-4 text-orange-600" />
+                <AlertDescription className="text-orange-800">
+                  <div className="space-y-2">
+                    <p className="font-medium">⚠️ 기존 계획된 이용 시간과 중복됩니다</p>
+                    <div className="space-y-1">
+                      {scheduleConflicts.map((conflict, index) => (
+                        <div key={index} className="text-sm">
+                          <span className="font-medium">{conflict.period}교시 ({conflict.timeSlot})</span>
+                          <div className="ml-4 mt-1">
+                            <span className="text-gray-700">문의할 학급 또는 학년: </span>
+                            {conflict.plannedGrades.map((grade, idx) => (
+                              <Badge key={idx} variant="secondary" className="mr-1 bg-orange-100 text-orange-800">
+                                {grade}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-xs text-orange-700 mt-2">
+                      위 학급 또는 학년과 조율 후 예약하시기 바랍니다.
+                    </p>
+                  </div>
+                </AlertDescription>
+              </Alert>
+            )}
 
             <FormField
               control={form.control}
