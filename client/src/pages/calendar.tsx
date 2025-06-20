@@ -1,0 +1,208 @@
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { formatDate } from "@/lib/utils";
+import ReservationModal from "@/components/reservation-modal";
+
+export default function Calendar() {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string>("");
+
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+
+  // Get reservations for the current month
+  const startDate = new Date(year, month, 1).toISOString().split('T')[0];
+  const endDate = new Date(year, month + 1, 0).toISOString().split('T')[0];
+
+  const { data: reservations = [], isLoading } = useQuery({
+    queryKey: ["/api/reservations", { startDate, endDate }],
+    queryFn: () => fetch(`/api/reservations?startDate=${startDate}&endDate=${endDate}`).then(res => res.json()),
+  });
+
+  const { data: rooms = [] } = useQuery({
+    queryKey: ["/api/rooms"],
+  });
+
+  const getDaysInMonth = () => {
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const startingDayOfWeek = firstDay.getDay();
+
+    const days = [];
+
+    // Add empty cells for days before the first day of the month
+    for (let i = 0; i < startingDayOfWeek; i++) {
+      days.push(null);
+    }
+
+    // Add days of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateStr = new Date(year, month, day).toISOString().split('T')[0];
+      const dayReservations = reservations.filter((r: any) => r.reservationDate === dateStr);
+      days.push({
+        day,
+        date: dateStr,
+        reservations: dayReservations,
+        isToday: dateStr === new Date().toISOString().split('T')[0]
+      });
+    }
+
+    return days;
+  };
+
+  const days = getDaysInMonth();
+
+  const navigateMonth = (direction: 'prev' | 'next') => {
+    setCurrentDate(prev => {
+      const newDate = new Date(prev);
+      if (direction === 'prev') {
+        newDate.setMonth(prev.getMonth() - 1);
+      } else {
+        newDate.setMonth(prev.getMonth() + 1);
+      }
+      return newDate;
+    });
+  };
+
+  const handleDateClick = (dateStr: string) => {
+    setSelectedDate(dateStr);
+    setIsModalOpen(true);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <Card className="animate-pulse">
+          <CardContent className="p-6">
+            <div className="h-96 bg-gray-200 rounded"></div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  const getRoomColor = (roomId: number) => {
+    const colors = ['bg-primary', 'bg-accent', 'bg-secondary', 'bg-purple-500', 'bg-pink-500'];
+    return colors[roomId % colors.length];
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-800">예약 달력</h1>
+        <Button onClick={() => setIsModalOpen(true)} className="btn-primary">
+          <Plus className="w-4 h-4 mr-2" />
+          새 예약
+        </Button>
+      </div>
+
+      <Card className="bg-white rounded-xl shadow-sm border border-gray-200">
+        <CardHeader className="border-b border-gray-200">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-lg font-semibold text-gray-800">
+              {currentDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long' })}
+            </CardTitle>
+            <div className="flex items-center space-x-2">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => navigateMonth('prev')}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setCurrentDate(new Date())}
+              >
+                오늘
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => navigateMonth('next')}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="p-6">
+          {/* Calendar Grid */}
+          <div className="grid grid-cols-7 gap-1">
+            {/* Day headers */}
+            {['일', '월', '화', '수', '목', '금', '토'].map((day) => (
+              <div key={day} className="p-3 text-center text-sm font-medium text-gray-600 border-b">
+                {day}
+              </div>
+            ))}
+
+            {/* Calendar days */}
+            {days.map((day, index) => (
+              <div 
+                key={index} 
+                className={`min-h-[120px] p-2 border border-gray-100 ${
+                  day ? 'cursor-pointer hover:bg-gray-50' : ''
+                } ${
+                  day?.isToday ? 'bg-blue-50 border-primary' : 'bg-white'
+                }`}
+                onClick={() => day && handleDateClick(day.date)}
+              >
+                {day && (
+                  <>
+                    <div className={`text-sm font-medium mb-1 ${
+                      day.isToday ? 'text-primary' : 'text-gray-800'
+                    }`}>
+                      {day.day}
+                    </div>
+                    <div className="space-y-1">
+                      {day.reservations.slice(0, 3).map((reservation: any) => (
+                        <div 
+                          key={reservation.id}
+                          className={`text-xs text-white px-1 py-0.5 rounded truncate ${getRoomColor(reservation.roomId)}`}
+                          title={`${reservation.room.name} - ${reservation.class.name} (${reservation.teacherName})`}
+                        >
+                          {reservation.room.name} {reservation.class.name}
+                        </div>
+                      ))}
+                      {day.reservations.length > 3 && (
+                        <div className="text-xs text-gray-500">
+                          +{day.reservations.length - 3}개 더
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Legend */}
+          <div className="mt-6 flex flex-wrap gap-4">
+            <div className="text-sm font-medium text-gray-700 mr-4">범례:</div>
+            {rooms.map((room: any) => (
+              <div key={room.id} className="flex items-center space-x-2">
+                <div className={`w-3 h-3 rounded ${getRoomColor(room.id)}`}></div>
+                <span className="text-sm text-gray-600">{room.name}</span>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <ReservationModal 
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedDate("");
+        }}
+      />
+    </div>
+  );
+}
