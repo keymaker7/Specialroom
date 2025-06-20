@@ -24,12 +24,12 @@ export default function Calendar() {
     queryKey: ["/api/reservations"],
   });
 
-  // Filter reservations for the current month
+  // Filter reservations for the current month using string comparison to avoid timezone issues
   const reservations = allReservations.filter((r: ReservationWithDetails) => {
-    const reservationDate = new Date(r.reservationDate);
-    const monthStart = new Date(year, month, 1);
-    const monthEnd = new Date(year, month + 1, 0);
-    return reservationDate >= monthStart && reservationDate <= monthEnd;
+    const reservationDate = r.reservationDate; // Keep as string
+    const monthStartStr = new Date(year, month, 1).toISOString().split('T')[0];
+    const monthEndStr = new Date(year, month + 1, 0).toISOString().split('T')[0];
+    return reservationDate >= monthStartStr && reservationDate <= monthEndStr;
   });
 
   const { data: rooms = [] } = useQuery<any[]>({
@@ -52,7 +52,10 @@ export default function Calendar() {
     // Add days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const dateStr = new Date(year, month, day).toISOString().split('T')[0];
-      const dayReservations = reservations.filter((r: any) => r.reservationDate === dateStr);
+      const dayReservations = reservations.filter((r: ReservationWithDetails) => {
+        // Direct string comparison to avoid timezone conversion issues
+        return r.reservationDate === dateStr;
+      });
       days.push({
         day,
         date: dateStr,
