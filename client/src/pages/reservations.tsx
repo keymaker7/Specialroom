@@ -37,11 +37,11 @@ export default function Reservations() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: reservations = [], isLoading } = useQuery({
+  const { data: reservations = [], isLoading } = useQuery<any[]>({
     queryKey: ["/api/reservations"],
   });
 
-  const { data: rooms = [] } = useQuery({
+  const { data: rooms = [] } = useQuery<any[]>({
     queryKey: ["/api/rooms"],
   });
 
@@ -50,8 +50,11 @@ export default function Reservations() {
       await apiRequest("DELETE", `/api/reservations/${id}`);
     },
     onSuccess: () => {
+      // Invalidate and force refetch for complete synchronization
       queryClient.invalidateQueries({ queryKey: ["/api/reservations"] });
       queryClient.invalidateQueries({ queryKey: ["/api/statistics"] });
+      queryClient.refetchQueries({ queryKey: ["/api/reservations"] });
+      queryClient.refetchQueries({ queryKey: ["/api/statistics"] });
       toast({
         title: "성공",
         description: "예약이 삭제되었습니다.",

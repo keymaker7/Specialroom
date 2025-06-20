@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import ReservationModal from "@/components/reservation-modal";
+import { type ReservationWithDetails } from "@shared/schema";
 
 export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -19,12 +20,19 @@ export default function Calendar() {
   const startDate = new Date(year, month, 1).toISOString().split('T')[0];
   const endDate = new Date(year, month + 1, 0).toISOString().split('T')[0];
 
-  const { data: reservations = [], isLoading } = useQuery({
-    queryKey: ["/api/reservations", { startDate, endDate }],
-    queryFn: () => fetch(`/api/reservations?startDate=${startDate}&endDate=${endDate}`).then(res => res.json()),
+  const { data: allReservations = [], isLoading } = useQuery<ReservationWithDetails[]>({
+    queryKey: ["/api/reservations"],
   });
 
-  const { data: rooms = [] } = useQuery({
+  // Filter reservations for the current month
+  const reservations = allReservations.filter((r: ReservationWithDetails) => {
+    const reservationDate = new Date(r.reservationDate);
+    const monthStart = new Date(year, month, 1);
+    const monthEnd = new Date(year, month + 1, 0);
+    return reservationDate >= monthStart && reservationDate <= monthEnd;
+  });
+
+  const { data: rooms = [] } = useQuery<any[]>({
     queryKey: ["/api/rooms"],
   });
 
