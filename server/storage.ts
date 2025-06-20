@@ -245,8 +245,14 @@ export class MemStorage implements IStorage {
       const room = this.rooms.get(reservation.roomId);
       const class_ = this.classes.get(reservation.classId);
       
-      if (!room || !class_) {
-        throw new Error(`Related data not found for reservation ${reservation.id}`);
+      if (!room) {
+        console.error(`Room not found for reservation ${reservation.id}, roomId: ${reservation.roomId}`);
+        return null;
+      }
+      
+      if (!class_) {
+        console.error(`Class not found for reservation ${reservation.id}, classId: ${reservation.classId}`);
+        return null;
       }
 
       return {
@@ -254,7 +260,7 @@ export class MemStorage implements IStorage {
         room,
         class: class_,
       };
-    });
+    }).filter(Boolean) as ReservationWithDetails[];
   }
 }
 
