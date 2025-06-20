@@ -43,7 +43,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       
       {/* Sidebar */}
       <div className={cn(
-        "sidebar fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-50 lg:relative lg:translate-x-0",
+        "sidebar fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-50 lg:relative lg:z-auto",
         isOpen ? "show" : ""
       )}>
         <div className="p-6 border-b border-gray-200 flex items-center justify-between">
