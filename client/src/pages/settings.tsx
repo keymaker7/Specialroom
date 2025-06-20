@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { type ReservationWithDetails, type Room, type Class } from "@shared/schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,17 +24,17 @@ export default function SettingsPage() {
   
   const { toast } = useToast();
 
-  const { data: reservations = [] } = useQuery({
+  const { data: reservations = [] } = useQuery<ReservationWithDetails[]>({
     queryKey: ["/api/reservations"],
     enabled: isAuthenticated,
   });
 
-  const { data: rooms = [] } = useQuery({
+  const { data: rooms = [] } = useQuery<Room[]>({
     queryKey: ["/api/rooms"],
     enabled: isAuthenticated,
   });
 
-  const { data: classes = [] } = useQuery({
+  const { data: classes = [] } = useQuery<Class[]>({
     queryKey: ["/api/classes"],
     enabled: isAuthenticated,
   });
@@ -57,7 +58,7 @@ export default function SettingsPage() {
   const exportToCSV = () => {
     const csvData = [
       ["날짜", "특별실", "학급", "담당교사", "시간", "참고사항"],
-      ...reservations.map((r: any) => [
+      ...reservations.map((r) => [
         r.reservationDate,
         r.room.name,
         r.class.name,

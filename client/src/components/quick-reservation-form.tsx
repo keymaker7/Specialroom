@@ -28,11 +28,11 @@ export default function QuickReservationForm() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: rooms = [] } = useQuery({
+  const { data: rooms = [] } = useQuery<Room[]>({
     queryKey: ["/api/rooms"],
   });
 
-  const { data: classes = [] } = useQuery({
+  const { data: classes = [] } = useQuery<Class[]>({
     queryKey: ["/api/classes"],
   });
 
@@ -233,6 +233,7 @@ export default function QuickReservationForm() {
                         className="form-input" 
                         placeholder="참고사항을 입력하세요" 
                         {...field} 
+                        value={field.value ?? ""}
                       />
                     </FormControl>
                     <FormMessage />
