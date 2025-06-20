@@ -16,7 +16,7 @@ interface SidebarProps {
 }
 
 const navigation = [
-  { name: '이번주 예약 현황', href: '/', icon: Calendar },
+  { name: '이번 주 예약 현황', href: '/', icon: Calendar },
   { name: '예약 달력', href: '/calendar', icon: Calendar },
   { name: '예약 목록', href: '/reservations', icon: List },
   { name: '대시보드', href: '/dashboard', icon: LayoutDashboard },

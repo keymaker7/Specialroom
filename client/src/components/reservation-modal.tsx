@@ -121,8 +121,12 @@ export default function ReservationModal({
       return response.json();
     },
     onSuccess: () => {
+      // Invalidate all reservation-related queries for complete synchronization
       queryClient.invalidateQueries({ queryKey: ["/api/reservations"] });
       queryClient.invalidateQueries({ queryKey: ["/api/statistics"] });
+      // Force refetch of all data
+      queryClient.refetchQueries({ queryKey: ["/api/reservations"] });
+      queryClient.refetchQueries({ queryKey: ["/api/statistics"] });
       toast({
         title: "성공",
         description: "예약이 등록되었습니다.",
@@ -145,8 +149,12 @@ export default function ReservationModal({
       return response.json();
     },
     onSuccess: () => {
+      // Invalidate all reservation-related queries for complete synchronization
       queryClient.invalidateQueries({ queryKey: ["/api/reservations"] });
       queryClient.invalidateQueries({ queryKey: ["/api/statistics"] });
+      // Force refetch of all data
+      queryClient.refetchQueries({ queryKey: ["/api/reservations"] });
+      queryClient.refetchQueries({ queryKey: ["/api/statistics"] });
       toast({
         title: "성공",
         description: "예약이 수정되었습니다.",
@@ -324,7 +332,7 @@ export default function ReservationModal({
                   <div className="space-y-2">
                     <p className="font-medium">⚠️ 기존 계획된 이용 시간과 중복됩니다</p>
                     <div className="space-y-1">
-                      {scheduleConflicts.map((conflict, index) => (
+                      {scheduleConflicts && scheduleConflicts.map((conflict, index) => (
                         <div key={index} className="text-sm">
                           <span className="font-medium">{conflict.period}교시 ({conflict.timeSlot})</span>
                           <div className="ml-4 mt-1">

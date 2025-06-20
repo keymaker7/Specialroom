@@ -56,8 +56,12 @@ export default function QuickReservationForm() {
       return response.json();
     },
     onSuccess: () => {
+      // Invalidate all reservation-related queries for complete synchronization
       queryClient.invalidateQueries({ queryKey: ["/api/reservations"] });
       queryClient.invalidateQueries({ queryKey: ["/api/statistics"] });
+      // Force refetch of weekly data
+      queryClient.refetchQueries({ queryKey: ["/api/reservations"] });
+      queryClient.refetchQueries({ queryKey: ["/api/statistics"] });
       toast({
         title: "성공",
         description: "예약이 등록되었습니다.",
