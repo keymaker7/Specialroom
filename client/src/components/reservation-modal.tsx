@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertReservationSchema, type InsertReservation, type Room, type Class } from "@shared/schema";
+import { getGradeSchedule, formatPeriodLabel, getAvailablePeriods } from "@shared/timeConfig";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -69,6 +70,13 @@ export default function ReservationModal({
       periods: reservation?.periods || [],
     },
   });
+
+  // Get selected class grade for time scheduling
+  const selectedClassId = form.watch("classId");
+  const selectedClass = classes.find((c) => c.id === selectedClassId);
+  const selectedGrade = selectedClass?.grade || 1;
+  const availablePeriods = getAvailablePeriods(selectedGrade);
+  const gradeSchedule = getGradeSchedule(selectedGrade);
 
   const createMutation = useMutation({
     mutationFn: async (data: InsertReservation) => {
@@ -234,34 +242,42 @@ export default function ReservationModal({
                   <FormItem>
                     <FormLabel>시간대 *</FormLabel>
                     <div className="space-y-3">
-                      {periods.map((period) => (
-                        <div key={period} className="flex items-center space-x-4">
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id={`period-${period}`}
-                              checked={field.value.includes(period)}
-                              onCheckedChange={(checked) => {
-                                if (checked) {
-                                  field.onChange([...field.value, period]);
-                                } else {
-                                  field.onChange(field.value.filter(p => p !== period));
-                                }
-                              }}
-                            />
-                            <label
-                              htmlFor={`period-${period}`}
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                            >
-                              {period}교시
-                            </label>
-                          </div>
-                          <Input
-                            type="time"
-                            className="w-32"
-                            placeholder="시간 입력"
-                          />
+                      {selectedClass && (
+                        <div className="text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
+                          <strong>{selectedClass.name}</strong> ({selectedGrade}학년) 시간표 적용
                         </div>
-                      ))}
+                      )}
+                      <div className="space-y-2">
+                        {availablePeriods.map((period) => {
+                          const periodTime = gradeSchedule.periods[period];
+                          return (
+                            <div key={period} className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50">
+                              <div className="flex items-center space-x-3">
+                                <Checkbox
+                                  id={`period-${period}`}
+                                  checked={field.value.includes(period)}
+                                  onCheckedChange={(checked) => {
+                                    if (checked) {
+                                      field.onChange([...field.value, period]);
+                                    } else {
+                                      field.onChange(field.value.filter(p => p !== period));
+                                    }
+                                  }}
+                                />
+                                <label
+                                  htmlFor={`period-${period}`}
+                                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                >
+                                  {period}교시
+                                </label>
+                              </div>
+                              <div className="text-sm text-gray-600 font-mono">
+                                {periodTime ? `${periodTime.start} - ${periodTime.end}` : '시간 미설정'}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                     <FormMessage />
                   </FormItem>

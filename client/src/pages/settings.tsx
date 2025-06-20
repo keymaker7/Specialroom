@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { type ReservationWithDetails, type Room, type Class } from "@shared/schema";
 import { type CSVData, generateCSVContent, mapToCSVField } from "@/lib/types";
+import TimeConfigModal from "@/components/time-config-modal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
