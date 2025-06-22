@@ -72,14 +72,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               
               return (
                 <li key={item.name}>
-                  <Link href={item.href}>
-                    <a className={cn(
-                      "nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg",
-                      isActive && "active"
-                    )}>
-                      <item.icon className="w-5 h-5 mr-3" />
-                      {item.name}
-                    </a>
+                  <Link href={item.href} className={cn(
+                    "nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg",
+                    isActive && "active"
+                  )}>
+                    <item.icon className="w-5 h-5 mr-3" />
+                    {item.name}
                   </Link>
                 </li>
               );
@@ -94,14 +92,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <ul className="space-y-1 px-4">
             {systemNavigation.map((item) => (
               <li key={item.name}>
-                <Link href={item.href}>
-                  <a className={cn(
-                    "nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg",
-                    location === item.href && "active"
-                  )}>
-                    <item.icon className="w-5 h-5 mr-3" />
-                    {item.name}
-                  </a>
+                <Link href={item.href} className={cn(
+                  "nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg",
+                  location === item.href && "active"
+                )}>
+                  <item.icon className="w-5 h-5 mr-3" />
+                  {item.name}
                 </Link>
               </li>
             ))}
