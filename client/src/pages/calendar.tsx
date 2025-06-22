@@ -3,12 +3,14 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ChevronLeft, ChevronRight, Plus, Trash2 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import ReservationModal from "@/components/reservation-modal";
 import { type ReservationWithDetails } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { getPlannedUsageForTimeSlot, getDayOfWeek } from "@shared/scheduleData";
 
 export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -137,6 +139,36 @@ export default function Calendar() {
     return colors[roomId % colors.length];
   };
 
+  // Get planned schedule information for a specific date
+  const getPlannedScheduleForDate = (dateStr: string) => {
+    const dayOfWeek = getDayOfWeek(dateStr);
+    const timeSlots = [
+      '09:00-09:40', '09:50-10:30', '10:40-11:20', '11:30-12:10',
+      '12:10-12:50', '12:20-13:00', '13:00-13:40', '13:50-14:30'
+    ];
+    
+    const plannedInfo: Array<{
+      room: string;
+      timeSlot: string;
+      grades: string[];
+    }> = [];
+
+    rooms.forEach((room: any) => {
+      timeSlots.forEach(timeSlot => {
+        const plannedGrades = getPlannedUsageForTimeSlot(room.name, dateStr, timeSlot);
+        if (plannedGrades.length > 0) {
+          plannedInfo.push({
+            room: room.name,
+            timeSlot,
+            grades: plannedGrades
+          });
+        }
+      });
+    });
+
+    return plannedInfo;
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -189,56 +221,93 @@ export default function Calendar() {
             ))}
 
             {/* Calendar days */}
-            {days.map((day, index) => (
-              <div 
-                key={index} 
-                className={`min-h-[120px] p-2 border border-gray-100 ${
-                  day ? 'cursor-pointer hover:bg-gray-50' : ''
-                } ${
-                  day?.isToday ? 'bg-blue-50 border-primary' : 'bg-white'
-                }`}
-                onClick={() => day && handleDateClick(day.date)}
-              >
-                {day && (
-                  <>
-                    <div className={`text-sm font-medium mb-1 ${
-                      day.isToday ? 'text-primary' : 'text-gray-800'
-                    }`}>
-                      {day.day}
-                    </div>
-                    <div className="space-y-1">
-                      {day.reservations.slice(0, 3).map((reservation: any) => (
-                        <div 
-                          key={reservation.id}
-                          className={`text-xs text-white px-1 py-0.5 rounded flex items-center justify-between group ${getRoomColor(reservation.roomId)}`}
-                          title={`${reservation.room.name} - ${reservation.class.name} (${reservation.teacherName}) - ${reservation.periods?.join(', ') || '시간 미지정'}교시`}
-                        >
-                          <span className="truncate flex-1">
-                            {reservation.room.name} {reservation.class.name} ({reservation.periods?.join(',') || '?'}교시)
-                          </span>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDelete(reservation.id, `${reservation.room.name} - ${reservation.class.name}`);
-                            }}
-                            className="ml-1 h-4 w-4 p-0 text-white/80 hover:text-white hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </Button>
+            {days.map((day, index) => {
+              const plannedSchedule = day ? getPlannedScheduleForDate(day.date) : [];
+              
+              return (
+                <TooltipProvider key={index}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div 
+                        className={`min-h-[120px] p-2 border border-gray-100 ${
+                          day ? 'cursor-pointer hover:bg-gray-50' : ''
+                        } ${
+                          day?.isToday ? 'bg-blue-50 border-primary' : 'bg-white'
+                        }`}
+                        onClick={() => day && handleDateClick(day.date)}
+                      >
+                        {day && (
+                          <>
+                            <div className={`text-sm font-medium mb-1 ${
+                              day.isToday ? 'text-primary' : 'text-gray-800'
+                            }`}>
+                              {day.day}
+                            </div>
+                            <div className="space-y-1">
+                              {day.reservations.slice(0, 3).map((reservation: any) => (
+                                <div 
+                                  key={reservation.id}
+                                  className={`text-xs text-white px-1 py-0.5 rounded flex items-center justify-between group ${getRoomColor(reservation.roomId)}`}
+                                  title={`${reservation.room.name} - ${reservation.class.name} (${reservation.teacherName}) - ${reservation.periods?.join(', ') || '시간 미지정'}교시`}
+                                >
+                                  <span className="truncate flex-1">
+                                    {reservation.room.name} {reservation.class.name} ({reservation.periods?.join(',') || '?'}교시)
+                                  </span>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDelete(reservation.id, `${reservation.room.name} - ${reservation.class.name}`);
+                                    }}
+                                    className="ml-1 h-4 w-4 p-0 text-white/80 hover:text-white hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                              ))}
+                              {day.reservations.length > 3 && (
+                                <div className="text-xs text-gray-500">
+                                  +{day.reservations.length - 3}개 더
+                                </div>
+                              )}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </TooltipTrigger>
+                    {day && plannedSchedule.length > 0 && (
+                      <TooltipContent side="top" className="max-w-xs">
+                        <div className="space-y-2">
+                          <div className="font-medium text-sm border-b pb-1">
+                            {formatDate(day.date)} 계획된 이용
+                          </div>
+                          <div className="space-y-1 text-xs">
+                            {plannedSchedule.map((plan, idx) => (
+                              <div key={idx} className="bg-gray-50 p-2 rounded">
+                                <div className="font-medium text-gray-700">
+                                  {plan.room} - {plan.timeSlot}
+                                </div>
+                                <div className="flex flex-wrap gap-1 mt-1">
+                                  {plan.grades.map((grade, gradeIdx) => (
+                                    <Badge key={gradeIdx} variant="secondary" className="text-xs px-1 py-0">
+                                      {grade}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="text-xs text-gray-500 border-t pt-1">
+                            예약 시 해당 학급과 조율 필요
+                          </div>
                         </div>
-                      ))}
-                      {day.reservations.length > 3 && (
-                        <div className="text-xs text-gray-500">
-                          +{day.reservations.length - 3}개 더
-                        </div>
-                      )}
-                    </div>
-                  </>
-                )}
-              </div>
-            ))}
+                      </TooltipContent>
+                    )}
+                  </Tooltip>
+                </TooltipProvider>
+              );
+            })}
           </div>
 
           {/* Legend */}
