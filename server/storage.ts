@@ -55,6 +55,7 @@ export class MemStorage implements IStorage {
       { name: "풋살장" },
       { name: "놀이활동실1" },
       { name: "놀이활동실2" },
+      { name: "표현무용실" },
       { name: "야외정원(4층)" },
       { name: "시청각실1" },
       { name: "시청각실2" },

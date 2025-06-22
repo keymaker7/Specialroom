@@ -128,39 +128,31 @@ export const PLANNED_SCHEDULE: ScheduledUsage[] = [
   { room: "놀이활동실2", timeSlot: "13:00-13:40", day: "금", grades: ["5학년"] },
   
   { room: "놀이활동실2", timeSlot: "13:50-14:30", day: "화", grades: ["3학년"] },
+
+  // 표현무용실 (3,4체육) - 첨부파일 기준 정확한 시간표
+  { room: "표현무용실", timeSlot: "09:00-09:40", day: "월", grades: ["체(3-8)"] },
+  { room: "표현무용실", timeSlot: "09:00-09:40", day: "화", grades: ["체(3-4)"] },
+  { room: "표현무용실", timeSlot: "09:00-09:40", day: "수", grades: ["체(4-4)"] },
+  { room: "표현무용실", timeSlot: "09:00-09:40", day: "목", grades: ["체(4-8)"] },
+  { room: "표현무용실", timeSlot: "09:00-09:40", day: "금", grades: ["체(4-7)"] },
   
-  { room: "놀이활동실2", timeSlot: "09:50-10:29", day: "월", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "09:50-10:29", day: "화", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "09:50-10:29", day: "수", grades: ["5학년"] },
-  { room: "놀이활동실2", timeSlot: "09:50-10:29", day: "목", grades: ["5학년"] },
-  { room: "놀이활동실2", timeSlot: "09:50-10:29", day: "금", grades: ["4학년"] },
+  { room: "표현무용실", timeSlot: "09:50-10:30", day: "월", grades: ["체(3-7)"] },
+  { room: "표현무용실", timeSlot: "09:50-10:30", day: "화", grades: ["체(3-9)"] },
+  { room: "표현무용실", timeSlot: "09:50-10:30", day: "수", grades: ["체(4-5)"] },
+  { room: "표현무용실", timeSlot: "09:50-10:30", day: "목", grades: ["체(4-9)"] },
+  { room: "표현무용실", timeSlot: "09:50-10:30", day: "금", grades: ["체(4-1)"] },
   
-  { room: "놀이활동실2", timeSlot: "10:40-11:19", day: "월", grades: ["3학년"] },
-  { room: "놀이활동실2", timeSlot: "10:40-11:19", day: "화", grades: ["3학년"] },
-  { room: "놀이활동실2", timeSlot: "10:40-11:19", day: "수", grades: ["3학년"] },
-  { room: "놀이활동실2", timeSlot: "10:40-11:19", day: "목", grades: ["4학년"] },
-  { room: "놀이활동실2", timeSlot: "10:40-11:19", day: "금", grades: ["4학년"] },
+  { room: "표현무용실", timeSlot: "10:40-11:20", day: "월", grades: ["체(3-6)"] },
+  { room: "표현무용실", timeSlot: "10:40-11:20", day: "화", grades: ["체(3-2)"] },
+  { room: "표현무용실", timeSlot: "10:40-11:20", day: "수", grades: ["체(4-6)"] },
+  { room: "표현무용실", timeSlot: "10:40-11:20", day: "목", grades: ["체(4-10)"] },
+  { room: "표현무용실", timeSlot: "10:40-11:20", day: "금", grades: ["체(4-2)"] },
   
-  { room: "놀이활동실2", timeSlot: "11:30-12:09", day: "월", grades: ["3학년"] },
-  { room: "놀이활동실2", timeSlot: "11:30-12:09", day: "화", grades: ["3학년"] },
-  { room: "놀이활동실2", timeSlot: "11:30-12:09", day: "수", grades: ["4학년"] },
-  { room: "놀이활동실2", timeSlot: "11:30-12:09", day: "목", grades: ["4학년"] },
-  { room: "놀이활동실2", timeSlot: "11:30-12:09", day: "금", grades: ["4학년"] },
-  
-  { room: "놀이활동실2", timeSlot: "12:10-12:49", day: "월", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "12:10-12:49", day: "화", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "12:10-12:49", day: "수", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "12:10-12:49", day: "금", grades: ["5학년"] },
-  
-  { room: "놀이활동실2", timeSlot: "12:20-12:59", day: "목", grades: ["4학년"] },
-  
-  { room: "놀이활동실2", timeSlot: "13:00-13:39", day: "월", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "13:00-13:39", day: "화", grades: ["6학년"] },
-  { room: "놀이활동실2", timeSlot: "13:00-13:39", day: "수", grades: ["5학년"] },
-  { room: "놀이활동실2", timeSlot: "13:00-13:39", day: "목", grades: ["5학년"] },
-  { room: "놀이활동실2", timeSlot: "13:00-13:39", day: "금", grades: ["5학년"] },
-  
-  { room: "놀이활동실2", timeSlot: "13:50-14:29", day: "목", grades: ["3학년"] },
+  { room: "표현무용실", timeSlot: "11:30-12:10", day: "월", grades: ["체(3-5)"] },
+  { room: "표현무용실", timeSlot: "11:30-12:10", day: "화", grades: ["체(3-3)"] },
+  { room: "표현무용실", timeSlot: "11:30-12:10", day: "수", grades: ["체(3-1)"] },
+  { room: "표현무용실", timeSlot: "11:30-12:10", day: "목", grades: ["체(4-11)"] },
+  { room: "표현무용실", timeSlot: "11:30-12:10", day: "금", grades: ["체(4-3)"] },
 
   // 운동장
   { room: "운동장", timeSlot: "09:00-09:40", day: "월", grades: ["4학년"] },
