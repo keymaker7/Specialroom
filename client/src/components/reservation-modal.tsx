@@ -159,12 +159,16 @@ export default function ReservationModal({
       return response.json();
     },
     onSuccess: () => {
-      // Invalidate all reservation-related queries for complete synchronization
+      // Complete cache invalidation for immediate synchronization
       queryClient.invalidateQueries({ queryKey: ["/api/reservations"] });
       queryClient.invalidateQueries({ queryKey: ["/api/statistics"] });
-      // Force refetch of all data
+      queryClient.invalidateQueries({ queryKey: ["/api/rooms"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/classes"] });
+      
+      // Force immediate refetch across all components
       queryClient.refetchQueries({ queryKey: ["/api/reservations"] });
       queryClient.refetchQueries({ queryKey: ["/api/statistics"] });
+      
       toast({
         title: "성공",
         description: "예약이 등록되었습니다.",
@@ -187,12 +191,16 @@ export default function ReservationModal({
       return response.json();
     },
     onSuccess: () => {
-      // Invalidate all reservation-related queries for complete synchronization
+      // Complete cache invalidation for immediate synchronization
       queryClient.invalidateQueries({ queryKey: ["/api/reservations"] });
       queryClient.invalidateQueries({ queryKey: ["/api/statistics"] });
-      // Force refetch of all data
+      queryClient.invalidateQueries({ queryKey: ["/api/rooms"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/classes"] });
+      
+      // Force immediate refetch across all components
       queryClient.refetchQueries({ queryKey: ["/api/reservations"] });
       queryClient.refetchQueries({ queryKey: ["/api/statistics"] });
+      
       toast({
         title: "성공",
         description: "예약이 수정되었습니다.",

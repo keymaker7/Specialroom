@@ -47,10 +47,16 @@ export default function Calendar() {
       await apiRequest("DELETE", `/api/reservations/${id}`);
     },
     onSuccess: () => {
+      // Complete cache invalidation for immediate synchronization
       queryClient.invalidateQueries({ queryKey: ["/api/reservations"] });
       queryClient.invalidateQueries({ queryKey: ["/api/statistics"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/rooms"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/classes"] });
+      
+      // Force immediate refetch across all components
       queryClient.refetchQueries({ queryKey: ["/api/reservations"] });
       queryClient.refetchQueries({ queryKey: ["/api/statistics"] });
+      
       toast({
         title: "성공",
         description: "예약이 취소되었습니다.",
