@@ -293,43 +293,38 @@ export default function Calendar() {
                       </div>
                     </TooltipTrigger>
                     {day && plannedSchedule.length > 0 && (
-                      <TooltipContent side="top" className="max-w-lg">
+                      <TooltipContent side="top" className="max-w-xl">
                         <div className="space-y-2">
-                          <div className="font-medium text-xs text-center">
+                          <div className="font-medium text-sm text-center border-b pb-1">
                             {formatDate(day.date)} 계획된 이용
                           </div>
-                          <div className="flex gap-3 text-xs">
+                          <div className="flex gap-4 text-xs">
                             {plannedSchedule.map((roomPlan, idx) => (
                               <div key={idx} className="bg-gray-50 p-2 rounded flex-1">
-                                <div className="font-medium text-gray-700 mb-1 text-center text-xs">
+                                <div className="font-medium text-gray-700 mb-2 text-center bg-white rounded px-2 py-1">
                                   {roomPlan.room}
                                 </div>
                                 <div className="space-y-1">
-                                  {roomPlan.schedules.slice(0, 2).map((schedule, scheduleIdx) => (
-                                    <div key={scheduleIdx} className="text-xs">
-                                      <div className="text-gray-600 font-medium">
+                                  {roomPlan.schedules.map((schedule, scheduleIdx) => (
+                                    <div key={scheduleIdx} className="bg-white p-1.5 rounded">
+                                      <div className="text-gray-600 font-medium mb-1">
                                         {schedule.timeSlot}
                                       </div>
-                                      <div className="flex flex-wrap gap-0.5">
-                                        {schedule.grades.slice(0, 3).map((grade, gradeIdx) => (
-                                          <span key={gradeIdx} className="text-xs px-1 py-0 bg-blue-100 rounded text-blue-800">
+                                      <div className="flex flex-wrap gap-1">
+                                        {schedule.grades.map((grade, gradeIdx) => (
+                                          <span key={gradeIdx} className="text-xs px-1.5 py-0.5 bg-blue-100 rounded text-blue-800">
                                             {grade}
                                           </span>
                                         ))}
-                                        {schedule.grades.length > 3 && (
-                                          <span className="text-xs text-gray-500">+{schedule.grades.length - 3}</span>
-                                        )}
                                       </div>
                                     </div>
                                   ))}
-                                  {roomPlan.schedules.length > 2 && (
-                                    <div className="text-xs text-gray-500 text-center">
-                                      +{roomPlan.schedules.length - 2}개 더
-                                    </div>
-                                  )}
                                 </div>
                               </div>
                             ))}
+                          </div>
+                          <div className="text-xs text-gray-500 text-center border-t pt-1">
+                            예약 시 해당 학급과 조율 필요
                           </div>
                         </div>
                       </TooltipContent>
