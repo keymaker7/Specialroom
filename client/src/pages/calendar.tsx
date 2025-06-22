@@ -158,7 +158,12 @@ export default function Calendar() {
       grades: string[];
     }>> = {};
 
-    rooms.forEach((room: any) => {
+    // 강당과 풋살장만 툴팁에 표시
+    const filteredRooms = rooms.filter((room: any) => 
+      room.name === '강당' || room.name === '풋살장'
+    );
+
+    filteredRooms.forEach((room: any) => {
       timeSlots.forEach(timeSlot => {
         const plannedGrades = getPlannedUsageForTimeSlot(room.name, dateStr, timeSlot);
         if (plannedGrades.length > 0) {

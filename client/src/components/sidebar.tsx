@@ -7,6 +7,7 @@ import {
   DoorOpen, 
   BarChart3, 
   Settings,
+  ClipboardList,
   X
 } from "lucide-react";
 
@@ -21,6 +22,7 @@ const navigation = [
   { name: '예약 목록', href: '/reservations', icon: List },
   { name: '대시보드', href: '/dashboard', icon: LayoutDashboard },
   { name: '특별실 관리', href: '/rooms', icon: DoorOpen },
+  { name: '특별실 이용 계획', href: '/room-schedule-plan', icon: ClipboardList },
   { name: '통계 분석', href: '/statistics', icon: BarChart3 },
 ];
 
