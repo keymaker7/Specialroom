@@ -293,26 +293,26 @@ export default function Calendar() {
                       </div>
                     </TooltipTrigger>
                     {day && plannedSchedule.length > 0 && (
-                      <TooltipContent side="top" className="max-w-xs">
-                        <div className="space-y-2">
-                          <div className="font-medium text-sm border-b pb-1">
+                      <TooltipContent side="top" className="max-w-2xl">
+                        <div className="space-y-3">
+                          <div className="font-medium text-sm border-b pb-2">
                             {formatDate(day.date)} 계획된 이용
                           </div>
-                          <div className="space-y-2 text-xs">
+                          <div className="flex gap-6 text-xs">
                             {plannedSchedule.map((roomPlan, idx) => (
-                              <div key={idx} className="bg-gray-50 p-2 rounded">
-                                <div className="font-medium text-gray-700 mb-2">
+                              <div key={idx} className="bg-gray-50 p-3 rounded-lg min-w-0 flex-1">
+                                <div className="font-medium text-gray-700 mb-3 text-center bg-white rounded px-2 py-1">
                                   {roomPlan.room}
                                 </div>
-                                <div className="space-y-1">
+                                <div className="space-y-2">
                                   {roomPlan.schedules.map((schedule, scheduleIdx) => (
-                                    <div key={scheduleIdx} className="pl-2 border-l-2 border-gray-300">
-                                      <div className="text-gray-600 font-medium">
+                                    <div key={scheduleIdx} className="bg-white p-2 rounded border-l-4 border-blue-400">
+                                      <div className="text-gray-600 font-medium mb-1">
                                         {schedule.timeSlot}
                                       </div>
-                                      <div className="flex flex-wrap gap-1 mt-1">
+                                      <div className="flex flex-wrap gap-1">
                                         {schedule.grades.map((grade, gradeIdx) => (
-                                          <Badge key={gradeIdx} variant="secondary" className="text-xs px-1 py-0">
+                                          <Badge key={gradeIdx} variant="outline" className="text-xs px-1.5 py-0.5 bg-blue-50 border-blue-200">
                                             {grade}
                                           </Badge>
                                         ))}
@@ -323,7 +323,7 @@ export default function Calendar() {
                               </div>
                             ))}
                           </div>
-                          <div className="text-xs text-gray-500 border-t pt-1">
+                          <div className="text-xs text-gray-500 border-t pt-2 text-center">
                             예약 시 해당 학급과 조율 필요
                           </div>
                         </div>
