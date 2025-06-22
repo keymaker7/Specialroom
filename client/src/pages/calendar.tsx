@@ -145,7 +145,7 @@ export default function Calendar() {
     return colors[roomId % colors.length];
   };
 
-  // Get planned schedule information for a specific date
+  // Get planned schedule information for a specific date, grouped by room
   const getPlannedScheduleForDate = (dateStr: string) => {
     const dayOfWeek = getDayOfWeek(dateStr);
     const timeSlots = [
@@ -153,18 +153,19 @@ export default function Calendar() {
       '12:10-12:50', '12:20-13:00', '13:00-13:40', '13:50-14:30'
     ];
     
-    const plannedInfo: Array<{
-      room: string;
+    const roomSchedules: Record<string, Array<{
       timeSlot: string;
       grades: string[];
-    }> = [];
+    }>> = {};
 
     rooms.forEach((room: any) => {
       timeSlots.forEach(timeSlot => {
         const plannedGrades = getPlannedUsageForTimeSlot(room.name, dateStr, timeSlot);
         if (plannedGrades.length > 0) {
-          plannedInfo.push({
-            room: room.name,
+          if (!roomSchedules[room.name]) {
+            roomSchedules[room.name] = [];
+          }
+          roomSchedules[room.name].push({
             timeSlot,
             grades: plannedGrades
           });
@@ -172,7 +173,11 @@ export default function Calendar() {
       });
     });
 
-    return plannedInfo;
+    // Convert to array format for easier rendering
+    return Object.entries(roomSchedules).map(([roomName, schedules]) => ({
+      room: roomName,
+      schedules
+    }));
   };
 
   return (
@@ -288,17 +293,26 @@ export default function Calendar() {
                           <div className="font-medium text-sm border-b pb-1">
                             {formatDate(day.date)} 계획된 이용
                           </div>
-                          <div className="space-y-1 text-xs">
-                            {plannedSchedule.map((plan, idx) => (
+                          <div className="space-y-2 text-xs">
+                            {plannedSchedule.map((roomPlan, idx) => (
                               <div key={idx} className="bg-gray-50 p-2 rounded">
-                                <div className="font-medium text-gray-700">
-                                  {plan.room} - {plan.timeSlot}
+                                <div className="font-medium text-gray-700 mb-2">
+                                  {roomPlan.room}
                                 </div>
-                                <div className="flex flex-wrap gap-1 mt-1">
-                                  {plan.grades.map((grade, gradeIdx) => (
-                                    <Badge key={gradeIdx} variant="secondary" className="text-xs px-1 py-0">
-                                      {grade}
-                                    </Badge>
+                                <div className="space-y-1">
+                                  {roomPlan.schedules.map((schedule, scheduleIdx) => (
+                                    <div key={scheduleIdx} className="pl-2 border-l-2 border-gray-300">
+                                      <div className="text-gray-600 font-medium">
+                                        {schedule.timeSlot}
+                                      </div>
+                                      <div className="flex flex-wrap gap-1 mt-1">
+                                        {schedule.grades.map((grade, gradeIdx) => (
+                                          <Badge key={gradeIdx} variant="secondary" className="text-xs px-1 py-0">
+                                            {grade}
+                                          </Badge>
+                                        ))}
+                                      </div>
+                                    </div>
                                   ))}
                                 </div>
                               </div>
