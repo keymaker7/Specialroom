@@ -75,7 +75,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               return (
                 <li key={item.name}>
                   <Link href={item.href} className={cn(
-                    "nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg",
+                    "nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg mobile-touch touch-feedback",
                     isActive && "active"
                   )}>
                     <item.icon className="w-5 h-5 mr-3" />
@@ -95,7 +95,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             {systemNavigation.map((item) => (
               <li key={item.name}>
                 <Link href={item.href} className={cn(
-                  "nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg",
+                  "nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg mobile-touch touch-feedback",
                   location === item.href && "active"
                 )}>
                   <item.icon className="w-5 h-5 mr-3" />

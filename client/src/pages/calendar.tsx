@@ -293,12 +293,12 @@ export default function Calendar() {
                       </div>
                     </TooltipTrigger>
                     {day && plannedSchedule.length > 0 && (
-                      <TooltipContent side="top" className="max-w-xl">
+                      <TooltipContent side="top" className="max-w-xl max-md:max-w-sm">
                         <div className="space-y-2">
                           <div className="font-medium text-sm text-center border-b pb-1">
                             {formatDate(day.date)} 계획된 이용
                           </div>
-                          <div className="flex gap-4 text-xs">
+                          <div className="flex gap-4 text-xs max-md:flex-col max-md:gap-2">
                             {plannedSchedule.map((roomPlan, idx) => (
                               <div key={idx} className="bg-gray-50 p-2 rounded flex-1">
                                 <div className="font-medium text-gray-700 mb-2 text-center bg-white rounded px-2 py-1">
