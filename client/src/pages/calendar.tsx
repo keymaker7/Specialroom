@@ -226,12 +226,12 @@ export default function Calendar() {
             </div>
           </div>
         </CardHeader>
-        <CardContent className="p-6">
+        <CardContent className="p-6 max-md:p-4">
           {/* Calendar Grid */}
-          <div className="grid grid-cols-7 gap-1">
+          <div className="grid grid-cols-7 gap-1 max-md:gap-0.5">
             {/* Day headers */}
             {['일', '월', '화', '수', '목', '금', '토'].map((day) => (
-              <div key={day} className="p-3 text-center text-sm font-medium text-gray-600 border-b">
+              <div key={day} className="p-3 text-center text-sm font-medium text-gray-600 border-b max-md:p-2 max-md:text-xs">
                 {day}
               </div>
             ))}

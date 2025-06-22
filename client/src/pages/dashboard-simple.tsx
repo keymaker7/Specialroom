@@ -141,7 +141,7 @@ export default function Dashboard() {
       </div>
 
       {/* Recent Reservations & Room Status */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-md:gap-4">
         {/* Recent Reservations */}
         <Card>
           <CardHeader>

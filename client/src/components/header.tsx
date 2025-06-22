@@ -14,7 +14,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
-      <div className="px-6 py-4 flex items-center justify-between">
+      <div className="px-6 py-4 flex items-center justify-between max-md:px-4 max-md:py-3">
         <div className="flex items-center">
           <button 
             onClick={onMenuClick}
@@ -22,7 +22,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
           >
             <Menu className="w-5 h-5" />
           </button>
-          <h2 className="ml-4 lg:ml-0 text-2xl font-bold text-gray-800">
+          <h2 className="ml-4 lg:ml-0 text-2xl font-bold text-gray-800 max-md:text-xl mobile-text-large">
             대시보드
           </h2>
         </div>
