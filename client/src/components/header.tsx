@@ -18,7 +18,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
         <div className="flex items-center">
           <button 
             onClick={onMenuClick}
-            className="lg:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100"
+            className="lg:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100 mobile-touch touch-feedback"
           >
             <Menu className="w-5 h-5" />
           </button>

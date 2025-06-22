@@ -569,8 +569,8 @@ export default function RoomSchedulePlan() {
         )}
       </CardHeader>
       <CardContent>
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse border border-gray-300">
+        <div className="overflow-x-auto -mx-2 md:mx-0">
+          <table className="w-full border-collapse border border-gray-300 min-w-[600px]">
             <thead>
               <tr className="bg-gray-50">
                 <th className="border border-gray-300 px-3 py-2 text-left font-medium">시간/교시</th>
@@ -642,7 +642,7 @@ export default function RoomSchedulePlan() {
   );
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto py-8 px-4 max-md:py-4 max-md:px-2">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">특별실 이용 계획</h1>
         <p className="text-gray-600">
