@@ -26,17 +26,19 @@ export default function Header({ onMenuClick }: HeaderProps) {
             대시보드
           </h2>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 max-md:space-x-2">
           <Button 
-            className="btn-primary"
+            className="btn-primary max-md:text-sm max-md:px-3 max-md:py-2"
             onClick={() => setIsModalOpen(true)}
           >
-            <Plus className="w-4 h-4 mr-2" />
-            새 예약
+            <Plus className="w-4 h-4 mr-2 max-md:w-3 max-md:h-3 max-md:mr-1" />
+            <span className="max-md:hidden">새 예약</span>
+            <span className="md:hidden">예약</span>
           </Button>
-          <div className="flex items-center space-x-2 text-sm text-gray-600">
-            <CalendarIcon className="w-4 h-4" />
-            <span>{formatDate(today)}</span>
+          <div className="flex items-center space-x-2 text-sm text-gray-600 max-md:text-xs max-md:space-x-1">
+            <CalendarIcon className="w-4 h-4 max-md:w-3 max-md:h-3" />
+            <span className="max-md:hidden">{formatDate(today)}</span>
+            <span className="md:hidden">{formatDate(today).substring(5)}</span>
           </div>
         </div>
       </div>

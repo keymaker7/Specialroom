@@ -559,13 +559,13 @@ export default function RoomSchedulePlan() {
   ];
 
   const renderScheduleTable = (schedule: RoomSchedule) => (
-    <Card key={schedule.roomName} className="mb-6">
-      <CardHeader>
-        <CardTitle className="text-lg font-bold text-primary">
+    <Card key={schedule.roomName} className="mb-6 max-md:mb-4">
+      <CardHeader className="max-md:pb-3">
+        <CardTitle className="text-lg font-bold text-primary max-md:text-base">
           {schedule.roomName}
         </CardTitle>
         {schedule.notes && (
-          <p className="text-sm text-gray-600">{schedule.notes}</p>
+          <p className="text-sm text-gray-600 max-md:text-xs">{schedule.notes}</p>
         )}
       </CardHeader>
       <CardContent>
@@ -573,60 +573,60 @@ export default function RoomSchedulePlan() {
           <table className="w-full border-collapse border border-gray-300 min-w-[600px]">
             <thead>
               <tr className="bg-gray-50">
-                <th className="border border-gray-300 px-3 py-2 text-left font-medium">시간/교시</th>
-                <th className="border border-gray-300 px-3 py-2 text-center font-medium">월</th>
-                <th className="border border-gray-300 px-3 py-2 text-center font-medium">화</th>
-                <th className="border border-gray-300 px-3 py-2 text-center font-medium">수</th>
-                <th className="border border-gray-300 px-3 py-2 text-center font-medium">목</th>
-                <th className="border border-gray-300 px-3 py-2 text-center font-medium">금</th>
+                <th className="border border-gray-300 px-3 py-2 text-left font-medium max-md:px-1 max-md:py-1 max-md:text-xs">시간/교시</th>
+                <th className="border border-gray-300 px-3 py-2 text-center font-medium max-md:px-1 max-md:py-1 max-md:text-xs">월</th>
+                <th className="border border-gray-300 px-3 py-2 text-center font-medium max-md:px-1 max-md:py-1 max-md:text-xs">화</th>
+                <th className="border border-gray-300 px-3 py-2 text-center font-medium max-md:px-1 max-md:py-1 max-md:text-xs">수</th>
+                <th className="border border-gray-300 px-3 py-2 text-center font-medium max-md:px-1 max-md:py-1 max-md:text-xs">목</th>
+                <th className="border border-gray-300 px-3 py-2 text-center font-medium max-md:px-1 max-md:py-1 max-md:text-xs">금</th>
               </tr>
             </thead>
             <tbody>
               {schedule.schedules.map((entry, idx) => (
                 <tr key={idx} className="hover:bg-gray-50">
-                  <td className="border border-gray-300 px-3 py-2 font-medium bg-gray-100">
+                  <td className="border border-gray-300 px-3 py-2 font-medium bg-gray-100 max-md:px-1 max-md:py-1 max-md:text-xs">
                     {entry.period}
                   </td>
-                  <td className="border border-gray-300 px-2 py-2">
-                    <div className="flex flex-wrap gap-1">
+                  <td className="border border-gray-300 px-2 py-2 max-md:px-1 max-md:py-1">
+                    <div className="flex flex-wrap gap-1 max-md:gap-0.5">
                       {entry.monday.map((item, itemIdx) => (
-                        <Badge key={itemIdx} variant="outline" className="text-xs">
+                        <Badge key={itemIdx} variant="outline" className="text-xs max-md:text-[10px] max-md:px-1 max-md:py-0">
                           {item}
                         </Badge>
                       ))}
                     </div>
                   </td>
-                  <td className="border border-gray-300 px-2 py-2">
-                    <div className="flex flex-wrap gap-1">
+                  <td className="border border-gray-300 px-2 py-2 max-md:px-1 max-md:py-1">
+                    <div className="flex flex-wrap gap-1 max-md:gap-0.5">
                       {entry.tuesday.map((item, itemIdx) => (
-                        <Badge key={itemIdx} variant="outline" className="text-xs">
+                        <Badge key={itemIdx} variant="outline" className="text-xs max-md:text-[10px] max-md:px-1 max-md:py-0">
                           {item}
                         </Badge>
                       ))}
                     </div>
                   </td>
-                  <td className="border border-gray-300 px-2 py-2">
-                    <div className="flex flex-wrap gap-1">
+                  <td className="border border-gray-300 px-2 py-2 max-md:px-1 max-md:py-1">
+                    <div className="flex flex-wrap gap-1 max-md:gap-0.5">
                       {entry.wednesday.map((item, itemIdx) => (
-                        <Badge key={itemIdx} variant="outline" className="text-xs">
+                        <Badge key={itemIdx} variant="outline" className="text-xs max-md:text-[10px] max-md:px-1 max-md:py-0">
                           {item}
                         </Badge>
                       ))}
                     </div>
                   </td>
-                  <td className="border border-gray-300 px-2 py-2">
-                    <div className="flex flex-wrap gap-1">
+                  <td className="border border-gray-300 px-2 py-2 max-md:px-1 max-md:py-1">
+                    <div className="flex flex-wrap gap-1 max-md:gap-0.5">
                       {entry.thursday.map((item, itemIdx) => (
-                        <Badge key={itemIdx} variant="outline" className="text-xs">
+                        <Badge key={itemIdx} variant="outline" className="text-xs max-md:text-[10px] max-md:px-1 max-md:py-0">
                           {item}
                         </Badge>
                       ))}
                     </div>
                   </td>
-                  <td className="border border-gray-300 px-2 py-2">
-                    <div className="flex flex-wrap gap-1">
+                  <td className="border border-gray-300 px-2 py-2 max-md:px-1 max-md:py-1">
+                    <div className="flex flex-wrap gap-1 max-md:gap-0.5">
                       {entry.friday.map((item, itemIdx) => (
-                        <Badge key={itemIdx} variant="outline" className="text-xs">
+                        <Badge key={itemIdx} variant="outline" className="text-xs max-md:text-[10px] max-md:px-1 max-md:py-0">
                           {item}
                         </Badge>
                       ))}
@@ -644,8 +644,8 @@ export default function RoomSchedulePlan() {
   return (
     <div className="container mx-auto py-8 px-4 max-md:py-4 max-md:px-2">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">특별실 이용 계획</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold text-gray-900 mb-4 max-md:text-2xl">특별실 이용 계획</h1>
+        <p className="text-gray-600 max-md:text-sm">
           효행초등학교의 모든 특별실 이용 계획을 요일별, 시간대별로 확인할 수 있습니다.
         </p>
       </div>

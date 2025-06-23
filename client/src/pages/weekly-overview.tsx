@@ -174,7 +174,7 @@ export default function WeeklyOverview() {
       </div>
 
       {/* Horizontal Week View */}
-      <div className="grid grid-cols-7 gap-4">
+      <div className="grid grid-cols-7 gap-4 max-md:grid-cols-1 max-md:gap-2">
         {weekDays.map((date, index) => {
           const dayReservations = reservationsByDate[date] || [];
           const conflicts = findTimeConflicts(dayReservations);
@@ -185,7 +185,7 @@ export default function WeeklyOverview() {
           return (
             <Card 
               key={date} 
-              className={`relative overflow-hidden transition-all duration-300 hover:shadow-lg ${
+              className={`relative overflow-hidden transition-all duration-300 hover:shadow-lg max-md:flex max-md:flex-row max-md:items-center ${
                 hasConflicts 
                   ? 'border-red-400 bg-gradient-to-br from-red-50 to-pink-50 shadow-red-100' 
                   : isToday
@@ -196,25 +196,25 @@ export default function WeeklyOverview() {
               }`}
             >
               {/* Day Header */}
-              <CardHeader className="pb-2 text-center">
-                <div className="space-y-1">
-                  <div className={`text-xs font-medium uppercase tracking-wider ${
+              <CardHeader className="pb-2 text-center max-md:pb-2 max-md:w-20 max-md:flex-shrink-0">
+                <div className="space-y-1 max-md:space-y-0.5">
+                  <div className={`text-xs font-medium uppercase tracking-wider max-md:text-[10px] ${
                     index === 0 ? 'text-red-500' : index === 6 ? 'text-blue-500' : 'text-gray-500'
                   }`}>
                     {dayName}
                   </div>
-                  <div className={`text-lg font-bold ${
+                  <div className={`text-lg font-bold max-md:text-sm ${
                     isToday ? 'text-blue-600' : 'text-gray-800'
                   }`}>
                     {new Date(date).getDate()}
                   </div>
                   <div className="flex items-center justify-center gap-1">
                     {hasConflicts && (
-                      <AlertTriangle className="w-4 h-4 text-red-500" />
+                      <AlertTriangle className="w-4 h-4 text-red-500 max-md:w-3 max-md:h-3" />
                     )}
                     <Badge 
                       variant={dayReservations.length > 0 ? "default" : "secondary"}
-                      className={`text-xs px-2 py-0.5 rounded-full ${
+                      className={`text-xs px-2 py-0.5 rounded-full max-md:text-[10px] max-md:px-1 ${
                         hasConflicts 
                           ? 'bg-red-500 text-white' 
                           : dayReservations.length > 0 
@@ -229,31 +229,31 @@ export default function WeeklyOverview() {
               </CardHeader>
 
               {/* Day Content */}
-              <CardContent className="p-3 h-80 overflow-y-auto">
+              <CardContent className="p-3 h-80 overflow-y-auto max-md:h-auto max-md:flex-1 max-md:p-2">
                 {dayReservations.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full text-gray-400">
-                    <Heart className="w-8 h-8 mb-2 opacity-50" />
-                    <p className="text-xs text-center">예약 없음</p>
+                  <div className="flex flex-col items-center justify-center h-full text-gray-400 max-md:flex-row max-md:gap-2 max-md:h-auto max-md:py-4">
+                    <Heart className="w-8 h-8 mb-2 opacity-50 max-md:w-5 max-md:h-5 max-md:mb-0" />
+                    <p className="text-xs text-center max-md:text-[10px]">예약 없음</p>
                   </div>
                 ) : (
-                  <div className="space-y-2">
+                  <div className="space-y-2 max-md:space-y-1">
                     {conflicts.length > 0 ? (
                       // Show conflicts grouped by period
                       conflicts.map(conflict => (
                         <div 
                           key={conflict.period}
-                          className={`p-2 rounded-lg border-l-4 ${
+                          className={`p-2 rounded-lg border-l-4 max-md:p-1 ${
                             conflict.timeOverlap 
                               ? 'bg-red-100 border-red-400' 
                               : 'bg-blue-100 border-blue-400'
                           }`}
                         >
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="text-xs font-bold text-gray-700">
+                          <div className="flex items-center justify-between mb-1 max-md:mb-0.5">
+                            <span className="text-xs font-bold text-gray-700 max-md:text-[10px]">
                               {conflict.period}교시
                             </span>
                             {conflict.timeOverlap && (
-                              <Badge variant="destructive" className="text-xs px-1 py-0">
+                              <Badge variant="destructive" className="text-xs px-1 py-0 max-md:text-[9px] max-md:px-0.5">
                                 중복
                               </Badge>
                             )}
