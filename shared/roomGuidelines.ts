@@ -8,21 +8,7 @@ export interface RoomGuideline {
 }
 
 export const ROOM_GUIDELINES: RoomGuideline[] = [
-  {
-    roomName: "체육관",
-    description: "1-6학년 체육 수업 및 방과후 활동",
-    usageNotes: [
-      "5,6학년 체육관 사용의 경우 동학년 내 조정 가능",
-      "코보 수업 블럭 시간 확인 필요",
-      "방과후 음악줄넘기, 스포츠클럽 활동 있음"
-    ],
-    conflictWarnings: [
-      "정규 체육 수업과 중복 확인",
-      "방과후 활동 시간 피해야 함",
-      "학년별 사전 조정 필요"
-    ],
-    recommendedGrades: [1, 2, 3, 4, 5, 6]
-  },
+
   {
     roomName: "표현무용실",
     description: "3,4학년 체육 수업 전용",
