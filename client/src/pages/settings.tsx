@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { type ReservationWithDetails, type Room, type Class } from "@shared/schema";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { type ReservationWithDetails, type Room, type Class, type InsertRoom } from "@shared/schema";
 import { type CSVData, generateCSVContent, mapToCSVField } from "@/lib/types";
 import TimeConfigModal from "@/components/time-config-modal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,17 +15,24 @@ import {
   Shield,
   Lock,
   Database,
-  Calendar
+  Calendar,
+  Plus,
+  Trash2,
+  Edit
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function SettingsPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isTimeConfigOpen, setIsTimeConfigOpen] = useState(false);
+  const [newRoomName, setNewRoomName] = useState("");
+  const [editingRoom, setEditingRoom] = useState<Room | null>(null);
   
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const { data: reservations = [] } = useQuery<ReservationWithDetails[]>({
     queryKey: ["/api/reservations"],
@@ -40,6 +47,82 @@ export default function SettingsPage() {
   const { data: classes = [] } = useQuery<Class[]>({
     queryKey: ["/api/classes"],
     enabled: isAuthenticated,
+  });
+
+  // Room management mutations
+  const createRoomMutation = useMutation({
+    mutationFn: async (data: InsertRoom) => {
+      const response = await apiRequest(`/api/rooms`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/rooms"] });
+      setNewRoomName("");
+      toast({
+        title: "성공",
+        description: "특별실이 추가되었습니다.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "오류",
+        description: "특별실 추가에 실패했습니다.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const updateRoomMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: Partial<InsertRoom> }) => {
+      const response = await apiRequest(`/api/rooms/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/rooms"] });
+      setEditingRoom(null);
+      toast({
+        title: "성공",
+        description: "특별실이 수정되었습니다.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "오류",
+        description: "특별실 수정에 실패했습니다.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const deleteRoomMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const response = await apiRequest(`/api/rooms/${id}`, {
+        method: "DELETE",
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/rooms"] });
+      toast({
+        title: "성공",
+        description: "특별실이 삭제되었습니다.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "오류",
+        description: "특별실 삭제에 실패했습니다.",
+        variant: "destructive",
+      });
+    },
   });
 
   const handlePasswordSubmit = () => {
@@ -62,11 +145,11 @@ export default function SettingsPage() {
     const csvData: CSVData = [
       ["날짜", "특별실", "학급", "담당교사", "시간", "참고사항"],
       ...reservations.map((r) => [
-        mapToCSVField(r.reservationDate),
+        mapToCSVField(r.date),
         mapToCSVField(r.room.name),
         mapToCSVField(r.class.name),
-        mapToCSVField(r.teacherName),
-        mapToCSVField(`${r.startTime}-${r.endTime}`),
+        mapToCSVField(r.periods.join(', ')),
+        mapToCSVField(r.purpose),
         mapToCSVField(r.notes || "")
       ])
     ];
@@ -131,6 +214,26 @@ export default function SettingsPage() {
       title: "성공",
       description: "학급 데이터가 CSV 파일로 다운로드되었습니다.",
     });
+  };
+
+  const handleCreateRoom = () => {
+    if (newRoomName.trim()) {
+      createRoomMutation.mutate({ name: newRoomName.trim(), isActive: true });
+    }
+  };
+
+  const handleUpdateRoom = (room: Room, newName: string) => {
+    if (newName.trim() && newName !== room.name) {
+      updateRoomMutation.mutate({ id: room.id, data: { name: newName.trim() } });
+    } else {
+      setEditingRoom(null);
+    }
+  };
+
+  const handleDeleteRoom = (room: Room) => {
+    if (confirm(`정말로 "${room.name}"을(를) 삭제하시겠습니까?`)) {
+      deleteRoomMutation.mutate(room.id);
+    }
   };
 
   if (!isAuthenticated) {
