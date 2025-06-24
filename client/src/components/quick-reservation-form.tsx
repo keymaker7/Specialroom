@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertReservationSchema, type InsertReservation, type Room, type Class } from "@shared/schema";
+import { getRoomGuideline } from "@shared/roomGuidelines";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -22,6 +23,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Info } from "lucide-react";
 import { getPeriodLabel, getToday } from "@/lib/utils";
 
 export default function QuickReservationForm() {
@@ -41,14 +44,16 @@ export default function QuickReservationForm() {
     defaultValues: {
       roomId: 0,
       classId: 0,
-      teacherName: "",
-      notes: "",
-      reservationDate: getToday(),
-      startTime: "09:00",
-      endTime: "09:40",
+      date: getToday(),
       periods: [],
+      purpose: "특별실 이용",
+      notes: "",
     },
   });
+
+  const selectedRoom = rooms.find(room => room.id === form.watch("roomId"));
+  const selectedClass = classes.find(cls => cls.id === form.watch("classId"));
+  const roomGuideline = selectedRoom ? getRoomGuideline(selectedRoom.name) : null;
 
   const createMutation = useMutation({
     mutationFn: async (data: InsertReservation) => {

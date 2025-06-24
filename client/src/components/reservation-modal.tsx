@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { insertReservationSchema, type InsertReservation, type Room, type Class } from "@shared/schema";
 import { getGradeSchedule, formatPeriodLabel, getAvailablePeriods } from "@shared/timeConfig";
 import { getPlannedUsageForTimeSlot, getTimeSlotFromPeriod, doTimeSlotsOverlap } from "@shared/scheduleData";
+import { getRoomGuideline, getConflictWarnings, getRoomUsageNotes } from "@shared/roomGuidelines";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import {
