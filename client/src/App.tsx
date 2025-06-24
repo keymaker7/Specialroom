@@ -9,7 +9,7 @@ import WeeklyOverview from "@/pages/weekly-overview";
 import Calendar from "@/pages/calendar";
 import Reservations from "@/pages/reservations";
 import Dashboard from "@/pages/dashboard-simple";
-import Rooms from "@/pages/rooms";
+
 import Statistics from "@/pages/statistics";
 import RoomSchedulePlan from "@/pages/room-schedule-plan";
 import Settings from "@/pages/settings";
@@ -23,7 +23,7 @@ function Router() {
       <Route path="/calendar" component={Calendar} />
       <Route path="/reservations" component={Reservations} />
       <Route path="/dashboard" component={Dashboard} />
-      <Route path="/rooms" component={Rooms} />
+
       <Route path="/statistics" component={Statistics} />
       <Route path="/room-schedule-plan" component={RoomSchedulePlan} />
       <Route path="/settings" component={Settings} />
