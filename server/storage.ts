@@ -58,10 +58,13 @@ export class DatabaseStorage implements IStorage {
 
       await db.insert(rooms).values(defaultRooms);
 
-      // Initialize default classes
+      // Initialize default classes - 효행초등학교 실제 학급 수
       const defaultClasses = [];
+      const classCountByGrade = { 1: 6, 2: 8, 3: 9, 4: 11, 5: 10, 6: 10 };
+      
       for (let grade = 1; grade <= 6; grade++) {
-        for (let classNum = 1; classNum <= 6; classNum++) {
+        const classCount = classCountByGrade[grade as keyof typeof classCountByGrade];
+        for (let classNum = 1; classNum <= classCount; classNum++) {
           defaultClasses.push({
             name: `${grade}학년 ${classNum}반`,
             grade: grade,
