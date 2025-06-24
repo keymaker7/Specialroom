@@ -10,6 +10,8 @@ import {
   type InsertReservation,
   type ReservationWithDetails
 } from "@shared/schema";
+import { db } from "./db";
+import { eq, and, gte, lte } from "drizzle-orm";
 
 export interface IStorage {
   // Rooms
@@ -362,8 +364,8 @@ export class DatabaseStorage implements IStorage {
 
     const existingReservations = await query;
 
-    return existingReservations.some(existing => 
-      existing.periods.some(period => periods.includes(period))
+    return existingReservations.some((existing: Reservation) => 
+      existing.periods.some((period: string) => periods.includes(period))
     );
   }
 }
