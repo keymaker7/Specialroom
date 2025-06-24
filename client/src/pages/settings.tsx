@@ -143,7 +143,7 @@ export default function SettingsPage() {
 
   const exportToCSV = () => {
     const csvData: CSVData = [
-      ["날짜", "특별실", "학급", "담당교사", "시간", "참고사항"],
+      ["날짜", "특별실", "학급", "교시", "목적", "참고사항"],
       ...reservations.map((r) => [
         mapToCSVField(r.date),
         mapToCSVField(r.room.name),
@@ -337,6 +337,79 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* 특별실 관리 */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Database className="w-5 h-5" />
+            특별실 관리
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex gap-2">
+              <Input
+                placeholder="새 특별실 이름"
+                value={newRoomName}
+                onChange={(e) => setNewRoomName(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleCreateRoom()}
+                className="flex-1"
+              />
+              <Button 
+                onClick={handleCreateRoom}
+                disabled={!newRoomName.trim() || createRoomMutation.isPending}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                추가
+              </Button>
+            </div>
+            
+            <div className="grid gap-2 max-h-64 overflow-y-auto">
+              {rooms.map((room) => (
+                <div key={room.id} className="flex items-center justify-between p-2 border rounded">
+                  {editingRoom?.id === room.id ? (
+                    <Input
+                      defaultValue={room.name}
+                      onBlur={(e) => handleUpdateRoom(room, e.target.value)}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          handleUpdateRoom(room, e.currentTarget.value);
+                        }
+                        if (e.key === 'Escape') {
+                          setEditingRoom(null);
+                        }
+                      }}
+                      autoFocus
+                      className="flex-1 mr-2"
+                    />
+                  ) : (
+                    <span className="flex-1">{room.name}</span>
+                  )}
+                  
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setEditingRoom(editingRoom?.id === room.id ? null : room)}
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDeleteRoom(room)}
+                      disabled={deleteRoomMutation.isPending}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Backup & Export */}
       <Card>
