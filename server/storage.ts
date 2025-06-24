@@ -35,6 +35,339 @@ export interface IStorage {
   checkReservationConflict(roomId: number, date: string, periods: string[], excludeId?: number): Promise<boolean>;
 }
 
+export class DatabaseStorage implements IStorage {
+  constructor() {
+    this.initializeDefaultData();
+  }
+
+  private async initializeDefaultData() {
+    try {
+      // Check if rooms already exist
+      const existingRooms = await db.select().from(rooms).limit(1);
+      if (existingRooms.length > 0) {
+        return; // Data already exists
+      }
+
+      // Initialize default rooms
+      const defaultRooms = [
+        { name: "강당", isActive: true },
+        { name: "음악실", isActive: true },
+        { name: "미술실", isActive: true },
+        { name: "과학실", isActive: true },
+        { name: "컴퓨터실", isActive: true },
+        { name: "도서관", isActive: true },
+        { name: "체육관", isActive: true },
+        { name: "영어체험실", isActive: true },
+        { name: "풋살장", isActive: true },
+        { name: "방송실", isActive: true },
+        { name: "보건실", isActive: true },
+        { name: "상담실", isActive: true }
+      ];
+
+      await db.insert(rooms).values(defaultRooms);
+
+      // Initialize default classes
+      const defaultClasses = [];
+      for (let grade = 1; grade <= 6; grade++) {
+        for (let classNum = 1; classNum <= 6; classNum++) {
+          defaultClasses.push({
+            name: `${grade}학년 ${classNum}반`,
+            grade: grade,
+            classNumber: classNum
+          });
+        }
+      }
+
+      await db.insert(classes).values(defaultClasses);
+    } catch (error) {
+      console.error('Error initializing default data:', error);
+    }
+  }
+
+  // Room methods
+  async getRooms(): Promise<Room[]> {
+    return await db.select().from(rooms).where(eq(rooms.isActive, true));
+  }
+
+  async getRoom(id: number): Promise<Room | undefined> {
+    const [room] = await db.select().from(rooms).where(eq(rooms.id, id));
+    return room || undefined;
+  }
+
+  async createRoom(room: InsertRoom): Promise<Room> {
+    const [newRoom] = await db.insert(rooms).values(room).returning();
+    return newRoom;
+  }
+
+  async updateRoom(id: number, room: Partial<InsertRoom>): Promise<Room | undefined> {
+    const [updatedRoom] = await db
+      .update(rooms)
+      .set(room)
+      .where(eq(rooms.id, id))
+      .returning();
+    return updatedRoom || undefined;
+  }
+
+  async deleteRoom(id: number): Promise<boolean> {
+    const result = await db
+      .update(rooms)
+      .set({ isActive: false })
+      .where(eq(rooms.id, id));
+    return result.rowCount > 0;
+  }
+
+  // Class methods
+  async getClasses(): Promise<Class[]> {
+    return await db.select().from(classes);
+  }
+
+  async getClass(id: number): Promise<Class | undefined> {
+    const [class_] = await db.select().from(classes).where(eq(classes.id, id));
+    return class_ || undefined;
+  }
+
+  async createClass(class_: InsertClass): Promise<Class> {
+    const [newClass] = await db.insert(classes).values(class_).returning();
+    return newClass;
+  }
+
+  // Reservation methods
+  async getReservations(): Promise<ReservationWithDetails[]> {
+    const result = await db
+      .select({
+        id: reservations.id,
+        roomId: reservations.roomId,
+        classId: reservations.classId,
+        date: reservations.date,
+        periods: reservations.periods,
+        purpose: reservations.purpose,
+        notes: reservations.notes,
+        createdAt: reservations.createdAt,
+        room: {
+          id: rooms.id,
+          name: rooms.name,
+          isActive: rooms.isActive,
+          createdAt: rooms.createdAt
+        },
+        class: {
+          id: classes.id,
+          name: classes.name,
+          grade: classes.grade,
+          classNumber: classes.classNumber,
+          createdAt: classes.createdAt
+        }
+      })
+      .from(reservations)
+      .innerJoin(rooms, eq(reservations.roomId, rooms.id))
+      .innerJoin(classes, eq(reservations.classId, classes.id));
+
+    return result.map(row => ({
+      id: row.id,
+      roomId: row.roomId,
+      classId: row.classId,
+      date: row.date,
+      periods: row.periods,
+      purpose: row.purpose,
+      notes: row.notes,
+      createdAt: row.createdAt,
+      room: row.room,
+      class: row.class
+    }));
+  }
+
+  async getReservation(id: number): Promise<ReservationWithDetails | undefined> {
+    const result = await db
+      .select({
+        id: reservations.id,
+        roomId: reservations.roomId,
+        classId: reservations.classId,
+        date: reservations.date,
+        periods: reservations.periods,
+        purpose: reservations.purpose,
+        notes: reservations.notes,
+        createdAt: reservations.createdAt,
+        room: {
+          id: rooms.id,
+          name: rooms.name,
+          isActive: rooms.isActive,
+          createdAt: rooms.createdAt
+        },
+        class: {
+          id: classes.id,
+          name: classes.name,
+          grade: classes.grade,
+          classNumber: classes.classNumber,
+          createdAt: classes.createdAt
+        }
+      })
+      .from(reservations)
+      .innerJoin(rooms, eq(reservations.roomId, rooms.id))
+      .innerJoin(classes, eq(reservations.classId, classes.id))
+      .where(eq(reservations.id, id));
+
+    if (result.length === 0) return undefined;
+
+    const row = result[0];
+    return {
+      id: row.id,
+      roomId: row.roomId,
+      classId: row.classId,
+      date: row.date,
+      periods: row.periods,
+      purpose: row.purpose,
+      notes: row.notes,
+      createdAt: row.createdAt,
+      room: row.room,
+      class: row.class
+    };
+  }
+
+  async getReservationsByDate(date: string): Promise<ReservationWithDetails[]> {
+    const result = await db
+      .select({
+        id: reservations.id,
+        roomId: reservations.roomId,
+        classId: reservations.classId,
+        date: reservations.date,
+        periods: reservations.periods,
+        purpose: reservations.purpose,
+        notes: reservations.notes,
+        createdAt: reservations.createdAt,
+        room: {
+          id: rooms.id,
+          name: rooms.name,
+          isActive: rooms.isActive,
+          createdAt: rooms.createdAt
+        },
+        class: {
+          id: classes.id,
+          name: classes.name,
+          grade: classes.grade,
+          classNumber: classes.classNumber,
+          createdAt: classes.createdAt
+        }
+      })
+      .from(reservations)
+      .innerJoin(rooms, eq(reservations.roomId, rooms.id))
+      .innerJoin(classes, eq(reservations.classId, classes.id))
+      .where(eq(reservations.date, date));
+
+    return result.map(row => ({
+      id: row.id,
+      roomId: row.roomId,
+      classId: row.classId,
+      date: row.date,
+      periods: row.periods,
+      purpose: row.purpose,
+      notes: row.notes,
+      createdAt: row.createdAt,
+      room: row.room,
+      class: row.class
+    }));
+  }
+
+  async getReservationsByDateRange(startDate: string, endDate: string): Promise<ReservationWithDetails[]> {
+    const result = await db
+      .select({
+        id: reservations.id,
+        roomId: reservations.roomId,
+        classId: reservations.classId,
+        date: reservations.date,
+        periods: reservations.periods,
+        purpose: reservations.purpose,
+        notes: reservations.notes,
+        createdAt: reservations.createdAt,
+        room: {
+          id: rooms.id,
+          name: rooms.name,
+          isActive: rooms.isActive,
+          createdAt: rooms.createdAt
+        },
+        class: {
+          id: classes.id,
+          name: classes.name,
+          grade: classes.grade,
+          classNumber: classes.classNumber,
+          createdAt: classes.createdAt
+        }
+      })
+      .from(reservations)
+      .innerJoin(rooms, eq(reservations.roomId, rooms.id))
+      .innerJoin(classes, eq(reservations.classId, classes.id))
+      .where(and(
+        gte(reservations.date, startDate),
+        lte(reservations.date, endDate)
+      ));
+
+    return result.map(row => ({
+      id: row.id,
+      roomId: row.roomId,
+      classId: row.classId,
+      date: row.date,
+      periods: row.periods,
+      purpose: row.purpose,
+      notes: row.notes,
+      createdAt: row.createdAt,
+      room: row.room,
+      class: row.class
+    }));
+  }
+
+  async createReservation(reservation: InsertReservation): Promise<Reservation> {
+    const [newReservation] = await db
+      .insert(reservations)
+      .values(reservation)
+      .returning();
+    return newReservation;
+  }
+
+  async updateReservation(id: number, reservation: Partial<InsertReservation>): Promise<Reservation | undefined> {
+    const [updatedReservation] = await db
+      .update(reservations)
+      .set(reservation)
+      .where(eq(reservations.id, id))
+      .returning();
+    return updatedReservation || undefined;
+  }
+
+  async deleteReservation(id: number): Promise<boolean> {
+    const result = await db.delete(reservations).where(eq(reservations.id, id));
+    return result.rowCount > 0;
+  }
+
+  async checkReservationConflict(
+    roomId: number,
+    date: string,
+    periods: string[],
+    excludeId?: number
+  ): Promise<boolean> {
+    let query = db
+      .select()
+      .from(reservations)
+      .where(and(
+        eq(reservations.roomId, roomId),
+        eq(reservations.date, date)
+      ));
+
+    if (excludeId) {
+      query = db
+        .select()
+        .from(reservations)
+        .where(and(
+          eq(reservations.roomId, roomId),
+          eq(reservations.date, date),
+          eq(reservations.id, excludeId)
+        ));
+    }
+
+    const existingReservations = await query;
+
+    return existingReservations.some(existing => 
+      existing.periods.some(period => periods.includes(period))
+    );
+  }
+}
+
 export class MemStorage implements IStorage {
   private rooms: Map<number, Room> = new Map();
   private classes: Map<number, Class> = new Map();
@@ -265,4 +598,5 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Use database storage for persistent data
+export const storage = new DatabaseStorage();

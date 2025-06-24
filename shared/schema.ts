@@ -14,20 +14,17 @@ export const classes = pgTable("classes", {
   name: text("name").notNull(), // e.g., "1학년 1반"
   grade: integer("grade").notNull(), // 1-6
   classNumber: integer("class_number").notNull(), // 1, 2, 3, etc.
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const reservations = pgTable("reservations", {
   id: serial("id").primaryKey(),
   roomId: integer("room_id").references(() => rooms.id).notNull(),
   classId: integer("class_id").references(() => classes.id).notNull(),
-  teacherName: text("teacher_name").notNull(),
-  teacherPhone: text("teacher_phone").notNull(),
-  purpose: text("purpose").notNull(),
+  date: text("date").notNull(), // YYYY-MM-DD format
+  periods: text("periods").array().notNull(), // e.g., ["1", "2"] for 1교시, 2교시
+  purpose: text("purpose").default("특별실 이용").notNull(),
   notes: text("notes"),
-  reservationDate: text("reservation_date").notNull(), // YYYY-MM-DD format
-  startTime: text("start_time").notNull(), // HH:MM format
-  endTime: text("end_time").notNull(), // HH:MM format
-  periods: text("periods").array(), // e.g., ["1", "2"] for 1교시, 2교시
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -38,13 +35,12 @@ export const insertRoomSchema = createInsertSchema(rooms).omit({
 
 export const insertClassSchema = createInsertSchema(classes).omit({
   id: true,
+  createdAt: true,
 });
 
 export const insertReservationSchema = createInsertSchema(reservations).omit({
   id: true,
   createdAt: true,
-  teacherPhone: true,
-  purpose: true,
 }).extend({
   periods: z.array(z.string()).min(1, "최소 1개 교시를 선택해야 합니다"),
 });
