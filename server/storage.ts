@@ -53,7 +53,6 @@ export class DatabaseStorage implements IStorage {
       // Initialize default rooms - 효행초등학교 실제 특별실만
       const defaultRooms = [
         { name: "강당", isActive: true },
-        { name: "컴퓨터실", isActive: true },
         { name: "풋살장", isActive: true }
       ];
 

@@ -106,18 +106,7 @@ export const ROOM_GUIDELINES: RoomGuideline[] = [
     ],
     recommendedGrades: [2]
   },
-  {
-    roomName: "컴퓨터실",
-    description: "일반 컴퓨터 활동실",
-    usageNotes: [
-      "다목적 컴퓨터 활동 공간",
-      "사전 예약 필수"
-    ],
-    conflictWarnings: [
-      "기존 예약과 중복 확인"
-    ],
-    recommendedGrades: [1, 2, 3, 4, 5, 6]
-  },
+
   {
     roomName: "야외정원(4층)",
     description: "야외 활동 및 휴식 공간",
