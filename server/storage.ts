@@ -50,20 +50,11 @@ export class DatabaseStorage implements IStorage {
         return; // Data already exists
       }
 
-      // Initialize default rooms
+      // Initialize default rooms - 효행초등학교 실제 특별실만
       const defaultRooms = [
         { name: "강당", isActive: true },
-        { name: "음악실", isActive: true },
-        { name: "미술실", isActive: true },
-        { name: "과학실", isActive: true },
         { name: "컴퓨터실", isActive: true },
-        { name: "도서관", isActive: true },
-        { name: "체육관", isActive: true },
-        { name: "영어체험실", isActive: true },
-        { name: "풋살장", isActive: true },
-        { name: "방송실", isActive: true },
-        { name: "보건실", isActive: true },
-        { name: "상담실", isActive: true }
+        { name: "풋살장", isActive: true }
       ];
 
       await db.insert(rooms).values(defaultRooms);
