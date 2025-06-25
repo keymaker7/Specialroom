@@ -55,7 +55,7 @@ export function getRoomStatusColor(roomId: number, reservations: any[]): string 
   // Check if room has current reservation
   const hasCurrentReservation = reservations.some(r => 
     r.roomId === roomId && 
-    r.reservationDate === today &&
+    r.date === today &&
     r.periods?.some((p: string) => {
       const periodHour = getPeriodHour(p);
       return currentHour >= periodHour && currentHour < periodHour + 1;

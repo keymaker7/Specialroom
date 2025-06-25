@@ -67,7 +67,7 @@ export default function Statistics() {
   const monthlyData = (() => {
     const months = {};
     reservations.forEach((reservation: any) => {
-      const month = reservation.reservationDate.substring(0, 7); // YYYY-MM
+      const month = reservation.date.substring(0, 7); // YYYY-MM
       if (!months[month]) {
         months[month] = 0;
       }

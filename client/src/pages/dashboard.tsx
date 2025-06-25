@@ -87,7 +87,7 @@ export default function Dashboard() {
       days.push({
         date: date.getDate(),
         fullDate: date.toISOString().split('T')[0],
-        reservations: weekReservations.filter((r: any) => r.reservationDate === date.toISOString().split('T')[0])
+        reservations: weekReservations.filter((r: any) => r.date === date.toISOString().split('T')[0])
       });
     }
     return days;
@@ -220,7 +220,7 @@ export default function Dashboard() {
                           <div>
                             <p className="font-medium text-gray-800">{reservation.room.name}</p>
                             <p className="text-sm text-gray-600">{reservation.class.name}</p>
-                            <p className="text-xs text-gray-500">{reservation.teacherName} 선생님</p>
+                            <p className="text-xs text-gray-500">{reservation.purpose}</p>
                           </div>
                         </div>
                         <div className="text-right">

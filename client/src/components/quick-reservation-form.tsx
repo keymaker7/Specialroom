@@ -87,22 +87,6 @@ export default function QuickReservationForm() {
   });
 
   const onSubmit = (data: InsertReservation) => {
-    // Set periods based on selected period from dropdown
-    const periodValue = form.watch("periods")[0];
-    if (periodValue) {
-      const periodTimes: Record<string, { start: string; end: string }> = {
-        "1": { start: "09:00", end: "09:40" },
-        "2": { start: "09:50", end: "10:30" },
-        "3": { start: "10:40", end: "11:20" },
-        "4": { start: "11:30", end: "12:10" },
-        "5": { start: "13:30", end: "14:10" },
-        "6": { start: "14:20", end: "15:00" },
-      };
-      
-      data.startTime = periodTimes[periodValue].start;
-      data.endTime = periodTimes[periodValue].end;
-    }
-
     createMutation.mutate(data);
   };
 
@@ -174,7 +158,7 @@ export default function QuickReservationForm() {
 
             <FormField
               control={form.control}
-              name="reservationDate"
+              name="date"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>예약 날짜</FormLabel>
@@ -217,14 +201,14 @@ export default function QuickReservationForm() {
             <div className="md:col-span-2">
               <FormField
                 control={form.control}
-                name="teacherName"
+                name="purpose"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>이용 학급</FormLabel>
+                    <FormLabel>이용 목적</FormLabel>
                     <FormControl>
                       <Input 
                         className="form-input" 
-                        placeholder="이용 학급을 입력하세요" 
+                        placeholder="이용 목적을 입력하세요" 
                         {...field} 
                       />
                     </FormControl>

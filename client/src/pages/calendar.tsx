@@ -96,7 +96,7 @@ export default function Calendar() {
       const dateStr = new Date(Date.UTC(year, month, day)).toISOString().split('T')[0];
       const dayReservations = reservations.filter((r: ReservationWithDetails) => {
         // Direct string comparison to avoid timezone conversion issues
-        return r.reservationDate === dateStr;
+        return r.date === dateStr;
       });
       days.push({
         day,
@@ -264,7 +264,7 @@ export default function Calendar() {
                                 <div 
                                   key={reservation.id}
                                   className={`text-xs text-white px-1 py-0.5 rounded flex items-center justify-between group ${getRoomColor(reservation.roomId)}`}
-                                  title={`${reservation.room.name} - ${reservation.class.name} (${reservation.teacherName}) - ${reservation.periods?.join(', ') || '시간 미지정'}교시`}
+                                  title={`${reservation.room.name} - ${reservation.class.name} (${reservation.purpose}) - ${reservation.periods?.join(', ') || '시간 미지정'}교시`}
                                 >
                                   <span className="truncate flex-1">
                                     {reservation.room.name} {reservation.class.name} ({reservation.periods?.join(',') || '?'}교시)

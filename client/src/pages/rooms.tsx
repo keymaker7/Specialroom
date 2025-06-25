@@ -131,7 +131,7 @@ export default function Rooms() {
   const getRoomStats = (roomId: number) => {
     const roomReservations = reservations.filter((r: any) => r.roomId === roomId);
     const today = new Date().toISOString().split('T')[0];
-    const todayReservations = roomReservations.filter((r: any) => r.reservationDate === today);
+    const todayReservations = roomReservations.filter((r: any) => r.date === today);
     
     return {
       totalReservations: roomReservations.length,

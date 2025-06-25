@@ -81,7 +81,7 @@ export default function ReservationModal({
   // Get selected class grade for time scheduling
   const selectedClassId = form.watch("classId");
   const selectedRoomId = form.watch("roomId");
-  const selectedDate = form.watch("reservationDate");
+  const selectedDate = form.watch("date");
   const selectedPeriods = form.watch("periods") || [];
   
   const selectedClass = classes.find((c) => c.id === selectedClassId);
@@ -309,7 +309,7 @@ export default function ReservationModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="reservationDate"
+                name="date"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>예약 날짜 *</FormLabel>
@@ -403,12 +403,12 @@ export default function ReservationModal({
 
             <FormField
               control={form.control}
-              name="teacherName"
+              name="purpose"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>이용 학급 *</FormLabel>
+                  <FormLabel>이용 목적 *</FormLabel>
                   <FormControl>
-                    <Input placeholder="이용 학급" {...field} />
+                    <Input placeholder="이용 목적" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

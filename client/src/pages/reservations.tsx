@@ -84,7 +84,7 @@ export default function Reservations() {
     const matchesSearch = 
       reservation.room.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       reservation.class.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      reservation.teacherName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      reservation.purpose.toLowerCase().includes(searchTerm.toLowerCase()) ||
       reservation.purpose.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesRoom = !filterRoom || reservation.roomId.toString() === filterRoom;
@@ -200,7 +200,7 @@ export default function Reservations() {
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4 text-gray-400" />
-                          {formatDate(reservation.reservationDate)}
+                          {formatDate(reservation.date)}
                         </div>
                       </TableCell>
                       <TableCell>
@@ -216,7 +216,7 @@ export default function Reservations() {
                       </TableCell>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{reservation.teacherName}</div>
+                          <div className="font-medium">{reservation.purpose}</div>
                           <div className="text-sm text-gray-500 flex items-center gap-1">
                             <Phone className="w-3 h-3" />
                             {reservation.teacherPhone}
