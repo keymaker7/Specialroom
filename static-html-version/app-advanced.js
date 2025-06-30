@@ -586,26 +586,31 @@ function showPage(page) {
     updateHeader(page);
     
     // 페이지별 초기화 및 동기화
-    switch(page) {
-        case 'dashboard':
-            updateDashboard();
-            break;
-        case 'weekly':
-            generateWeeklyCards();
-            break;
-        case 'calendar':
-            generateCalendar();
-            break;
-        case 'reservations':
-            generateReservationsList();
-            break;
-        case 'rooms':
-            updateRooms();
-            break;
-        case 'stats':
-            updateStats();
-            break;
-    }
+    setTimeout(() => {
+        switch(page) {
+            case 'dashboard':
+                updateDashboard();
+                updateDashboardCounters();
+                break;
+            case 'weekly':
+                generateWeeklyCards();
+                break;
+            case 'calendar':
+                generateCalendar();
+                console.log('📅 달력 페이지 로드 완료');
+                break;
+            case 'reservations':
+                generateReservationsList();
+                break;
+            case 'rooms':
+                updateRooms();
+                if (typeof renderRoomsPage === 'function') renderRoomsPage();
+                break;
+            case 'stats':
+                updateStats();
+                break;
+        }
+    }, 50);
 }
 
 // 🔟 헤더 업데이트
@@ -777,8 +782,49 @@ function setupPeriodsGrid() {
     periodsGrid.innerHTML = html;
 }
 
+// 🔄 강제 달력 재생성
+function forceRegenerateCalendar() {
+    console.log('🔄 달력 강제 재생성 시작');
+    
+    setTimeout(() => {
+        const calendarGrid = document.getElementById('calendarGrid');
+        const calendarTitle = document.getElementById('calendarTitle');
+        
+        if (!calendarGrid || !calendarTitle) {
+            console.error('❌ 달력 DOM 요소를 찾을 수 없음:', { calendarGrid: !!calendarGrid, calendarTitle: !!calendarTitle });
+            return;
+        }
+        
+        console.log('📅 달력 DOM 요소 확인됨, 생성 시작');
+        generateCalendar();
+        console.log('✅ 달력 강제 재생성 완료');
+    }, 100);
+}
+
+// 📅 달력 페이지 활성화 감지 및 자동 재생성
+function watchCalendarPage() {
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                const calendarPage = document.getElementById('calendar');
+                if (calendarPage && calendarPage.classList.contains('active')) {
+                    console.log('📅 달력 페이지 활성화 감지');
+                    forceRegenerateCalendar();
+                }
+            }
+        });
+    });
+    
+    const calendarPage = document.getElementById('calendar');
+    if (calendarPage) {
+        observer.observe(calendarPage, { attributes: true });
+    }
+}
+
 // 초기화
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM 로드 완료, 앱 초기화 시작');
+    
     // 모달 폼 이벤트 리스너
     const form = document.getElementById('reservationForm');
     if (form) {
@@ -794,8 +840,20 @@ document.addEventListener('DOMContentLoaded', function() {
         dateInput.value = new Date().toISOString().split('T')[0];
     }
     
+    // 달력 페이지 감시 시작
+    watchCalendarPage();
+    
     // 초기 페이지 로드
-    refreshAllPages();
+    setTimeout(() => {
+        refreshAllPages();
+        
+        // 달력이 현재 활성 페이지인지 확인
+        const calendarPage = document.getElementById('calendar');
+        if (calendarPage && calendarPage.classList.contains('active')) {
+            console.log('📅 초기 로드 시 달력 페이지가 활성화됨');
+            forceRegenerateCalendar();
+        }
+    }, 200);
     
     console.log('🎯 원본과 완전히 동일한 특별실 예약 시스템이 로드되었습니다!');
 }); 
