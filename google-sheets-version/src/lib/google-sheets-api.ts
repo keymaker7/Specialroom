@@ -7,9 +7,8 @@
 
 const API_URL = import.meta.env.VITE_GOOGLE_SHEETS_API_URL;
 
-if (!API_URL) {
-  throw new Error('VITE_GOOGLE_SHEETS_API_URL 환경변수가 설정되지 않았습니다.');
-}
+// API URL이 없으면 테스트 데이터 사용
+const USE_TEST_DATA = !API_URL;
 
 // 타입 정의 - 실제 스키마에 맞춤
 export interface Room {
@@ -52,8 +51,76 @@ export interface CreateReservationData {
   notes?: string;
 }
 
+// 테스트 데이터
+const TEST_ROOMS: Room[] = [
+  {id: 1, name: '강당', isActive: true, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 2, name: '운동장', isActive: true, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 3, name: '풋살장', isActive: true, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 4, name: '놀이활동실1', isActive: true, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 5, name: '놀이활동실2', isActive: true, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 6, name: '표현무용실', isActive: true, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 7, name: '야외정원(4층)', isActive: true, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 8, name: '시청각실1', isActive: true, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 9, name: '시청각실2', isActive: true, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 10, name: '제1컴퓨터실', isActive: true, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 11, name: '제2컴퓨터실', isActive: true, createdAt: '2024-01-01T09:00:00.000Z'}
+];
+
+const TEST_CLASSES: Class[] = [
+  {id: 1, name: '1학년 1반', grade: 1, classNumber: 1, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 2, name: '1학년 2반', grade: 1, classNumber: 2, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 3, name: '2학년 1반', grade: 2, classNumber: 1, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 4, name: '2학년 2반', grade: 2, classNumber: 2, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 5, name: '3학년 1반', grade: 3, classNumber: 1, createdAt: '2024-01-01T09:00:00.000Z'},
+  {id: 6, name: '유치원', grade: 0, classNumber: 1, createdAt: '2024-01-01T09:00:00.000Z'}
+];
+
+const TEST_RESERVATIONS: Reservation[] = [
+  {
+    id: 1,
+    roomId: 1,
+    classId: 1,
+    date: new Date().toISOString().split('T')[0],
+    periods: ['1', '2'],
+    purpose: '체육 수업',
+    notes: '농구 수업',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 2,
+    roomId: 8,
+    classId: 3,
+    date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
+    periods: ['3'],
+    purpose: '영상 시청',
+    notes: '',
+    createdAt: new Date().toISOString()
+  }
+];
+
 // API 호출 공통 함수
 async function callAPI(action: string, data?: any) {
+  if (USE_TEST_DATA) {
+    // 테스트 데이터 반환
+    console.log(`🧪 테스트 데이터 사용: ${action}`);
+    await new Promise(resolve => setTimeout(resolve, 200)); // 로딩 시뮬레이션
+    
+    switch (action) {
+      case 'getRooms': return TEST_ROOMS;
+      case 'getClasses': return TEST_CLASSES;
+      case 'getReservations': return TEST_RESERVATIONS;
+      case 'createReservation': 
+        const newReservation = { id: Date.now(), ...data, createdAt: new Date().toISOString() };
+        TEST_RESERVATIONS.push(newReservation);
+        return newReservation;
+      case 'deleteReservation':
+        const index = TEST_RESERVATIONS.findIndex(r => r.id === data.id);
+        if (index > -1) TEST_RESERVATIONS.splice(index, 1);
+        return { success: true };
+      default: return {};
+    }
+  }
+  
   try {
     const response = await fetch(API_URL, {
       method: 'POST',
