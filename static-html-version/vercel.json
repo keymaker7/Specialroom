@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "*.html": {
-      "runtime": "@vercel/static"
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
@@ -21,12 +16,6 @@
           "value": "X-Requested-With, Content-Type, Authorization"
         }
       ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
     }
   ]
 } 
