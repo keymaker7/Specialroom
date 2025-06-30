@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Clock, Save, RotateCcw } from "lucide-react";
-import { DEFAULT_GRADE_SCHEDULES, type GradeSchedule, type PeriodTime } from "@shared/timeConfig";
+import { DEFAULT_GRADE_SCHEDULES, type GradeSchedule, type PeriodTime } from "../../shared/timeConfig";
 import { useToast } from "@/hooks/use-toast";
 
 interface TimeConfigModalProps {

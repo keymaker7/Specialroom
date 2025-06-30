@@ -9,7 +9,7 @@ import { formatDate } from "@/lib/utils";
 import ReservationModal from "@/components/reservation-modal";
 import { useToast } from "@/hooks/use-toast";
 import * as SheetsAPI from "@/lib/google-sheets-api";
-import { getPlannedUsageForTimeSlot, getDayOfWeek } from "@shared/scheduleData";
+import { getPlannedUsageForTimeSlot, getDayOfWeek } from "../../shared/scheduleData";
 
 // 데이터 변환용 인터페이스
 interface ReservationWithDetails extends SheetsAPI.Reservation {

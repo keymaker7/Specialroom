@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, AlertTriangle, Users, Heart, Star, Trash2 } from "lucide-react";
 import { getWeekRange, formatDate } from "@/lib/utils";
-import { getGradeSchedule, formatPeriodLabel } from "@shared/timeConfig";
+import { getGradeSchedule, formatPeriodLabel } from "../../shared/timeConfig";
 import { useToast } from "@/hooks/use-toast";
 import * as SheetsAPI from "@/lib/google-sheets-api";
 

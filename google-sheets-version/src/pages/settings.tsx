@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { type ReservationWithDetails, type Room, type Class, type InsertRoom } from "@shared/schema";
+import { type ReservationWithDetails, type Room, type Class, type InsertRoom } from "../../shared/schema";
 import { type CSVData, generateCSVContent, mapToCSVField } from "@/lib/types";
 import TimeConfigModal from "@/components/time-config-modal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
