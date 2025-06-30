@@ -258,16 +258,16 @@ export default function WeeklyOverview() {
               {/* Reservations List */}
               <CardContent className="pt-0 max-md:flex-1 max-md:pt-2">
                 <div className="space-y-2 max-md:space-y-1">
-                  {dayReservations.length === 0 ? (
+                {dayReservations.length === 0 ? (
                     <p className="text-xs text-gray-400 text-center py-4 max-md:py-2">
                       예약 없음
                     </p>
                   ) : (
                     dayReservations.map((reservation) => (
-                      <div
+                        <div 
                         key={reservation.id}
                         className="bg-white rounded-lg p-3 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200 max-md:p-2"
-                      >
+                        >
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
@@ -291,23 +291,23 @@ export default function WeeklyOverview() {
                                 {reservation.purpose}
                               </p>
                             )}
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="sm"
+                                    </div>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
                             onClick={() => handleDelete(
                               reservation.id,
                               `${reservation.room?.name} - ${reservation.class?.name}`
                             )}
                             className="h-8 w-8 p-0 text-gray-400 hover:text-red-500 hover:bg-red-50"
-                          >
+                            >
                             <Trash2 className="w-4 h-4" />
-                          </Button>
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                    ))
-                  )}
-                </div>
+                      ))
+                    )}
+                  </div>
               </CardContent>
             </Card>
           );
@@ -362,7 +362,7 @@ export default function WeeklyOverview() {
             <div className="text-center">
               <div className="text-2xl font-bold text-orange-600">
                 {findTimeConflicts(weekReservations).filter(c => c.timeOverlap).length}
-              </div>
+          </div>
               <div className="text-sm text-gray-600">시간 충돌</div>
             </div>
           </div>

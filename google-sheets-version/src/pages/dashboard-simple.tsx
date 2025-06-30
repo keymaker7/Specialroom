@@ -3,12 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Calendar,
+import { 
+  Calendar, 
   Clock,
   MapPin,
-  Users,
-  TrendingUp,
+  Users, 
+  TrendingUp, 
   AlertCircle,
   Plus,
   Building,
@@ -144,14 +144,14 @@ export default function DashboardSimple() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button
+        <Button 
             onClick={() => setIsQuickFormOpen(true)}
             variant="outline"
             size="sm"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            빠른 예약
-          </Button>
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          빠른 예약
+        </Button>
           <Button
             onClick={() => setIsModalOpen(true)}
             className="bg-blue-600 hover:bg-blue-700"
@@ -234,35 +234,35 @@ export default function DashboardSimple() {
                 <p>오늘 예약된 특별실이 없습니다.</p>
               </div>
             ) : (
-              <div className="space-y-3">
+            <div className="space-y-3">
                 {todaySchedule.map((reservation) => (
-                  <div
-                    key={reservation.id}
+                <div 
+                  key={reservation.id} 
                     className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                  >
-                    <div className="flex items-center gap-3">
+                >
+                  <div className="flex items-center gap-3">
                       <div className="w-2 h-8 bg-blue-500 rounded"></div>
-                      <div>
+                    <div>
                         <div className="font-medium text-gray-800">
                           {reservation.room?.name || '알 수 없는 특별실'}
                         </div>
                         <div className="text-sm text-gray-600">
                           {reservation.class?.name || '알 수 없는 학급'} • {reservation.teacherName || '담당교사 미기재'}
                         </div>
-                      </div>
                     </div>
-                    <div className="text-right">
+                  </div>
+                  <div className="text-right">
                       <div className="text-sm font-medium text-gray-800">
                         {reservation.timeSlot || '시간 미정'}
                       </div>
                       <div className="text-xs text-gray-500">
                         {reservation.purpose || '목적 미기재'}
                       </div>
-                    </div>
                   </div>
-                ))}
-              </div>
-            )}
+                </div>
+              ))}
+                </div>
+              )}
           </CardContent>
         </Card>
 
@@ -281,7 +281,7 @@ export default function DashboardSimple() {
                 <p>최근 예약 기록이 없습니다.</p>
               </div>
             ) : (
-              <div className="space-y-3">
+            <div className="space-y-3">
                 {recentReservations.map((reservation) => (
                   <div
                     key={reservation.id}
@@ -309,7 +309,7 @@ export default function DashboardSimple() {
             )}
           </CardContent>
         </Card>
-      </div>
+            </div>
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

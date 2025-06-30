@@ -222,25 +222,25 @@ export default function Calendar() {
       <Card className="bg-white rounded-xl shadow-sm border border-gray-200">
         <CardHeader className="border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigateMonth('prev')}
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => navigateMonth('prev')}
               className="hover:bg-gray-100"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </Button>
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
             <CardTitle className="text-xl font-semibold text-gray-800">
               {currentDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long' })}
             </CardTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigateMonth('next')}
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => navigateMonth('next')}
               className="hover:bg-gray-100"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </Button>
+              >
+                <ChevronRight className="w-4 h-4" />
+              </Button>
           </div>
         </CardHeader>
         <CardContent className="p-6">
@@ -257,28 +257,28 @@ export default function Calendar() {
               <div key={index} className="min-h-[120px]">
                 {day ? (
                   <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div 
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div 
                           className={`h-full p-2 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors ${
                             day.isToday ? 'bg-blue-50 border-blue-300' : ''
-                          }`}
+                        }`}
                           onClick={() => handleDateClick(day.date)}
-                        >
+                      >
                           <div className={`text-sm font-medium mb-2 ${
                             day.isToday ? 'text-blue-600' : 'text-gray-700'
-                          }`}>
-                            {day.day}
-                          </div>
+                            }`}>
+                              {day.day}
+                            </div>
                           
-                          <div className="space-y-1">
+                            <div className="space-y-1">
                             {day.reservations.map((reservation) => (
-                              <div
-                                key={reservation.id}
+                                <div 
+                                  key={reservation.id}
                                 className={`text-xs p-1 rounded text-white truncate relative group ${
                                   getRoomColor(reservation.roomId)
                                 }`}
-                              >
+                                >
                                 <div className="flex items-center justify-between">
                                   <span className="truncate">
                                     {reservation.room?.name || '알 수 없는 특별실'}: {reservation.class?.name || '알 수 없는 학급'}
@@ -301,9 +301,9 @@ export default function Calendar() {
                                 </div>
                               </div>
                             ))}
-                          </div>
-                        </div>
-                      </TooltipTrigger>
+                            </div>
+                      </div>
+                    </TooltipTrigger>
                       <TooltipContent className="max-w-xs">
                         <div className="space-y-2">
                           <div className="font-semibold">{formatDate(day.date)}</div>
@@ -321,10 +321,10 @@ export default function Calendar() {
                                   </div>
                                   <div className="text-gray-600">
                                     목적: {reservation.purpose || '미기재'}
-                                  </div>
+                          </div>
                                 </div>
-                              ))}
-                            </div>
+                                        ))}
+                                      </div>
                           )}
                           
                           {getPlannedScheduleForDate(day.date).length > 0 && (
@@ -338,9 +338,9 @@ export default function Calendar() {
                                       {schedule.timeSlot}: {schedule.grades.join(', ')}
                                     </div>
                                   ))}
-                                </div>
-                              ))}
-                            </div>
+                              </div>
+                            ))}
+                          </div>
                           )}
                           
                           {day.reservations.length === 0 && getPlannedScheduleForDate(day.date).length === 0 && (
@@ -348,8 +348,8 @@ export default function Calendar() {
                           )}
                         </div>
                       </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  </Tooltip>
+                </TooltipProvider>
                 ) : (
                   <div className="h-full"></div>
                 )}
@@ -359,7 +359,7 @@ export default function Calendar() {
         </CardContent>
       </Card>
 
-      <ReservationModal
+      <ReservationModal 
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);

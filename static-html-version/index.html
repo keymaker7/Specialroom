@@ -7,251 +7,1145 @@
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📅%3C/text%3E%3C/svg%3E">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: #f9fafb; 
+            color: #111827; 
+            line-height: 1.5;
+        }
         .app { display: flex; min-height: 100vh; }
-        .sidebar { width: 250px; background: white; border-right: 1px solid #e2e8f0; padding: 20px; }
-        .main { flex: 1; padding: 20px; }
-        .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; font-size: 18px; font-weight: 600; }
-        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px; background: none; border: none; width: 100%; text-align: left; margin-bottom: 5px; border-radius: 5px; cursor: pointer; }
-        .nav-item:hover { background: #f1f5f9; }
-        .nav-item.active { background: #dbeafe; color: #2563eb; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .btn { padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; }
-        .btn-primary { background: #2563eb; color: white; }
-        .btn-secondary { background: #f1f5f9; color: #374151; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .card { background: white; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; }
-        .stat { display: flex; justify-content: space-between; align-items: center; }
+        
+        /* 사이드바 */
+        .sidebar { 
+            width: 260px; 
+            background: white; 
+            border-right: 1px solid #e5e7eb; 
+            padding: 24px; 
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            margin-bottom: 32px; 
+            font-size: 20px; 
+            font-weight: 700; 
+            color: #111827;
+        }
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+        .nav-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            padding: 12px 16px; 
+            background: none; 
+            border: none; 
+            width: 100%; 
+            text-align: left; 
+            margin-bottom: 4px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            color: #374151; 
+            transition: all 0.2s;
+        }
+        .nav-item:hover { background: #f3f4f6; }
+        .nav-item.active { 
+            background: linear-gradient(135deg, #dbeafe, #e0e7ff); 
+            color: #2563eb; 
+            font-weight: 500;
+        }
+        .nav-icon { width: 20px; height: 20px; font-size: 16px; }
+        
+        /* 메인 콘텐츠 */
+        .main { flex: 1; padding: 32px; background: #f9fafb; }
+        
+        /* 헤더 */
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+            margin-bottom: 32px; 
+        }
+        .header-left h1 { 
+            font-size: 28px; 
+            font-weight: 700; 
+            color: #111827; 
+            margin-bottom: 4px; 
+        }
+        .header-left p { 
+            color: #6b7280; 
+            font-size: 14px; 
+        }
+        .header-buttons { 
+            display: flex; 
+            gap: 12px; 
+        }
+        .btn { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+            padding: 10px 16px; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 14px; 
+            font-weight: 500; 
+            cursor: pointer; 
+            transition: all 0.2s;
+        }
+        .btn-outline { 
+            background: white; 
+            color: #374151; 
+            border: 1px solid #d1d5db; 
+        }
+        .btn-outline:hover { 
+            background: #f9fafb; 
+            border-color: #9ca3af; 
+        }
+        .btn-primary { 
+            background: linear-gradient(135deg, #2563eb, #3b82f6); 
+            color: white; 
+            border: 1px solid #2563eb;
+        }
+        .btn-primary:hover { 
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+        }
+        
+        /* 통계 카드 그리드 */
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 24px; 
+            margin-bottom: 32px; 
+        }
+        .stat-card { 
+            background: white; 
+            padding: 24px; 
+            border-radius: 12px; 
+            border: 1px solid #e5e7eb; 
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+        .stat-card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        .stat-card.blue { 
+            background: linear-gradient(135deg, #eff6ff, #dbeafe); 
+            border-color: #bfdbfe; 
+        }
+        .stat-card.green { 
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7); 
+            border-color: #bbf7d0; 
+        }
+        .stat-card.purple { 
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff); 
+            border-color: #e9d5ff; 
+        }
+        .stat-card.orange { 
+            background: linear-gradient(135deg, #fff7ed, #fed7aa); 
+            border-color: #fdba74; 
+        }
+        .stat-content { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .stat-info h3 { 
+            font-size: 14px; 
+            font-weight: 500; 
+            margin-bottom: 8px; 
+        }
+        .stat-info .number { 
+            font-size: 32px; 
+            font-weight: 700; 
+            margin-bottom: 4px; 
+        }
+        .stat-info .unit { 
+            font-size: 12px; 
+            opacity: 0.8; 
+        }
+        .stat-icon { 
+            width: 48px; 
+            height: 48px; 
+            font-size: 24px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .blue .stat-info h3, .blue .stat-info .number, .blue .stat-info .unit { color: #1e40af; }
+        .green .stat-info h3, .green .stat-info .number, .green .stat-info .unit { color: #166534; }
+        .purple .stat-info h3, .purple .stat-info .number, .purple .stat-info .unit { color: #7c3aed; }
+        .orange .stat-info h3, .orange .stat-info .number, .orange .stat-info .unit { color: #ea580c; }
+        
+        /* 메인 콘텐츠 그리드 */
+        .content-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 24px; 
+            margin-bottom: 32px; 
+        }
+        .content-card { 
+            background: white; 
+            border-radius: 12px; 
+            border: 1px solid #e5e7eb; 
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .content-header { 
+            padding: 20px 24px; 
+            border-bottom: 1px solid #e5e7eb; 
+        }
+        .content-title { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            font-size: 18px; 
+            font-weight: 600; 
+            color: #111827; 
+        }
+        .content-body { 
+            padding: 24px; 
+        }
+        .empty-state { 
+            text-align: center; 
+            padding: 48px 20px; 
+            color: #6b7280; 
+        }
+        .empty-icon { 
+            width: 48px; 
+            height: 48px; 
+            margin: 0 auto 12px; 
+            font-size: 24px; 
+            color: #d1d5db; 
+        }
+        .reservation-item { 
+            display: flex; 
+            align-items: center; 
+            justify-content: between; 
+            padding: 16px; 
+            margin-bottom: 12px; 
+            background: #f9fafb; 
+            border-radius: 8px; 
+            border: 1px solid #f3f4f6;
+        }
+        .reservation-indicator { 
+            width: 4px; 
+            height: 32px; 
+            background: #3b82f6; 
+            border-radius: 2px; 
+            margin-right: 16px; 
+        }
+        .reservation-content { 
+            flex: 1; 
+        }
+        .reservation-title { 
+            font-weight: 600; 
+            color: #111827; 
+            margin-bottom: 4px; 
+        }
+        .reservation-subtitle { 
+            font-size: 14px; 
+            color: #6b7280; 
+        }
+        .reservation-time { 
+            text-align: right; 
+        }
+        .time-main { 
+            font-weight: 500; 
+            color: #111827; 
+            font-size: 14px; 
+        }
+        .time-sub { 
+            font-size: 12px; 
+            color: #9ca3af; 
+        }
+        
+        /* 하단 통계 */
+        .bottom-stats { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 24px; 
+        }
+        .bottom-card { 
+            background: white; 
+            padding: 32px 24px; 
+            border-radius: 12px; 
+            border: 1px solid #e5e7eb; 
+            text-align: center; 
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .bottom-icon { 
+            width: 48px; 
+            height: 48px; 
+            margin: 0 auto 16px; 
+            font-size: 24px; 
+            color: #6b7280; 
+        }
+        .bottom-number { 
+            font-size: 28px; 
+            font-weight: 700; 
+            color: #111827; 
+            margin-bottom: 4px; 
+        }
+        .bottom-label { 
+            font-size: 14px; 
+            color: #6b7280; 
+        }
+        
+        /* 기타 */
         .page { display: none; }
         .page.active { display: block; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
         .modal.show { display: flex; align-items: center; justify-content: center; }
-        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 400px; }
-        .form-group { margin-bottom: 15px; }
-        .form-label { display: block; margin-bottom: 5px; font-weight: 500; }
-        .form-input { width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; }
-        .checkbox-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .toast { position: fixed; top: 20px; right: 20px; padding: 15px; border-radius: 5px; color: white; z-index: 1100; transform: translateX(100%); transition: transform 0.3s; }
+        .modal-content { background: white; padding: 24px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .modal-title { font-size: 20px; font-weight: 600; color: #111827; }
+        .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #6b7280; padding: 4px; }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 500; color: #374151; }
+        .form-input { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; transition: border-color 0.2s; }
+        .form-input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        .checkbox-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .checkbox-item { display: flex; align-items: center; gap: 8px; }
+        .form-actions { display: flex; gap: 12px; margin-top: 24px; }
+        .btn-full { flex: 1; }
+        .toast { position: fixed; top: 20px; right: 20px; padding: 16px 20px; border-radius: 8px; color: white; z-index: 1100; transform: translateX(100%); transition: transform 0.3s; font-weight: 500; max-width: 400px; word-wrap: break-word; }
         .toast.show { transform: translateX(0); }
-        .toast.success { background: #10b981; }
-        .toast.error { background: #ef4444; }
+        .toast.success { background: linear-gradient(135deg, #10b981, #059669); }
+        .toast.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .toast.warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .toast.info { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        
+        @media (max-width: 768px) {
+            .app { flex-direction: column; }
+            .sidebar { width: 100%; padding: 16px; }
+            .nav-item { font-size: 16px; padding: 16px; }
+            .main { padding: 16px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .content-grid { grid-template-columns: 1fr; }
+            .bottom-stats { grid-template-columns: 1fr; }
+            .header { flex-direction: column; align-items: flex-start; gap: 16px; }
+        }
     </style>
 </head>
 <body>
     <div class="app">
+        <!-- 사이드바 -->
         <div class="sidebar">
-            <div class="logo">📅 특별실 예약</div>
-            <nav>
-                <button class="nav-item active" onclick="showPage('dashboard')">🏠 대시보드</button>
-                <button class="nav-item" onclick="showPage('weekly')">📅 주간 현황</button>
-                <button class="nav-item" onclick="showPage('reservations')">📋 예약 목록</button>
-                <button class="nav-item" onclick="showPage('rooms')">🏢 특별실</button>
-                <button class="nav-item" onclick="showPage('stats')">📊 통계</button>
-            </nav>
+            <div class="logo">
+                <div class="logo-icon">📅</div>
+                <div>
+                    <div style="font-size: 18px; font-weight: 700; color: #111827;">특별실 예약 관리</div>
+                    <div style="font-size: 13px; color: #6b7280; margin-top: 2px;">효행초등학교</div>
+                </div>
+            </div>
+            
+            <!-- 메인 메뉴 -->
+            <div style="margin-bottom: 24px;">
+                <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; padding: 0 16px;">메인 메뉴</div>
+                <nav>
+                    <button class="nav-item active" onclick="showPage('weekly')">
+                        <span class="nav-icon">📅</span>
+                        <span>이번 주 예약 현황</span>
+                    </button>
+                    <button class="nav-item" onclick="showPage('calendar')">
+                        <span class="nav-icon">📅</span>
+                        <span>예약 달력</span>
+                    </button>
+                    <button class="nav-item" onclick="showPage('reservations')">
+                        <span class="nav-icon">📋</span>
+                        <span>예약 목록</span>
+                    </button>
+                    <button class="nav-item" onclick="showPage('dashboard')">
+                        <span class="nav-icon">🏠</span>
+                        <span>대시보드</span>
+                    </button>
+                    <button class="nav-item" onclick="showPage('rooms')">
+                        <span class="nav-icon">📋</span>
+                        <span>특별실 이용 계획</span>
+                    </button>
+                    <button class="nav-item" onclick="showPage('stats')">
+                        <span class="nav-icon">📊</span>
+                        <span>통계 분석</span>
+                    </button>
+                </nav>
+            </div>
+            
+            <!-- 시스템 메뉴 -->
+            <div>
+                <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; padding: 0 16px;">시스템</div>
+                <nav>
+                    <button class="nav-item" onclick="showPage('settings')">
+                        <span class="nav-icon">⚙️</span>
+                        <span>설정</span>
+                    </button>
+                </nav>
+            </div>
         </div>
         
         <div class="main">
+            <!-- 헤더 -->
             <div class="header">
-                <div>
-                    <h1 id="pageTitle">대시보드</h1>
-                    <p>특별실 예약 현황을 확인하세요</p>
+                <div class="header-left">
+                    <h1 id="pageTitle">이번 주 예약 현황</h1>
+                    <p id="pageSubtitle">이번 주 특별실 이용 현황을 확인하세요</p>
                 </div>
-                <button class="btn btn-primary" onclick="openModal()">➕ 새 예약</button>
+                <div class="header-buttons">
+                    <button class="btn btn-outline" onclick="openQuickModal()">
+                        <span>➕</span>
+                        <span>빠른 예약</span>
+                    </button>
+                    <button class="btn btn-primary" onclick="openModal()">
+                        <span>➕</span>
+                        <span>새 예약</span>
+                    </button>
+                </div>
             </div>
             
-            <div id="dashboard" class="page active">
-                <div class="grid">
-                    <div class="card stat">
-                        <div><small>총 특별실</small><br><strong>11</strong></div>
-                        <div>🏢</div>
-                    </div>
-                    <div class="card stat">
-                        <div><small>오늘 예약</small><br><strong id="todayCount">1</strong></div>
-                        <div>📅</div>
-                    </div>
-                    <div class="card stat">
-                        <div><small>이번 주</small><br><strong id="weekCount">2</strong></div>
-                        <div>📊</div>
-                    </div>
-                    <div class="card stat">
-                        <div><small>총 학급</small><br><strong>16</strong></div>
-                        <div>👥</div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <h3>최근 예약</h3><br>
-                    <div id="recentList">
-                        <div style="padding: 10px; background: #f8fafc; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between;">
-                            <div><strong>강당 - 1학년 1반</strong><br><small>1교시, 2교시 • 체육 수업</small></div>
-                            <button onclick="delReservation(1)" style="background: none; border: none; color: red;">🗑️</button>
-                        </div>
-                        <div style="padding: 10px; background: #f8fafc; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between;">
-                            <div><strong>시청각실1 - 2학년 1반</strong><br><small>3교시 • 영상 시청</small></div>
-                            <button onclick="delReservation(2)" style="background: none; border: none; color: red;">🗑️</button>
+            <!-- 대시보드 페이지 -->
+            <div id="dashboard" class="page">
+                <!-- 통계 카드들 -->
+                <div class="stats-grid">
+                    <div class="stat-card blue">
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <h3>오늘 예약</h3>
+                                <div class="number" id="todayCount">1</div>
+                                <div class="unit">건</div>
+                            </div>
+                            <div class="stat-icon">📅</div>
                         </div>
                     </div>
+                    
+                    <div class="stat-card green">
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <h3>이번 주</h3>
+                                <div class="number" id="weekCount">2</div>
+                                <div class="unit">건</div>
+                            </div>
+                            <div class="stat-icon">📊</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card purple">
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <h3>이번 달</h3>
+                                <div class="number" id="monthCount">5</div>
+                                <div class="unit">건</div>
+                            </div>
+                            <div class="stat-icon">📈</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card orange">
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <h3>이용률</h3>
+                                <div class="number" id="utilizationRate">25</div>
+                                <div class="unit">%</div>
+                            </div>
+                            <div class="stat-icon">👥</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 메인 콘텐츠 -->
+                <div class="content-grid">
+                    <!-- 오늘의 예약 현황 -->
+                    <div class="content-card">
+                        <div class="content-header">
+                            <div class="content-title">
+                                <span>🕐</span>
+                                <span>오늘의 예약 현황</span>
+                            </div>
+                        </div>
+                        <div class="content-body">
+                            <div id="todaySchedule">
+                                <div class="reservation-item">
+                                    <div class="reservation-indicator"></div>
+                                    <div class="reservation-content">
+                                        <div class="reservation-title">강당</div>
+                                        <div class="reservation-subtitle">1학년 1반 • 담당교사 미기재</div>
+                                    </div>
+                                    <div class="reservation-time">
+                                        <div class="time-main">1교시, 2교시</div>
+                                        <div class="time-sub">체육 수업</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 최근 예약 현황 -->
+                    <div class="content-card">
+                        <div class="content-header">
+                            <div class="content-title">
+                                <span>📍</span>
+                                <span>최근 예약 현황</span>
+                            </div>
+                        </div>
+                        <div class="content-body">
+                            <div id="recentReservations">
+                                <div class="reservation-item">
+                                    <div class="reservation-indicator"></div>
+                                    <div class="reservation-content">
+                                        <div class="reservation-title">강당</div>
+                                        <div class="reservation-subtitle">1학년 1반</div>
+                                    </div>
+                                    <div class="reservation-time">
+                                        <div class="time-main">1월 23일</div>
+                                        <div class="time-sub">1교시, 2교시</div>
+                                    </div>
+                                </div>
+                                <div class="reservation-item">
+                                    <div class="reservation-indicator"></div>
+                                    <div class="reservation-content">
+                                        <div class="reservation-title">시청각실1</div>
+                                        <div class="reservation-subtitle">2학년 1반</div>
+                                    </div>
+                                    <div class="reservation-time">
+                                        <div class="time-main">1월 21일</div>
+                                        <div class="time-sub">3교시</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 하단 통계 -->
+                <div class="bottom-stats">
+                    <div class="bottom-card">
+                        <div class="bottom-icon">🏢</div>
+                        <div class="bottom-number" id="totalRooms">11</div>
+                        <div class="bottom-label">특별실</div>
+                    </div>
+                    <div class="bottom-card">
+                        <div class="bottom-icon">🎓</div>
+                        <div class="bottom-number" id="totalClasses">56</div>
+                        <div class="bottom-label">학급</div>
+                    </div>
+                    <div class="bottom-card">
+                        <div class="bottom-icon">📊</div>
+                        <div class="bottom-number" id="totalReservations">12</div>
+                        <div class="bottom-label">총 예약</div>
+                    </div>
                 </div>
             </div>
             
-            <div id="weekly" class="page">
-                <div class="card">
-                    <h3>이번 주 예약 현황</h3><br>
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <tr style="background: #f8fafc;">
-                            <th style="padding: 10px; border: 1px solid #e2e8f0;">시간</th>
-                            <th style="padding: 10px; border: 1px solid #e2e8f0;">월</th>
-                            <th style="padding: 10px; border: 1px solid #e2e8f0;">화</th>
-                            <th style="padding: 10px; border: 1px solid #e2e8f0;">수</th>
-                            <th style="padding: 10px; border: 1px solid #e2e8f0;">목</th>
-                            <th style="padding: 10px; border: 1px solid #e2e8f0;">금</th>
-                        </tr>
-                        <tr><td style="padding: 10px; border: 1px solid #e2e8f0;">1교시</td><td style="padding: 10px; border: 1px solid #e2e8f0;">강당(1-1)</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td></tr>
-                        <tr><td style="padding: 10px; border: 1px solid #e2e8f0;">2교시</td><td style="padding: 10px; border: 1px solid #e2e8f0;">강당(1-1)</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td></tr>
-                        <tr><td style="padding: 10px; border: 1px solid #e2e8f0;">3교시</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">시청각실1(2-1)</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td></tr>
-                        <tr><td style="padding: 10px; border: 1px solid #e2e8f0;">4교시</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td></tr>
-                        <tr><td style="padding: 10px; border: 1px solid #e2e8f0;">5교시</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td></tr>
-                        <tr><td style="padding: 10px; border: 1px solid #e2e8f0;">6교시</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td><td style="padding: 10px; border: 1px solid #e2e8f0;">-</td></tr>
-                    </table>
+            <!-- 주간 현황 페이지 -->
+            <div id="weekly" class="page active">
+                <!-- 헤더 -->
+                <div style="text-align: center; margin-bottom: 32px;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #dbeafe, #e0e7ff); padding: 12px 16px; border-radius: 24px;">
+                            <span style="font-size: 20px;">📅</span>
+                            <h1 style="font-size: 24px; font-weight: 700; background: linear-gradient(135deg, #2563eb, #7c3aed); -webkit-background-clip: text; background-clip: text; color: transparent; margin: 0;">이번주 예약 현황</h1>
+                            <span style="font-size: 16px; color: #fbbf24;">⭐</span>
+                        </div>
+                    </div>
+                    <div style="display: inline-block; background: white; border: 1px solid #e5e7eb; padding: 6px 12px; border-radius: 12px; font-size: 13px; color: #6b7280;" id="weekRange">
+                        1월 20일 ~ 1월 26일
+                    </div>
+                </div>
+
+                <!-- 수평 스크롤 주간 뷰 -->
+                <div style="margin-bottom: 32px;">
+                    <div style="display: flex; gap: 16px; overflow-x: auto; padding: 8px; scrollbar-width: thin;" id="weeklyCards">
+                        <!-- JavaScript로 동적 생성됨 -->
+                    </div>
+                </div>
+
+                <!-- 충돌 경고 -->
+                <div id="conflictWarning" style="display: none; background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <span style="color: #ef4444; font-size: 18px;">⚠️</span>
+                        <h3 style="color: #dc2626; font-weight: 600; margin: 0;">시간 충돌 경고</h3>
+                    </div>
+                    <p style="color: #dc2626; font-size: 14px; margin: 0;">이번 주에 시간이 겹치는 예약이 있습니다. 각 날짜별 예약을 확인해주세요.</p>
+                </div>
+
+                <!-- 주간 요약 -->
+                <div style="background: white; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                    <div style="padding: 20px 24px; border-bottom: 1px solid #e5e7eb;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="color: #ec4899; font-size: 18px;">💖</span>
+                            <h3 style="font-size: 18px; font-weight: 600; color: #111827; margin: 0;">이번 주 요약</h3>
+                        </div>
+                    </div>
+                    <div style="padding: 24px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 700; color: #2563eb;" id="totalWeekReservations">2</div>
+                                <div style="font-size: 14px; color: #6b7280;">총 예약</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 700; color: #10b981;" id="usedRooms">2</div>
+                                <div style="font-size: 14px; color: #6b7280;">사용된 특별실</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 700; color: #7c3aed;" id="reservingClasses">2</div>
+                                <div style="font-size: 14px; color: #6b7280;">예약한 학급</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 700; color: #f59e0b;" id="timeConflicts">0</div>
+                                <div style="font-size: 14px; color: #6b7280;">시간 충돌</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
+            <!-- 예약 목록 페이지 -->
             <div id="reservations" class="page">
-                <div class="card">
-                    <h3>모든 예약</h3><br>
-                    <div id="allReservations">
-                        <div style="padding: 15px; background: #f8fafc; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between;">
-                            <div><strong>강당 - 1학년 1반</strong><br><small>1월 20일 (월) • 1교시, 2교시</small><br><small>체육 수업</small></div>
-                            <button onclick="delReservation(1)" style="background: none; border: none; color: red;">🗑️</button>
+                <!-- 헤더 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+                    <h1 style="font-size: 28px; font-weight: 700; color: #1f2937; margin: 0;">예약 목록</h1>
+                    <button onclick="showAddModal()" style="display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #2563eb, #3b82f6); color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s ease;">
+                        <span style="font-size: 14px;">➕</span>
+                        새 예약
+                    </button>
+                </div>
+
+                <!-- 검색 및 필터 -->
+                <div style="background: white; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); margin-bottom: 24px;">
+                    <div style="padding: 24px;">
+                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center;">
+                            <div style="position: relative;">
+                                <div style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 16px;">🔍</div>
+                                <input type="text" id="searchInput" placeholder="예약 검색 (특별실, 학급, 담당교사, 목적)" style="width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; outline: none; transition: all 0.2s ease;" onfocus="this.style.borderColor='#2563eb'; this.style.boxShadow='0 0 0 3px rgba(37, 99, 235, 0.1)'" onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'" oninput="filterReservations()">
+                            </div>
+                            <select id="roomFilter" style="padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; outline: none; min-width: 200px; transition: all 0.2s ease;" onchange="filterReservations()" onfocus="this.style.borderColor='#2563eb'; this.style.boxShadow='0 0 0 3px rgba(37, 99, 235, 0.1)'" onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
+                                <option value="">모든 특별실</option>
+                                <option value="강당">강당</option>
+                                <option value="운동장">운동장</option>
+                                <option value="시청각실1">시청각실1</option>
+                                <option value="시청각실2">시청각실2</option>
+                                <option value="제1컴퓨터실">제1컴퓨터실</option>
+                            </select>
                         </div>
-                        <div style="padding: 15px; background: #f8fafc; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between;">
-                            <div><strong>시청각실1 - 2학년 1반</strong><br><small>1월 21일 (화) • 3교시</small><br><small>영상 시청</small></div>
-                            <button onclick="delReservation(2)" style="background: none; border: none; color: red;">🗑️</button>
+                    </div>
+                </div>
+
+                <!-- 예약 테이블 -->
+                <div style="background: white; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                    <div style="padding: 20px 24px; border-bottom: 1px solid #e5e7eb;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 18px;">📅</span>
+                            <h3 style="font-size: 18px; font-weight: 600; color: #111827; margin: 0;">예약 현황 (<span id="reservationCount">2</span>건)</h3>
                         </div>
+                    </div>
+                    
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;" id="reservationsTable">
+                            <thead>
+                                <tr style="background: #f9fafb;">
+                                    <th style="padding: 16px 24px; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">날짜</th>
+                                    <th style="padding: 16px 24px; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">특별실</th>
+                                    <th style="padding: 16px 24px; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">학급</th>
+                                    <th style="padding: 16px 24px; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">담당교사</th>
+                                    <th style="padding: 16px 24px; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">시간</th>
+                                    <th style="padding: 16px 24px; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">목적</th>
+                                    <th style="padding: 16px 24px; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">상태</th>
+                                    <th style="padding: 16px 24px; text-align: right; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">작업</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reservationsTableBody">
+                                <!-- JavaScript로 동적 생성됨 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="noReservations" style="display: none; text-align: center; padding: 64px 24px; color: #6b7280;">
+                        검색 조건에 맞는 예약이 없습니다.
                     </div>
                 </div>
             </div>
             
+            <!-- 특별실 관리 페이지 -->
             <div id="rooms" class="page">
-                <div class="card">
-                    <h3>특별실 목록</h3><br>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                        <div style="padding: 15px; border: 1px solid #e2e8f0; border-radius: 5px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;"><strong>강당</strong><span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span></div>
-                            <small>총 예약: 1건</small><br><br>
-                            <button class="btn btn-secondary" style="width: 100%;">일정 보기</button>
+                <div class="content-card">
+                    <div class="content-header">
+                        <div class="content-title">
+                            <span>🏢</span>
+                            <span>특별실 목록</span>
                         </div>
-                        <div style="padding: 15px; border: 1px solid #e2e8f0; border-radius: 5px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;"><strong>시청각실1</strong><span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span></div>
-                            <small>총 예약: 1건</small><br><br>
-                            <button class="btn btn-secondary" style="width: 100%;">일정 보기</button>
-                        </div>
-                        <div style="padding: 15px; border: 1px solid #e2e8f0; border-radius: 5px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;"><strong>운동장</strong><span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span></div>
-                            <small>총 예약: 0건</small><br><br>
-                            <button class="btn btn-secondary" style="width: 100%;">일정 보기</button>
+                        <button onclick="showAddRoomModal()" class="btn btn-primary" style="display: flex; align-items: center; gap: 8px;">
+                            <span>➕</span>
+                            새 특별실 추가
+                        </button>
+                    </div>
+                    <div class="content-body">
+                        <div id="roomsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+                            <!-- JavaScript로 동적 생성됨 -->
                         </div>
                     </div>
                 </div>
             </div>
             
+            <!-- 통계 페이지 -->
             <div id="stats" class="page">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="card">
-                        <h3>특별실별 이용률</h3><br>
-                        <div style="display: flex; align-items: center; margin-bottom: 8px;"><span style="width: 60px; font-size: 12px;">강당</span><div style="flex: 1; height: 15px; background: #f1f5f9; border-radius: 8px; margin: 0 10px;"><div style="width: 100%; height: 100%; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: flex-end; padding-right: 5px; color: white; font-size: 10px;">1</div></div></div>
-                        <div style="display: flex; align-items: center; margin-bottom: 8px;"><span style="width: 60px; font-size: 12px;">시청각실1</span><div style="flex: 1; height: 15px; background: #f1f5f9; border-radius: 8px; margin: 0 10px;"><div style="width: 100%; height: 100%; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: flex-end; padding-right: 5px; color: white; font-size: 10px;">1</div></div></div>
-                        <div style="display: flex; align-items: center; margin-bottom: 8px;"><span style="width: 60px; font-size: 12px;">운동장</span><div style="flex: 1; height: 15px; background: #f1f5f9; border-radius: 8px; margin: 0 10px;"><div style="width: 0%; height: 100%; background: #2563eb; border-radius: 8px;"></div></div></div>
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="content-header">
+                            <div class="content-title">
+                                <span>📊</span>
+                                <span>특별실별 이용률</span>
+                            </div>
+                        </div>
+                        <div class="content-body">
+                            <div style="space-y: 16px;">
+                                <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                                    <span style="width: 80px; font-size: 14px; color: #374151;">강당</span>
+                                    <div style="flex: 1; height: 20px; background: #f3f4f6; border-radius: 10px; margin: 0 16px; overflow: hidden;">
+                                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #2563eb, #3b82f6); border-radius: 10px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px;">
+                                            <span style="color: white; font-size: 12px; font-weight: 600;">1</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                                    <span style="width: 80px; font-size: 14px; color: #374151;">시청각실1</span>
+                                    <div style="flex: 1; height: 20px; background: #f3f4f6; border-radius: 10px; margin: 0 16px; overflow: hidden;">
+                                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #2563eb, #3b82f6); border-radius: 10px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px;">
+                                            <span style="color: white; font-size: 12px; font-weight: 600;">1</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 80px; font-size: 14px; color: #374151;">운동장</span>
+                                    <div style="flex: 1; height: 20px; background: #f3f4f6; border-radius: 10px; margin: 0 16px;">
+                                        <div style="width: 0%; height: 100%; background: linear-gradient(135deg, #2563eb, #3b82f6); border-radius: 10px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card">
-                        <h3>학급별 예약 현황</h3><br>
-                        <div style="display: flex; align-items: center; margin-bottom: 8px;"><span style="width: 60px; font-size: 12px;">1-1</span><div style="flex: 1; height: 15px; background: #f1f5f9; border-radius: 8px; margin: 0 10px;"><div style="width: 100%; height: 100%; background: #10b981; border-radius: 8px; display: flex; align-items: center; justify-content: flex-end; padding-right: 5px; color: white; font-size: 10px;">1</div></div></div>
-                        <div style="display: flex; align-items: center; margin-bottom: 8px;"><span style="width: 60px; font-size: 12px;">2-1</span><div style="flex: 1; height: 15px; background: #f1f5f9; border-radius: 8px; margin: 0 10px;"><div style="width: 100%; height: 100%; background: #10b981; border-radius: 8px; display: flex; align-items: center; justify-content: flex-end; padding-right: 5px; color: white; font-size: 10px;">1</div></div></div>
-                        <div style="display: flex; align-items: center; margin-bottom: 8px;"><span style="width: 60px; font-size: 12px;">1-2</span><div style="flex: 1; height: 15px; background: #f1f5f9; border-radius: 8px; margin: 0 10px;"><div style="width: 0%; height: 100%; background: #10b981; border-radius: 8px;"></div></div></div>
+                    
+                    <div class="content-card">
+                        <div class="content-header">
+                            <div class="content-title">
+                                <span>👥</span>
+                                <span>학급별 예약 현황</span>
+                            </div>
+                        </div>
+                        <div class="content-body">
+                            <div style="space-y: 16px;">
+                                <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                                    <span style="width: 80px; font-size: 14px; color: #374151;">1학년 1반</span>
+                                    <div style="flex: 1; height: 20px; background: #f3f4f6; border-radius: 10px; margin: 0 16px; overflow: hidden;">
+                                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #10b981, #059669); border-radius: 10px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px;">
+                                            <span style="color: white; font-size: 12px; font-weight: 600;">1</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                                    <span style="width: 80px; font-size: 14px; color: #374151;">2학년 1반</span>
+                                    <div style="flex: 1; height: 20px; background: #f3f4f6; border-radius: 10px; margin: 0 16px; overflow: hidden;">
+                                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #10b981, #059669); border-radius: 10px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px;">
+                                            <span style="color: white; font-size: 12px; font-weight: 600;">1</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 80px; font-size: 14px; color: #374151;">1학년 2반</span>
+                                    <div style="flex: 1; height: 20px; background: #f3f4f6; border-radius: 10px; margin: 0 16px;">
+                                        <div style="width: 0%; height: 100%; background: linear-gradient(135deg, #10b981, #059669); border-radius: 10px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 예약 달력 페이지 -->
+            <div id="calendar" class="page">
+                <!-- 헤더 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+                    <h1 style="font-size: 28px; font-weight: 700; color: #1f2937; margin: 0;">예약 달력</h1>
+                    <button onclick="showAddModal()" style="display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #2563eb, #3b82f6); color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s ease;">
+                        <span style="font-size: 14px;">➕</span>
+                        새 예약
+                    </button>
+                </div>
+
+                <!-- 달력 카드 -->
+                <div style="background: white; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                    <!-- 달력 헤더 -->
+                    <div style="padding: 20px 24px; border-bottom: 1px solid #e5e7eb;">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <button onclick="navigateMonth(-1)" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: none; border: none; border-radius: 6px; cursor: pointer; color: #6b7280; transition: all 0.2s ease;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+                                <span style="font-size: 16px;">‹</span>
+                            </button>
+                            <h2 style="font-size: 20px; font-weight: 600; color: #1f2937; margin: 0;" id="calendarTitle">2025년 1월</h2>
+                            <button onclick="navigateMonth(1)" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: none; border: none; border-radius: 6px; cursor: pointer; color: #6b7280; transition: all 0.2s ease;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+                                <span style="font-size: 16px;">›</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 달력 그리드 -->
+                    <div style="padding: 24px;">
+                        <!-- 요일 헤더 -->
+                        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0; margin-bottom: 8px;">
+                            <div style="text-align: center; padding: 12px; font-size: 14px; font-weight: 600; color: #6b7280;">일</div>
+                            <div style="text-align: center; padding: 12px; font-size: 14px; font-weight: 600; color: #6b7280;">월</div>
+                            <div style="text-align: center; padding: 12px; font-size: 14px; font-weight: 600; color: #6b7280;">화</div>
+                            <div style="text-align: center; padding: 12px; font-size: 14px; font-weight: 600; color: #6b7280;">수</div>
+                            <div style="text-align: center; padding: 12px; font-size: 14px; font-weight: 600; color: #6b7280;">목</div>
+                            <div style="text-align: center; padding: 12px; font-size: 14px; font-weight: 600; color: #6b7280;">금</div>
+                            <div style="text-align: center; padding: 12px; font-size: 14px; font-weight: 600; color: #6b7280;">토</div>
+                        </div>
+                        
+                        <!-- 달력 날짜들 -->
+                        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #e5e7eb; border-radius: 8px; overflow: hidden;" id="calendarGrid">
+                            <!-- JavaScript로 동적 생성됨 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 설정 페이지 -->
+            <div id="settings" class="page">
+                <div class="content-card">
+                    <div class="content-header">
+                        <div class="content-title">
+                            <span>⚙️</span>
+                            <span>시스템 설정</span>
+                        </div>
+                    </div>
+                    <div class="content-body">
+                        <div class="empty-state">
+                            <div class="empty-icon">⚙️</div>
+                            <h3 style="margin-bottom: 8px; font-size: 18px; font-weight: 600;">설정</h3>
+                            <p style="color: #6b7280;">시스템 설정을 관리할 수 있습니다.</p>
+                            <p style="color: #6b7280; margin-top: 8px; font-size: 14px;">곧 구현 예정입니다.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
+    <!-- 예약 모달 -->
     <div id="modal" class="modal">
         <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3>새 예약</h3>
-                <button onclick="closeModal()" style="background: none; border: none; font-size: 18px; cursor: pointer;">✕</button>
+            <div class="modal-header">
+                <h3 id="modalTitle" class="modal-title">새 예약</h3>
+                <button type="button" onclick="closeModal()" class="close-btn">✕</button>
             </div>
-            <form onsubmit="return submitForm(event)">
+            
+            <form id="reservationForm">
                 <div class="form-group">
-                    <label class="form-label">특별실</label>
-                    <select class="form-input" id="roomSelect" required>
-                        <option value="">선택하세요</option>
-                        <option value="강당">강당</option>
-                        <option value="운동장">운동장</option>
-                        <option value="시청각실1">시청각실1</option>
-                        <option value="시청각실2">시청각실2</option>
-                        <option value="컴퓨터실">컴퓨터실</option>
+                    <label class="form-label">특별실 선택</label>
+                    <select id="modalRoomSelect" class="form-input" required>
+                        <option value="">특별실을 선택하세요</option>
+                        <option value="1">강당</option>
+                        <option value="2">운동장</option>
+                        <option value="3">풋살장</option>
+                        <option value="4">놀이활동실1</option>
+                        <option value="5">놀이활동실2</option>
+                        <option value="6">표현무용실</option>
+                        <option value="7">야외정원(4층)</option>
+                        <option value="8">시청각실1</option>
+                        <option value="9">시청각실2</option>
+                        <option value="10">제1컴퓨터실</option>
+                        <option value="11">제2컴퓨터실</option>
                     </select>
                 </div>
+                
                 <div class="form-group">
-                    <label class="form-label">학급</label>
-                    <select class="form-input" id="classSelect" required>
-                        <option value="">선택하세요</option>
-                        <option value="1학년 1반">1학년 1반</option>
-                        <option value="1학년 2반">1학년 2반</option>
-                        <option value="2학년 1반">2학년 1반</option>
-                        <option value="2학년 2반">2학년 2반</option>
+                    <label class="form-label">학급 선택</label>
+                    <select id="modalClassSelect" class="form-input" required>
+                        <option value="">학급을 선택하세요</option>
+                        <option value="1">1학년 1반</option>
+                        <option value="2">1학년 2반</option>
+                        <option value="3">2학년 1반</option>
+                        <option value="4">2학년 2반</option>
+                        <option value="5">유치원</option>
                     </select>
                 </div>
+                
                 <div class="form-group">
-                    <label class="form-label">날짜</label>
-                    <input type="date" class="form-input" id="dateInput" required>
+                    <label class="form-label">예약 날짜</label>
+                    <input type="date" id="modalDateInput" class="form-input" required>
                 </div>
+                
                 <div class="form-group">
-                    <label class="form-label">교시</label>
-                    <div class="checkbox-grid">
-                        <div><input type="checkbox" id="p1" value="1교시"> <label for="p1">1교시</label></div>
-                        <div><input type="checkbox" id="p2" value="2교시"> <label for="p2">2교시</label></div>
-                        <div><input type="checkbox" id="p3" value="3교시"> <label for="p3">3교시</label></div>
-                        <div><input type="checkbox" id="p4" value="4교시"> <label for="p4">4교시</label></div>
-                        <div><input type="checkbox" id="p5" value="5교시"> <label for="p5">5교시</label></div>
-                        <div><input type="checkbox" id="p6" value="6교시"> <label for="p6">6교시</label></div>
+                    <label class="form-label">담당교사</label>
+                    <input type="text" id="modalTeacherInput" class="form-input" placeholder="담당교사 이름을 입력하세요">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">시간 선택</label>
+                    <div id="modalPeriodsGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                        <!-- JavaScript로 동적 생성됨 -->
                     </div>
                 </div>
+                
                 <div class="form-group">
                     <label class="form-label">사용 목적</label>
-                    <input type="text" class="form-input" id="purposeInput" placeholder="예: 체육 수업">
+                    <input type="text" id="modalPurposeInput" class="form-input" placeholder="예: 체육수업, 영상시청, 과학실험 등">
                 </div>
-                <div style="display: flex; gap: 10px;">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">예약 생성</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">취소</button>
+                
+                <div class="form-group">
+                    <label class="form-label">비고</label>
+                    <textarea id="modalNotesInput" class="form-input" rows="2" placeholder="추가 메모사항"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" onclick="closeModal()" class="btn btn-outline btn-full">취소</button>
+                    <button type="submit" class="btn btn-primary btn-full">예약 생성</button>
                 </div>
             </form>
         </div>
     </div>
-    
+    </div>
+
+    <!-- 특별실 상세 정보 모달 -->
+    <div id="roomDetailModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 id="roomDetailTitle">특별실 상세 정보</h3>
+                <button onclick="closeRoomDetailModal()" class="btn-text">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="roomDetailContent">
+                    <!-- 동적으로 생성됨 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeRoomDetailModal()" class="btn btn-outline">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 특별실 추가/수정 모달 -->
+    <div id="roomModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3 id="roomModalTitle">새 특별실 추가</h3>
+                <button onclick="closeRoomModal()" class="btn-text">×</button>
+            </div>
+            
+            <form id="roomForm" onsubmit="handleRoomSubmit(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">특별실 이름</label>
+                        <input type="text" id="roomNameInput" class="form-input" placeholder="예: 제3컴퓨터실" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">수용 인원</label>
+                        <input type="number" id="roomCapacityInput" class="form-input" placeholder="30" min="1" max="1000" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">설명</label>
+                        <textarea id="roomDescriptionInput" class="form-input" rows="2" placeholder="특별실 용도 및 설명"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">권장 학년 (복수 선택 가능)</label>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; padding: 8px; background: #f9fafb; border-radius: 6px; cursor: pointer;">
+                                <input type="checkbox" value="1" name="recommendedGrades" style="margin: 0;">
+                                <span style="font-size: 14px; color: #374151;">1학년</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; padding: 8px; background: #f9fafb; border-radius: 6px; cursor: pointer;">
+                                <input type="checkbox" value="2" name="recommendedGrades" style="margin: 0;">
+                                <span style="font-size: 14px; color: #374151;">2학년</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; padding: 8px; background: #f9fafb; border-radius: 6px; cursor: pointer;">
+                                <input type="checkbox" value="3" name="recommendedGrades" style="margin: 0;">
+                                <span style="font-size: 14px; color: #374151;">3학년</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; padding: 8px; background: #f9fafb; border-radius: 6px; cursor: pointer;">
+                                <input type="checkbox" value="4" name="recommendedGrades" style="margin: 0;">
+                                <span style="font-size: 14px; color: #374151;">4학년</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; padding: 8px; background: #f9fafb; border-radius: 6px; cursor: pointer;">
+                                <input type="checkbox" value="5" name="recommendedGrades" style="margin: 0;">
+                                <span style="font-size: 14px; color: #374151;">5학년</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; padding: 8px; background: #f9fafb; border-radius: 6px; cursor: pointer;">
+                                <input type="checkbox" value="6" name="recommendedGrades" style="margin: 0;">
+                                <span style="font-size: 14px; color: #374151;">6학년</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">이용 안내사항</label>
+                        <textarea id="roomUsageNotesInput" class="form-input" rows="3" placeholder="이용 시 주의사항을 한 줄씩 입력해주세요&#10;예:&#10;사전 장비 점검 필요&#10;정원 초과 시 사용 제한"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">충돌 주의사항</label>
+                        <textarea id="roomWarningsInput" class="form-input" rows="3" placeholder="예약 시 주의해야 할 사항들을 한 줄씩 입력해주세요&#10;예:&#10;정규 수업 시간 확인 필요&#10;다른 학급과 중복 불가"></textarea>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" onclick="closeRoomModal()" class="btn btn-outline">취소</button>
+                    <button type="submit" class="btn btn-primary" id="roomSubmitBtn">추가하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         let nextId = 3;
-        const titles = { dashboard: '대시보드', weekly: '주간 현황', reservations: '예약 목록', rooms: '특별실 관리', stats: '통계' };
         
-        document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
+        // 특별실 상세 정보 데이터
+        const roomDetails = {
+            '강당': {
+                description: '대규모 행사 및 전교생 집회',
+                usageNotes: ['정리정돈 철저', '마이크 사용법 숙지', '대규모 행사 전용'],
+                conflictWarnings: ['체육대회 등 행사 우선', '전교생 집회와 중복 불가'],
+                recommendedGrades: [1, 2, 3, 4, 5, 6]
+            },
+            '운동장': {
+                description: '야외 체육 활동 및 놀이',
+                usageNotes: ['학년별 이용 시간 배정', '날씨에 따른 사용 제한'],
+                conflictWarnings: ['학년별 정규 이용 시간 확인', '우천 시 실내 대체 공간 필요'],
+                recommendedGrades: [1, 2, 3, 4, 5, 6]
+            },
+            '풋살장': {
+                description: '축구 및 구기 활동',
+                usageNotes: ['학년별 이용 시간 배정', '와우중학교 이용 시간 있음', '복합특수 학급 이용'],
+                conflictWarnings: ['와우중학교 이용 시간 피해야 함', '복합특수 시간 확인 필요', '학년별 정규 시간과 중복 불가'],
+                recommendedGrades: [1, 2, 3, 4, 5, 6]
+            },
+            '놀이활동실1': {
+                description: '1,2학년 놀이체육 전용',
+                usageNotes: ['1,2학년 놀이체육 전용', '유치원 및 복합특수 학급 이용', '늘봄 프로그램 운영'],
+                conflictWarnings: ['1,2학년 정규 놀이체육 시간 확인', '유치원 및 복합특수 시간 피해야 함', '늘봄 프로그램과 중복 불가'],
+                recommendedGrades: [1, 2]
+            },
+            '놀이활동실2': {
+                description: '3-6학년 활동 및 특별 프로그램',
+                usageNotes: ['3-6학년 다양한 활동 공간', '학년별 시간대 배정됨'],
+                conflictWarnings: ['학년별 정규 이용 시간 확인', '기존 배정 시간과 중복 불가'],
+                recommendedGrades: [3, 4, 5, 6]
+            },
+            '표현무용실': {
+                description: '3,4학년 체육 수업 전용',
+                usageNotes: ['3,4학년 체육 수업 전용 공간', '표현 및 무용 활동에 최적화'],
+                conflictWarnings: ['3,4학년 정규 체육 시간과 중복 불가', '방과후 수업 시간 확인 필요'],
+                recommendedGrades: [3, 4]
+            },
+            '야외정원(4층)': {
+                description: '야외 활동 및 휴식 공간',
+                usageNotes: ['4층 야외 공간', '날씨 조건 확인 필요', '안전 수칙 준수 필수'],
+                conflictWarnings: ['우천 시 사용 불가', '안전 관리자 동행 권장'],
+                recommendedGrades: [1, 2, 3, 4, 5, 6]
+            },
+            '시청각실1': {
+                description: '영상 시청 및 발표 활동',
+                usageNotes: ['프로젝터 및 음향 시설 완비', '좌석 수 제한 있음', '사전 장비 점검 권장'],
+                conflictWarnings: ['장비 사용법 숙지 필요', '정원 초과 시 사용 제한'],
+                recommendedGrades: [1, 2, 3, 4, 5, 6]
+            },
+            '시청각실2': {
+                description: '영상 시청 및 발표 활동',
+                usageNotes: ['프로젝터 및 음향 시설 완비', '좌석 수 제한 있음', '사전 장비 점검 권장'],
+                conflictWarnings: ['장비 사용법 숙지 필요', '정원 초과 시 사용 제한'],
+                recommendedGrades: [1, 2, 3, 4, 5, 6]
+            },
+            '제1컴퓨터실': {
+                description: '1학년 컴퓨터 수업 전용',
+                usageNotes: ['1학년 전용 컴퓨터실', '학년별 사전 조정 후 사용', '방과후 수업 운영'],
+                conflictWarnings: ['1학년 정규 컴퓨터 수업과 중복 불가', '방과후 수업 시간 확인'],
+                recommendedGrades: [1]
+            },
+            '제2컴퓨터실': {
+                description: '2학년 컴퓨터 수업 및 연수',
+                usageNotes: ['2학년 전용 컴퓨터실', '소프트웨어 연수 및 학생동아리 활동', '학년별 사전 조정 후 사용'],
+                conflictWarnings: ['2학년 정규 컴퓨터 수업과 중복 불가', '소프트웨어 연수 일정 확인'],
+                recommendedGrades: [2]
+            }
+        };
         
+        const pageTitles = { 
+            weekly: '이번 주 예약 현황',
+            calendar: '예약 달력', 
+            reservations: '예약 목록',
+            dashboard: '대시보드', 
+            rooms: '특별실 이용 계획', 
+            stats: '통계 분석',
+            settings: '설정'
+        };
+        const pageSubtitles = {
+            weekly: '이번 주 특별실 이용 현황을 확인하세요',
+            calendar: '달력에서 예약 일정을 확인하고 관리하세요',
+            reservations: '모든 예약 내역을 관리하세요',
+            dashboard: '2025년 1월 23일 • 특별실 예약 현황',
+            rooms: '특별실별 이용 계획을 확인하세요',
+            stats: '이용 통계를 분석하세요',
+            settings: '시스템 설정을 관리하세요'
+        };
+        
+        // 페이지 로드 시 날짜 설정
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInput = document.getElementById('dateInput');
+            if (dateInput) {
+                dateInput.value = new Date().toISOString().split('T')[0];
+            }
+        });
+        
+        // 페이지 전환
         function showPage(page) {
+            // 모든 페이지 숨기기
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            
+            // 모든 네비게이션 버튼 비활성화
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            // 선택된 페이지 보이기
             document.getElementById(page).classList.add('active');
-            event.target.classList.add('active');
-            document.getElementById('pageTitle').textContent = titles[page];
+            
+            // 해당 네비게이션 버튼 활성화
+            event.target.closest('.nav-item').classList.add('active');
+            
+            // 페이지 제목과 부제목 변경
+            document.getElementById('pageTitle').textContent = pageTitles[page];
+            document.getElementById('pageSubtitle').textContent = pageSubtitles[page];
         }
         
+        // 모달 관련 함수들
         function openModal() {
+            document.getElementById('modal').classList.add('show');
+        }
+        
+        function openQuickModal() {
+            // 빠른 예약 모달은 동일한 모달을 사용하되, 제목만 변경
+            document.getElementById('modalTitle').textContent = '빠른 예약';
             document.getElementById('modal').classList.add('show');
         }
         
         function closeModal() {
             document.getElementById('modal').classList.remove('show');
-            document.querySelector('form').reset();
+            document.getElementById('modalTitle').textContent = '새 예약';
+            const form = document.querySelector('#modal form');
+            if (form) form.reset();
         }
         
+        // 예약 생성
         function submitForm(e) {
             e.preventDefault();
             const room = document.getElementById('roomSelect').value;
@@ -261,52 +1155,368 @@
             
             const periods = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
             if (periods.length === 0) {
-                showToast('교시를 선택해주세요!', 'error');
+                showToast('교시를 하나 이상 선택해주세요!', 'error');
                 return false;
             }
             
-            const item = `<div style="padding: 10px; background: #f8fafc; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between;">
-                <div><strong>${room} - ${cls}</strong><br><small>${periods.join(', ')} • ${purpose}</small></div>
-                <button onclick="delReservation(${nextId})" style="background: none; border: none; color: red;">🗑️</button>
-            </div>`;
+            // 새 예약 아이템 생성 (새로운 스타일)
+            const reservationItem = createReservationItem(room, cls, date, periods, purpose, nextId);
             
-            document.getElementById('recentList').innerHTML += item;
-            document.getElementById('allReservations').innerHTML += item;
+            // 오늘의 예약 현황에 추가
+            const todaySchedule = document.getElementById('todaySchedule');
+            if (todaySchedule) {
+                todaySchedule.innerHTML += reservationItem.today;
+            }
+            
+            // 최근 예약 현황에 추가
+            const recentReservations = document.getElementById('recentReservations');
+            if (recentReservations) {
+                recentReservations.innerHTML += reservationItem.recent;
+            }
+            
+            // 모든 예약 목록에 추가
+            const allReservations = document.getElementById('allReservations');
+            if (allReservations) {
+                allReservations.innerHTML += reservationItem.all;
+            }
             
             updateStats();
             closeModal();
-            showToast('예약이 생성되었습니다!', 'success');
+            showToast('예약이 성공적으로 생성되었습니다!', 'success');
             nextId++;
             return false;
         }
         
-        function delReservation(id) {
-            if (confirm('예약을 삭제하시겠습니까?')) {
-                document.querySelectorAll(`[onclick="delReservation(${id})"]`).forEach(btn => btn.parentElement.remove());
+        // 예약 아이템 생성 함수
+        function createReservationItem(room, cls, date, periods, purpose, id) {
+            const formattedDate = formatDate(date);
+            const periodsText = periods.join(', ');
+            
+            return {
+                today: `
+                    <div class="reservation-item">
+                        <div class="reservation-indicator"></div>
+                        <div class="reservation-content">
+                            <div class="reservation-title">${room}</div>
+                            <div class="reservation-subtitle">${cls} • 담당교사 미기재</div>
+                        </div>
+                        <div class="reservation-time">
+                            <div class="time-main">${periodsText}</div>
+                            <div class="time-sub">${purpose}</div>
+                        </div>
+                    </div>
+                `,
+                recent: `
+                    <div class="reservation-item">
+                        <div class="reservation-indicator"></div>
+                        <div class="reservation-content">
+                            <div class="reservation-title">${room}</div>
+                            <div class="reservation-subtitle">${cls}</div>
+                        </div>
+                        <div class="reservation-time">
+                            <div class="time-main">${formattedDate}</div>
+                            <div class="time-sub">${periodsText}</div>
+                        </div>
+                    </div>
+                `,
+                all: `
+                    <div class="reservation-item">
+                        <div class="reservation-indicator"></div>
+                        <div class="reservation-content">
+                            <div class="reservation-title">${room} - ${cls}</div>
+                            <div class="reservation-subtitle">${formattedDate} • ${periodsText}</div>
+                            <div class="reservation-subtitle">${purpose}</div>
+                        </div>
+                        <button onclick="deleteReservation(${id})" style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 8px;">🗑️</button>
+                    </div>
+                `
+            };
+        }
+        
+        // 예약 삭제
+        function deleteReservation(id) {
+            if (confirm('정말로 이 예약을 삭제하시겠습니까?')) {
+                // 해당 예약 요소들 찾아서 삭제
+                const deleteButtons = document.querySelectorAll(`[onclick="deleteReservation(${id})"]`);
+                deleteButtons.forEach(btn => {
+                    const item = btn.closest('.reservation-item');
+                    if (item) item.remove();
+                });
+                
                 updateStats();
                 showToast('예약이 삭제되었습니다.', 'success');
             }
         }
         
+        // 통계 업데이트
         function updateStats() {
-            const count = document.querySelectorAll('#recentList > div').length;
-            document.getElementById('todayCount').textContent = count;
-            document.getElementById('weekCount').textContent = count;
+            const todayItems = document.querySelectorAll('#todaySchedule .reservation-item');
+            const recentItems = document.querySelectorAll('#recentReservations .reservation-item');
+            const allItems = document.querySelectorAll('#allReservations .reservation-item');
+            
+            const todayCount = todayItems.length;
+            const weekCount = recentItems.length;
+            const monthCount = allItems.length;
+            
+            // 통계 카드 업데이트
+            const todayCountEl = document.getElementById('todayCount');
+            const weekCountEl = document.getElementById('weekCount');
+            const monthCountEl = document.getElementById('monthCount');
+            const utilizationEl = document.getElementById('utilizationRate');
+            const totalReservationsEl = document.getElementById('totalReservations');
+            
+            if (todayCountEl) todayCountEl.textContent = todayCount;
+            if (weekCountEl) weekCountEl.textContent = weekCount;
+            if (monthCountEl) monthCountEl.textContent = monthCount;
+            if (utilizationEl) utilizationEl.textContent = Math.round((todayCount / 11) * 100);
+            if (totalReservationsEl) totalReservationsEl.textContent = allItems.length;
         }
         
-        function showToast(msg, type) {
+        // 날짜 포맷팅
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+            const weekday = weekdays[date.getDay()];
+            return `${month}월 ${day}일 (${weekday})`;
+        }
+        
+        // 토스트 알림
+        function showToast(msg, type = 'info') {
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             toast.textContent = msg;
+            
             document.body.appendChild(toast);
-            setTimeout(() => toast.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
             setTimeout(() => {
                 toast.classList.remove('show');
-                setTimeout(() => document.body.removeChild(toast), 300);
-            }, 300);
+                setTimeout(() => {
+                    if (document.body.contains(toast)) {
+                        document.body.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
         }
         
-        console.log('✅ 오류 없는 특별실 예약 시스템 로드 완료!');
+        // 특별실 목록 렌더링
+        function renderRoomsPage() {
+            const grid = document.getElementById('roomsGrid');
+            if (!grid) return;
+            
+            let html = '';
+            testData.rooms.forEach(room => {
+                const roomReservations = testData.reservations.filter(r => r.roomId === room.id);
+                const today = new Date().toISOString().split('T')[0];
+                const todayReservations = roomReservations.filter(r => r.date === today);
+                const detail = roomDetails[room.name];
+                
+                html += `
+                    <div class="bottom-card" style="padding: 20px; cursor: pointer; transition: all 0.2s ease;" onclick="showRoomDetail('${room.name}')" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <h4 style="font-weight: 600; color: #111827; font-size: 16px;">${room.name}</h4>
+                            <span style="width: 12px; height: 12px; background: ${todayReservations.length > 0 ? '#f59e0b' : '#10b981'}; border-radius: 50%; display: inline-block;"></span>
+                        </div>
+                        <p style="color: #6366f1; font-size: 14px; margin-bottom: 12px; font-weight: 500;">${detail?.description || '특별실'}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <p style="color: #6b7280; font-size: 13px;">총 예약: ${roomReservations.length}건</p>
+                            <p style="color: ${todayReservations.length > 0 ? '#f59e0b' : '#6b7280'}; font-size: 13px; font-weight: ${todayReservations.length > 0 ? '600' : '400'};">오늘: ${todayReservations.length}건</p>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <p style="color: #374151; font-size: 12px; margin-bottom: 4px;">
+                                권장 학년: ${detail?.recommendedGrades?.join(', ') || '전체'}학년
+                            </p>
+                        </div>
+                        <button class="btn btn-outline" style="width: 100%; font-size: 13px;">
+                            📋 상세 정보 보기
+                        </button>
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+        }
+        
+        // 특별실 상세 정보 모달 표시
+        function showRoomDetail(roomName) {
+            const modal = document.getElementById('roomDetailModal');
+            const title = document.getElementById('roomDetailTitle');
+            const content = document.getElementById('roomDetailContent');
+            const detail = roomDetails[roomName];
+            
+            if (!detail) return;
+            
+            title.textContent = `${roomName} 상세 정보`;
+            
+            let html = `
+                <div style="margin-bottom: 24px;">
+                    <h4 style="color: #111827; font-size: 20px; font-weight: 600; margin-bottom: 8px;">${roomName}</h4>
+                    <p style="color: #6366f1; font-size: 16px; font-weight: 500; margin-bottom: 16px;">${detail.description}</p>
+                </div>
+                
+                <div style="margin-bottom: 24px;">
+                    <h5 style="color: #374151; font-size: 16px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center;">
+                        <span style="color: #10b981; margin-right: 8px; font-size: 18px;">✓</span>
+                        이용 안내
+                    </h5>
+                    <ul style="list-style: none; padding: 0; margin: 0; background: #f8fffe; padding: 16px; border-radius: 8px; border-left: 4px solid #10b981;">
+                        ${detail.usageNotes.map(note => `
+                            <li style="color: #0f766e; font-size: 14px; margin-bottom: 8px; padding-left: 20px; position: relative; line-height: 1.5;">
+                                <span style="position: absolute; left: 0; color: #10b981; font-weight: bold;">•</span>
+                                ${note}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                
+                <div style="margin-bottom: 24px;">
+                    <h5 style="color: #374151; font-size: 16px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center;">
+                        <span style="color: #f59e0b; margin-right: 8px; font-size: 18px;">⚠</span>
+                        주의사항
+                    </h5>
+                    <ul style="list-style: none; padding: 0; margin: 0; background: #fffbeb; padding: 16px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                        ${detail.conflictWarnings.map(warning => `
+                            <li style="color: #dc2626; font-size: 14px; margin-bottom: 8px; padding-left: 20px; position: relative; line-height: 1.5;">
+                                <span style="position: absolute; left: 0; color: #dc2626; font-weight: bold;">•</span>
+                                ${warning}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px; color: white;">
+                    <h5 style="color: white; font-size: 16px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center;">
+                        <span style="margin-right: 8px; font-size: 18px;">👥</span>
+                        권장 이용 학년
+                    </h5>
+                    <div style="display: flex; flex-wrap: gap: 8px;">
+                        ${detail.recommendedGrades.map(grade => `
+                            <span style="background: rgba(255,255,255,0.2); color: white; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; backdrop-filter: blur(10px);">
+                                ${grade}학년
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            content.innerHTML = html;
+            modal.style.display = 'flex';
+        }
+        
+        // 특별실 상세 정보 모달 닫기
+        function closeRoomDetailModal() {
+            document.getElementById('roomDetailModal').style.display = 'none';
+        }
+        
+        // 🏢 특별실 추가 모달 표시
+        function showAddRoomModal() {
+            document.getElementById('roomModalTitle').textContent = '새 특별실 추가';
+            document.getElementById('roomSubmitBtn').textContent = '추가하기';
+            document.getElementById('roomForm').reset();
+            document.getElementById('roomModal').style.display = 'flex';
+        }
+        
+        // 특별실 추가 모달 닫기
+        function closeRoomModal() {
+            document.getElementById('roomModal').style.display = 'none';
+            document.getElementById('roomForm').reset();
+        }
+        
+        // 특별실 추가/수정 처리
+        function handleRoomSubmit(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('roomNameInput').value.trim(),
+                capacity: parseInt(document.getElementById('roomCapacityInput').value),
+                description: document.getElementById('roomDescriptionInput').value.trim() || '특별실',
+                recommendedGrades: Array.from(document.querySelectorAll('input[name="recommendedGrades"]:checked')).map(cb => parseInt(cb.value)),
+                usageNotes: document.getElementById('roomUsageNotesInput').value.trim().split('\n').filter(note => note.trim()),
+                conflictWarnings: document.getElementById('roomWarningsInput').value.trim().split('\n').filter(warning => warning.trim())
+            };
+            
+            // 유효성 검사
+            if (!formData.name) {
+                showToast('특별실 이름을 입력해주세요.', 'error');
+                return;
+            }
+            
+            if (!formData.capacity || formData.capacity < 1) {
+                showToast('올바른 수용 인원을 입력해주세요.', 'error');
+                return;
+            }
+            
+            // 중복 이름 검사
+            const existingRoom = testData.rooms.find(room => room.name === formData.name);
+            if (existingRoom) {
+                showToast('이미 존재하는 특별실 이름입니다.', 'error');
+                return;
+            }
+            
+            // 새 특별실 추가
+            const newRoom = {
+                id: Math.max(...testData.rooms.map(r => r.id), 0) + 1,
+                name: formData.name,
+                capacity: formData.capacity,
+                isActive: true
+            };
+            
+            testData.rooms.push(newRoom);
+            
+            // 특별실 상세 정보도 추가
+            roomDetails[formData.name] = {
+                description: formData.description,
+                usageNotes: formData.usageNotes.length > 0 ? formData.usageNotes : ['일반적인 이용 규칙을 준수해주세요'],
+                conflictWarnings: formData.conflictWarnings.length > 0 ? formData.conflictWarnings : ['다른 예약과 중복되지 않도록 주의하세요'],
+                recommendedGrades: formData.recommendedGrades.length > 0 ? formData.recommendedGrades : [1, 2, 3, 4, 5, 6]
+            };
+            
+            // 예약 모달의 특별실 옵션도 업데이트
+            updateRoomSelectOptions();
+            
+            closeRoomModal();
+            renderRoomsPage();
+            showToast(`✅ "${formData.name}" 특별실이 성공적으로 추가되었습니다!`, 'success');
+            
+            console.log(`🏢 새 특별실 추가: ${formData.name} (수용: ${formData.capacity}명)`);
+        }
+        
+        // 예약 모달의 특별실 선택 옵션 업데이트
+        function updateRoomSelectOptions() {
+            const roomSelect = document.getElementById('modalRoomSelect');
+            if (!roomSelect) return;
+            
+            const currentValue = roomSelect.value;
+            roomSelect.innerHTML = '<option value="">특별실을 선택하세요</option>';
+            
+            testData.rooms.forEach(room => {
+                if (room.isActive) {
+                    const option = document.createElement('option');
+                    option.value = room.id;
+                    option.textContent = `${room.name} (${room.capacity}명)`;
+                    roomSelect.appendChild(option);
+                }
+            });
+            
+            // 이전 선택값 복원
+            if (currentValue) roomSelect.value = currentValue;
+        }
+        
+        // 페이지 로드 시 특별실 목록 렌더링
+        window.addEventListener('load', function() {
+            renderRoomsPage();
+            updateRoomSelectOptions();
+        });
+        
+        console.log('🎯 원본과 똑같은 특별실 예약 시스템이 로드되었습니다!');
     </script>
+    
+    <!-- 고급 기능 JavaScript -->
+    <script src="app-advanced.js"></script>
 </body>
 </html> 

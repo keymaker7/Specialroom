@@ -127,11 +127,11 @@ export default function ReservationModal({
     }> = [];
 
     // Check against planned schedules
-    const day = ['일', '월', '화', '수', '목', '금', '토'][new Date(selectedDate).getDay()];
-    
+      const day = ['일', '월', '화', '수', '목', '금', '토'][new Date(selectedDate).getDay()];
+      
     if (doTimeSlotsOverlap(selectedTimeSlot, selectedTimeSlot)) {
       const plannedGrades = getPlannedUsageForTimeSlot(selectedRoom.name, selectedDate, selectedTimeSlot);
-      if (plannedGrades.length > 0) {
+          if (plannedGrades.length > 0) {
         conflicts.push({
           timeSlot: selectedTimeSlot,
           plannedGrades: plannedGrades.filter((grade, index, arr) => arr.indexOf(grade) === index)
@@ -240,7 +240,7 @@ export default function ReservationModal({
             {reservation ? "예약 수정" : "새 예약"}
           </DialogTitle>
         </DialogHeader>
-
+        
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -361,7 +361,7 @@ export default function ReservationModal({
                 <FormItem>
                   <FormLabel>목적</FormLabel>
                   <FormControl>
-                    <Textarea 
+                    <Textarea
                       placeholder="특별실 사용 목적을 입력하세요"
                       className="min-h-[80px]"
                       {...field}
@@ -418,8 +418,8 @@ export default function ReservationModal({
               >
                 취소
               </Button>
-              <Button
-                type="submit"
+              <Button 
+                type="submit" 
                 disabled={isSubmitting}
                 className="bg-blue-600 hover:bg-blue-700"
               >

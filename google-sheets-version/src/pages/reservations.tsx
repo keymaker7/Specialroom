@@ -293,7 +293,7 @@ export default function Reservations() {
       </Card>
 
       {/* Reservation Modal */}
-      <ReservationModal
+      <ReservationModal 
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);

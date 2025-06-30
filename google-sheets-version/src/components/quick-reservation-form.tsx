@@ -189,61 +189,61 @@ export default function QuickReservationForm({
 
             {/* 특별실 & 학급 */}
             <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="roomId"
-                render={({ field }) => (
-                  <FormItem>
+            <FormField
+              control={form.control}
+              name="roomId"
+              render={({ field }) => (
+                <FormItem>
                     <FormLabel className="flex items-center gap-1">
                       <MapPin className="w-4 h-4" />
                       특별실
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
+                    <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="특별실 선택" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
                         {rooms.map((room) => (
                           <SelectItem key={room.id} value={room.id}>
-                            {room.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                          {room.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={form.control}
-                name="classId"
-                render={({ field }) => (
-                  <FormItem>
+            <FormField
+              control={form.control}
+              name="classId"
+              render={({ field }) => (
+                <FormItem>
                     <FormLabel className="flex items-center gap-1">
                       <User className="w-4 h-4" />
                       학급
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
+                    <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="학급 선택" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
                         {classes.map((cls) => (
                           <SelectItem key={cls.id} value={cls.id}>
                             {cls.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             </div>
 
             {/* 담당교사 */}
@@ -268,17 +268,17 @@ export default function QuickReservationForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>목적</FormLabel>
-                  <FormControl>
+                    <FormControl>
                     <Textarea 
                       placeholder="간단한 사용 목적을 입력하세요"
                       className="min-h-[80px] resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
             {/* 제출 버튼 */}
             <div className="flex justify-end gap-3 pt-4">
@@ -290,8 +290,8 @@ export default function QuickReservationForm({
               >
                 취소
               </Button>
-              <Button
-                type="submit"
+              <Button 
+                type="submit" 
                 disabled={isSubmitting}
                 className="bg-blue-600 hover:bg-blue-700"
               >
