@@ -211,12 +211,22 @@ function generateWeeklyCards() {
         `${weekStart.getMonth() + 1}월 ${weekStart.getDate()}일 ~ ${weekEnd.getMonth() + 1}월 ${weekEnd.getDate()}일`;
 }
 
-// 2️⃣ 달력 생성 - 월간 뷰 + 네비게이션
+// 2️⃣ 달력 생성 - 월간 뷰 + 네비게이션 (완전 개선)
 function generateCalendar() {
+    console.log('📅 달력 생성 함수 호출됨');
+    
     const calendarGrid = document.getElementById('calendarGrid');
     const calendarTitle = document.getElementById('calendarTitle');
     
-    if (!calendarGrid || !calendarTitle) return;
+    if (!calendarGrid || !calendarTitle) {
+        console.error('❌ 달력 DOM 요소를 찾을 수 없음:', { 
+            calendarGrid: !!calendarGrid, 
+            calendarTitle: !!calendarTitle 
+        });
+        return;
+    }
+    
+    console.log('✅ 달력 DOM 요소 확인됨, 생성 시작');
 
     const year = currentCalendarDate.getFullYear();
     const month = currentCalendarDate.getMonth();
@@ -238,36 +248,367 @@ function generateCalendar() {
         
         const dayReservations = testData.reservations.filter(r => r.date === dateStr);
         
+        // 🎯 개선된 오늘 날짜 스타일링
+        const todayStyle = isToday ? `
+            background: linear-gradient(135deg, #eff6ff, #dbeafe) !important;
+            border: 2px solid #2563eb !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2) !important;
+        ` : '';
+        
+        // 📅 호버 효과
+        const hoverStyle = `
+            transition: all 0.2s ease;
+            border: 1px solid #e5e7eb;
+        `;
+        
         html += `
-            <div style="background: white; min-height: 100px; padding: 8px; position: relative; cursor: pointer; ${isToday ? 'border: 2px solid #2563eb;' : ''}" onclick="selectCalendarDate('${dateStr}')">
-                <div style="font-size: 14px; font-weight: ${isToday ? '700' : '500'}; color: ${isCurrentMonth ? (isToday ? '#2563eb' : '#374151') : '#9ca3af'}; margin-bottom: 4px;">
-                    ${date.getDate()}
+            <div 
+                class="calendar-day" 
+                style="
+                    background: white; 
+                    min-height: 100px; 
+                    padding: 8px; 
+                    position: relative; 
+                    cursor: pointer; 
+                    ${todayStyle} 
+                    ${hoverStyle}
+                " 
+                onclick="selectCalendarDate('${dateStr}')"
+                onmouseover="showCalendarTooltip(event, '${dateStr}', ${JSON.stringify(dayReservations).replace(/"/g, '&quot;')})"
+                onmouseout="hideCalendarTooltip()"
+                onmouseenter="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0,0,0,0.1)'"
+                onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='${isToday ? '0 4px 12px rgba(37, 99, 235, 0.2)' : 'none'}'"
+            >
+                <!-- 📅 날짜 표시 (오늘 날짜 강조) -->
+                <div style="
+                    font-size: 14px; 
+                    font-weight: ${isToday ? '700' : '500'}; 
+                    color: ${isCurrentMonth ? (isToday ? '#2563eb' : '#374151') : '#9ca3af'}; 
+                    margin-bottom: 6px;
+                    ${isToday ? 'background: white; padding: 4px 8px; border-radius: 12px; text-align: center; border: 1px solid #2563eb;' : ''}
+                ">
+                    ${isToday ? '📅 ' : ''}${date.getDate()}${isToday ? ' (오늘)' : ''}
                 </div>
+                
+                <!-- 🏢 예약 항목들 (최대 3개) -->
                 ${dayReservations.slice(0, 3).map(reservation => {
                     const room = testData.rooms.find(r => r.id === reservation.roomId);
                     const cls = testData.classes.find(c => c.id === reservation.classId);
                     const roomColors = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
                     const color = roomColors[reservation.roomId % roomColors.length];
+                    
                     return `
-                        <div style="background: ${color}; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; group;" title="${room?.name}: ${cls?.name}">
+                        <div 
+                            class="reservation-item"
+                            style="
+                                background: ${color}; 
+                                color: white; 
+                                padding: 4px 8px; 
+                                border-radius: 6px; 
+                                font-size: 11px; 
+                                margin-bottom: 3px; 
+                                white-space: nowrap; 
+                                overflow: hidden; 
+                                text-overflow: ellipsis; 
+                                position: relative;
+                                transition: all 0.2s ease;
+                                cursor: pointer;
+                            " 
+                            onclick="event.stopPropagation(); editReservation(${reservation.id})"
+                            onmouseover="this.style.transform='scale(1.02)'; this.style.zIndex='10'"
+                            onmouseout="this.style.transform='scale(1)'; this.style.zIndex='auto'"
+                            title="📋 ${room?.name}: ${cls?.name}
+🕐 ${reservation.periods ? reservation.periods.join(', ') : '시간 미정'}
+👤 ${reservation.teacherName || '담당교사 미기재'}
+📝 ${reservation.purpose || '목적 미기재'}
+클릭하여 수정"
+                        >
                             <div style="display: flex; align-items: center; justify-content: space-between;">
-                                <span>${room?.name}: ${cls?.name}</span>
-                                <button onclick="event.stopPropagation(); deleteReservation(${reservation.id})" style="background: none; border: none; color: white; opacity: 0; transition: opacity 0.2s; margin-left: 4px; padding: 0; cursor: pointer;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                <span style="font-weight: 600;">${room?.name}</span>
+                                <button 
+                                    onclick="event.stopPropagation(); deleteReservation(${reservation.id})" 
+                                    style="
+                                        background: none; 
+                                        border: none; 
+                                        color: white; 
+                                        opacity: 0; 
+                                        transition: opacity 0.2s; 
+                                        margin-left: 4px; 
+                                        padding: 2px; 
+                                        cursor: pointer;
+                                        border-radius: 2px;
+                                    " 
+                                    onmouseover="this.style.opacity='1'; this.style.background='rgba(255,255,255,0.2)'" 
+                                    onmouseout="this.style.opacity='0'; this.style.background='none'"
+                                    title="🗑️ 예약 삭제"
+                                >
                                     🗑️
                                 </button>
                             </div>
-                            <div style="font-size: 10px; opacity: 90%;">${reservation.periods ? reservation.periods.join(', ') : '시간 미정'}</div>
+                            <div style="font-size: 10px; opacity: 90%; font-weight: 500;">
+                                ${cls?.name} | ${reservation.periods ? reservation.periods.join(', ') : '시간 미정'}
+                            </div>
                         </div>
                     `;
                 }).join('')}
+                
+                <!-- 📋 추가 예약 개수 표시 -->
                 ${dayReservations.length > 3 ? `
-                    <div style="color: #6b7280; font-size: 11px;">+${dayReservations.length - 3}개 더</div>
+                    <div style="
+                        color: #6b7280; 
+                        font-size: 11px; 
+                        background: #f3f4f6; 
+                        padding: 2px 6px; 
+                        border-radius: 4px; 
+                        text-align: center;
+                        font-weight: 500;
+                    ">
+                        +${dayReservations.length - 3}개 더
+                    </div>
+                ` : ''}
+                
+                <!-- ➕ 빈 날짜 클릭 안내 -->
+                ${dayReservations.length === 0 ? `
+                    <div style="
+                        position: absolute; 
+                        bottom: 8px; 
+                        left: 50%; 
+                        transform: translateX(-50%); 
+                        color: #9ca3af; 
+                        font-size: 10px; 
+                        opacity: 0; 
+                        transition: opacity 0.2s ease;
+                    " class="click-hint">
+                        클릭하여 예약
+                    </div>
                 ` : ''}
             </div>
         `;
     }
     
     calendarGrid.innerHTML = html;
+    
+    console.log(`✅ 달력 HTML 생성 완료: ${html.length}자 (${year}년 ${month + 1}월)`);
+    console.log(`📋 예약 데이터: ${testData.reservations.length}건`);
+    
+    // 💡 빈 날짜 호버 시 힌트 표시
+    setTimeout(() => {
+        const dayElements = document.querySelectorAll('.calendar-day');
+        console.log(`📅 달력 날짜 요소: ${dayElements.length}개`);
+        
+        dayElements.forEach(day => {
+            day.addEventListener('mouseenter', function() {
+                const hint = this.querySelector('.click-hint');
+                if (hint) hint.style.opacity = '1';
+            });
+            day.addEventListener('mouseleave', function() {
+                const hint = this.querySelector('.click-hint');
+                if (hint) hint.style.opacity = '0';
+            });
+        });
+    }, 100);
+}
+
+// 📅 달력 툴팁 시스템
+function showCalendarTooltip(event, dateStr, reservations) {
+    hideCalendarTooltip(); // 기존 툴팁 제거
+    
+    if (!reservations || reservations.length === 0) return;
+    
+    const tooltip = document.createElement('div');
+    tooltip.id = 'calendar-tooltip';
+    tooltip.style.cssText = `
+        position: fixed;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        max-width: 320px;
+        font-size: 14px;
+        backdrop-filter: blur(10px);
+        border-top: 3px solid #2563eb;
+    `;
+    
+    const formatDate = new Date(dateStr).toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+    });
+    
+    let tooltipContent = `
+        <div style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 12px;">
+            <div style="font-weight: 700; color: #111827; font-size: 16px; margin-bottom: 4px;">
+                📅 ${formatDate}
+            </div>
+            <div style="color: #6b7280; font-size: 13px;">
+                📋 총 ${reservations.length}개의 예약
+            </div>
+        </div>
+    `;
+    
+    reservations.forEach((reservation, index) => {
+        const room = testData.rooms.find(r => r.id === reservation.roomId);
+        const cls = testData.classes.find(c => c.id === reservation.classId);
+        const roomColors = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+        const color = roomColors[reservation.roomId % roomColors.length];
+        
+        tooltipContent += `
+            <div style="
+                background: linear-gradient(135deg, ${color}15, ${color}08);
+                border-left: 3px solid ${color};
+                padding: 12px;
+                border-radius: 8px;
+                margin-bottom: ${index < reservations.length - 1 ? '12px' : '0'};
+            ">
+                <div style="display: flex; align-items: center; justify-content: between; margin-bottom: 8px;">
+                    <div style="
+                        background: ${color};
+                        color: white;
+                        padding: 4px 8px;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        margin-right: 8px;
+                    ">
+                        🏢 ${room?.name || '특별실'}
+                    </div>
+                    <div style="color: #6b7280; font-size: 12px;">
+                        ${reservation.periods ? reservation.periods.join(', ') : '시간 미정'}
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 6px;">
+                    <div style="color: #374151; font-weight: 600; font-size: 14px;">
+                        👥 ${cls?.name || '알 수 없는 학급'}
+                    </div>
+                </div>
+                
+                <div style="color: #6b7280; font-size: 13px; margin-bottom: 4px;">
+                    👤 담당교사: ${reservation.teacherName || '미기재'}
+                </div>
+                
+                ${reservation.purpose ? `
+                    <div style="color: #6b7280; font-size: 13px; margin-bottom: 8px;">
+                        📝 목적: ${reservation.purpose}
+                    </div>
+                ` : ''}
+                
+                ${reservation.notes ? `
+                    <div style="color: #6b7280; font-size: 12px; font-style: italic;">
+                        💬 ${reservation.notes}
+                    </div>
+                ` : ''}
+                
+                <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid ${color}20;">
+                    <button 
+                        onclick="editReservation(${reservation.id}); hideCalendarTooltip();" 
+                        style="
+                            background: none;
+                            border: 1px solid ${color};
+                            color: ${color};
+                            padding: 4px 8px;
+                            border-radius: 4px;
+                            font-size: 11px;
+                            cursor: pointer;
+                            margin-right: 6px;
+                            transition: all 0.2s;
+                        "
+                        onmouseover="this.style.background='${color}'; this.style.color='white'"
+                        onmouseout="this.style.background='none'; this.style.color='${color}'"
+                    >
+                        ✏️ 수정
+                    </button>
+                    <button 
+                        onclick="deleteReservation(${reservation.id}); hideCalendarTooltip();" 
+                        style="
+                            background: none;
+                            border: 1px solid #ef4444;
+                            color: #ef4444;
+                            padding: 4px 8px;
+                            border-radius: 4px;
+                            font-size: 11px;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                        "
+                        onmouseover="this.style.background='#ef4444'; this.style.color='white'"
+                        onmouseout="this.style.background='none'; this.style.color='#ef4444'"
+                    >
+                        🗑️ 삭제
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+    
+    tooltipContent += `
+        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f3f4f6; text-align: center;">
+            <button 
+                onclick="selectCalendarDate('${dateStr}'); hideCalendarTooltip();" 
+                style="
+                    background: linear-gradient(135deg, #2563eb, #3b82f6);
+                    color: white;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 6px;
+                    font-size: 13px;
+                    cursor: pointer;
+                    font-weight: 500;
+                    transition: all 0.2s;
+                "
+                onmouseover="this.style.background='linear-gradient(135deg, #1d4ed8, #2563eb)'"
+                onmouseout="this.style.background='linear-gradient(135deg, #2563eb, #3b82f6)'"
+            >
+                ➕ 새 예약 추가
+            </button>
+        </div>
+    `;
+    
+    tooltip.innerHTML = tooltipContent;
+    document.body.appendChild(tooltip);
+    
+    // 툴팁 위치 계산
+    const rect = event.target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+    
+    let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+    let top = rect.top - tooltipRect.height - 10;
+    
+    // 화면 경계 확인 및 조정
+    if (left < 10) left = 10;
+    if (left + tooltipRect.width > window.innerWidth - 10) {
+        left = window.innerWidth - tooltipRect.width - 10;
+    }
+    if (top < 10) {
+        top = rect.bottom + 10;
+    }
+    
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = top + 'px';
+    
+    // 애니메이션 효과
+    tooltip.style.opacity = '0';
+    tooltip.style.transform = 'translateY(10px) scale(0.9)';
+    setTimeout(() => {
+        tooltip.style.transition = 'all 0.2s ease';
+        tooltip.style.opacity = '1';
+        tooltip.style.transform = 'translateY(0) scale(1)';
+    }, 10);
+}
+
+function hideCalendarTooltip() {
+    const existingTooltip = document.getElementById('calendar-tooltip');
+    if (existingTooltip) {
+        existingTooltip.style.opacity = '0';
+        existingTooltip.style.transform = 'translateY(10px) scale(0.9)';
+        setTimeout(() => {
+            if (existingTooltip.parentNode) {
+                existingTooltip.parentNode.removeChild(existingTooltip);
+            }
+        }, 200);
+    }
 }
 
 // 월 네비게이션
@@ -383,20 +724,60 @@ function filterReservations() {
     generateReservationsList();
 }
 
-// 5️⃣ 모달 및 폼 관리
-function showAddModal() {
+// 5️⃣ 모달 및 폼 관리 (개선된 버전)
+function showAddModal(selectedDate = null) {
     // 수정 모드 초기화
     editingReservationId = null;
-    document.querySelector('.modal-title').textContent = '새 예약';
-    document.querySelector('#reservationForm button[type="submit"]').textContent = '예약 생성';
+    
+    const modalTitle = document.querySelector('.modal-title');
+    const submitBtn = document.querySelector('#reservationForm button[type="submit"]');
+    
+    if (selectedDate) {
+        // 달력에서 날짜를 선택해서 온 경우
+        const formatDate = new Date(selectedDate).toLocaleDateString('ko-KR', {
+            month: 'long',
+            day: 'numeric',
+            weekday: 'short'
+        });
+        modalTitle.textContent = `새 예약 - ${formatDate}`;
+    } else {
+        // 일반적인 새 예약 버튼에서 온 경우
+        modalTitle.textContent = '새 예약';
+    }
+    
+    if (submitBtn) {
+        submitBtn.textContent = '예약 생성';
+    }
     
     // 날짜 기본값 설정
     const dateInput = document.getElementById('modalDateInput');
-    if (dateInput && !dateInput.value) {
-        dateInput.value = new Date().toISOString().split('T')[0];
+    if (dateInput) {
+        if (selectedDate) {
+            dateInput.value = selectedDate;
+        } else if (!dateInput.value) {
+            dateInput.value = new Date().toISOString().split('T')[0];
+        }
+    }
+    
+    // 폼 초기화
+    const form = document.getElementById('reservationForm');
+    if (form) {
+        form.reset();
+        // 날짜는 다시 설정
+        if (dateInput) {
+            dateInput.value = selectedDate || new Date().toISOString().split('T')[0];
+        }
     }
     
     document.getElementById('modal').classList.add('show');
+    
+    // 🎯 포커스를 특별실 선택으로 이동
+    setTimeout(() => {
+        const roomSelect = document.getElementById('modalRoomSelect');
+        if (roomSelect) {
+            roomSelect.focus();
+        }
+    }, 300);
 }
 
 function closeModal() {
@@ -405,10 +786,27 @@ function closeModal() {
     editingReservationId = null;
 }
 
-// 달력 날짜 선택
+// 📅 달력 날짜 선택 (개선된 피드백)
 function selectCalendarDate(dateStr) {
-    document.getElementById('modalDateInput').value = dateStr;
-    showAddModal();
+    // 툴팁 숨기기
+    hideCalendarTooltip();
+    
+    // 선택된 날짜 피드백 표시
+    const selectedDate = new Date(dateStr);
+    const formatDate = selectedDate.toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+    });
+    
+    // 📅 선택 피드백 토스트
+    showToast(`📅 ${formatDate} 선택됨 - 새 예약을 생성하세요!`, 'info');
+    
+    // 🎯 선택된 날짜와 함께 모달 열기
+    showAddModal(dateStr);
+    
+    console.log(`📅 달력에서 날짜 선택: ${formatDate}`);
 }
 
 // 예약 편집
@@ -596,7 +994,7 @@ function showPage(page) {
                 generateWeeklyCards();
                 break;
             case 'calendar':
-                generateCalendar();
+                rebuildCalendar();
                 console.log('📅 달력 페이지 로드 완료');
                 break;
             case 'reservations':
@@ -821,6 +1219,67 @@ function watchCalendarPage() {
     }
 }
 
+// 🔧 달력 강제 테스트 함수
+function testCalendar() {
+    console.log('🔧 달력 테스트 시작');
+    
+    const calendarGrid = document.getElementById('calendarGrid');
+    const calendarTitle = document.getElementById('calendarTitle');
+    
+    if (!calendarGrid) {
+        console.error('❌ calendarGrid 요소가 없음');
+        return;
+    }
+    
+    if (!calendarTitle) {
+        console.error('❌ calendarTitle 요소가 없음');
+        return;
+    }
+    
+    // 기본 테스트 HTML 삽입
+    calendarTitle.textContent = '2025년 1월 (테스트)';
+    calendarGrid.innerHTML = `
+        <div style="background: white; min-height: 100px; padding: 8px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="alert('달력 클릭 테스트 성공!')">
+            <div style="font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 4px;">1</div>
+            <div style="background: #2563eb; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">
+                테스트 예약
+            </div>
+        </div>
+        <div style="background: white; min-height: 100px; padding: 8px; border: 1px solid #e5e7eb;">
+            <div style="font-size: 14px; font-weight: 500; color: #374151;">2</div>
+        </div>
+        <div style="background: white; min-height: 100px; padding: 8px; border: 1px solid #e5e7eb;">
+            <div style="font-size: 14px; font-weight: 500; color: #374151;">3</div>
+        </div>
+        <div style="background: white; min-height: 100px; padding: 8px; border: 1px solid #e5e7eb;">
+            <div style="font-size: 14px; font-weight: 500; color: #374151;">4</div>
+        </div>
+        <div style="background: white; min-height: 100px; padding: 8px; border: 1px solid #e5e7eb;">
+            <div style="font-size: 14px; font-weight: 500; color: #374151;">5</div>
+        </div>
+        <div style="background: white; min-height: 100px; padding: 8px; border: 1px solid #e5e7eb;">
+            <div style="font-size: 14px; font-weight: 500; color: #374151;">6</div>
+        </div>
+        <div style="background: white; min-height: 100px; padding: 8px; border: 1px solid #e5e7eb;">
+            <div style="font-size: 14px; font-weight: 500; color: #374151;">7</div>
+        </div>
+    `;
+    
+    console.log('✅ 달력 테스트 HTML 삽입 완료');
+}
+
+// 🎯 달력 완전 재구축
+function rebuildCalendar() {
+    console.log('🎯 달력 완전 재구축 시작');
+    
+    setTimeout(() => {
+        testCalendar();
+        setTimeout(() => {
+            generateCalendar();
+        }, 500);
+    }, 100);
+}
+
 // 초기화
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 DOM 로드 완료, 앱 초기화 시작');
@@ -843,6 +1302,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // 달력 페이지 감시 시작
     watchCalendarPage();
     
+    // 🎯 전역 이벤트 리스너 추가
+    setupGlobalEventListeners();
+    
     // 초기 페이지 로드
     setTimeout(() => {
         refreshAllPages();
@@ -855,5 +1317,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 200);
     
-    console.log('🎯 원본과 완전히 동일한 특별실 예약 시스템이 로드되었습니다!');
-}); 
+    console.log('🎯 완전히 개선된 특별실 예약 시스템이 로드되었습니다!');
+});
+
+// 🎯 전역 이벤트 리스너 설정
+function setupGlobalEventListeners() {
+    // 📅 달력 툴팁 숨기기 (다른 곳 클릭 시)
+    document.addEventListener('click', function(event) {
+        const tooltip = document.getElementById('calendar-tooltip');
+        if (tooltip && !tooltip.contains(event.target)) {
+            // 달력 날짜나 예약 아이템을 클릭한 경우가 아니라면 툴팁 숨기기
+            const isCalendarClick = event.target.closest('.calendar-day') || 
+                                  event.target.closest('.reservation-item');
+            if (!isCalendarClick) {
+                hideCalendarTooltip();
+            }
+        }
+    });
+    
+    // 🔄 페이지 전환 시 툴팁 숨기기
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('nav-item')) {
+            hideCalendarTooltip();
+        }
+    });
+    
+    // ⌨️ ESC 키로 툴팁 숨기기
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            hideCalendarTooltip();
+            closeModal();
+            if (typeof closeRoomModal === 'function') closeRoomModal();
+        }
+    });
+    
+    // 📱 스크롤 시 툴팁 숨기기
+    document.addEventListener('scroll', hideCalendarTooltip);
+    
+    console.log('🎯 전역 이벤트 리스너 설정 완료');
+} 
